@@ -1,0 +1,121 @@
+package main
+
+import (
+	"os"
+	"strings"
+	"time"
+
+	"github.com/elastic/crd-ref-docs/config"
+	"github.com/elastic/crd-ref-docs/processor"
+	"github.com/elastic/crd-ref-docs/renderer"
+	"github.com/spf13/cobra"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
+)
+
+var args = config.Flags{}
+
+func main() {
+	cmd := cobra.Command{
+		Use:          "crd-ref-docs",
+		Short:        "Generate CRD reference documentation",
+		SilenceUsage: true,
+		RunE:         doRun,
+	}
+
+	cmd.Flags().StringVar(&args.LogLevel, "log-level", "INFO", "Log level")
+	cmd.Flags().StringVar(&args.Config, "config", "config.yaml", "Path to config file")
+	cmd.Flags().StringVar(&args.SourcePath, "source-path", "", "Path to source directory containing CRDs")
+	cmd.Flags().StringVar(&args.TemplatesDir, "templates-dir", "templates", "Path to the directory containing template.tpl")
+	cmd.Flags().StringVar(&args.Renderer, "renderer", "asciidoctor", "Renderer to use")
+	cmd.Flags().StringVar(&args.OutputPath, "output-path", "out.asciidoc", "Path to output the rendered result")
+	cmd.Flags().IntVar(&args.MaxDepth, "max-depth", 6, "Maximum recursion level for type discovery")
+
+	cmd.Execute()
+}
+
+func doRun(_ *cobra.Command, _ []string) error {
+	initLogging(args.LogLevel)
+
+	zap.S().Infow("Loading configuration", "path", args.Config)
+	conf, err := config.Load(args)
+	if err != nil {
+		zap.S().Errorw("Failed to read config", "error", err)
+		return err
+	}
+
+	r, err := renderer.New(conf)
+	if err != nil {
+		zap.S().Errorw("Failed to create renderer", "error", err)
+		return err
+	}
+
+	startTime := time.Now()
+	defer func() {
+		zap.S().Infof("Execution time: %s", time.Since(startTime))
+	}()
+
+	zap.S().Infow("Processing source directory", "directory", conf.SourcePath, "depth", conf.MaxDepth)
+	gvd, err := processor.Process(conf)
+	if err != nil {
+		zap.S().Errorw("Failed to process source directory", "error", err)
+		return err
+	}
+
+	zap.S().Infow("Rendering output", "path", conf.OutputPath)
+	if err := r.Render(gvd); err != nil {
+		zap.S().Errorw("Failed to render", "error", err)
+		return err
+	}
+
+	zap.S().Info("CRD reference documentation generated")
+	return nil
+}
+
+func initLogging(level string) {
+	var logger *zap.Logger
+	var err error
+	errorPriority := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
+		return lvl >= zapcore.ErrorLevel
+	})
+
+	minLogLevel := zapcore.InfoLevel
+	switch strings.ToUpper(level) {
+	case "DEBUG":
+		minLogLevel = zapcore.DebugLevel
+	case "INFO":
+		minLogLevel = zapcore.InfoLevel
+	case "WARN":
+		minLogLevel = zapcore.WarnLevel
+	case "ERROR":
+		minLogLevel = zapcore.ErrorLevel
+	}
+
+	infoPriority := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
+		return lvl < zapcore.ErrorLevel && lvl >= minLogLevel
+	})
+
+	consoleErrors := zapcore.Lock(os.Stderr)
+	consoleInfo := zapcore.Lock(os.Stdout)
+
+	encoderConf := zap.NewDevelopmentEncoderConfig()
+	encoderConf.EncodeLevel = zapcore.CapitalColorLevelEncoder
+	consoleEncoder := zapcore.NewConsoleEncoder(encoderConf)
+
+	core := zapcore.NewTee(
+		zapcore.NewCore(consoleEncoder, consoleErrors, errorPriority),
+		zapcore.NewCore(consoleEncoder, consoleInfo, infoPriority),
+	)
+
+	stackTraceEnabler := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
+		return lvl > zapcore.ErrorLevel
+	})
+	logger = zap.New(core, zap.AddStacktrace(stackTraceEnabler))
+
+	if err != nil {
+		zap.S().Fatalw("Failed to create logger", "error", err)
+	}
+
+	zap.ReplaceGlobals(logger.Named("crd-ref-docs"))
+	zap.RedirectStdLog(logger.Named("stdlog"))
+}
