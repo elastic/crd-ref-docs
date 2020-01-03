@@ -177,6 +177,7 @@ func Key(t *Type) string {
 // GroupVersionDetails encapsulates details about a discovered API group.
 type GroupVersionDetails struct {
 	schema.GroupVersion
+	Doc   string
 	Kinds []string
 	Types map[string]*Type
 }

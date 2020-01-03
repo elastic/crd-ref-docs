@@ -3,7 +3,9 @@
 [id="{{ asciidocGroupVersionID $gv | asciidocRenderAnchorID }}"]
 === {{ $gv.GroupVersionString }}
 
-{{ if $gv.Kinds  }}
+{{ $gv.Doc }}
+
+{{- if $gv.Kinds  }}
 .Resource Types
 {{- range $gv.Kinds }}
 - {{ $gv.TypeForKind . | asciidocRenderTypeLink }}

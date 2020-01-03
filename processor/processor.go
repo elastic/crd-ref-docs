@@ -3,6 +3,7 @@ package processor
 import (
 	"fmt"
 	gotypes "go/types"
+	"regexp"
 	"sort"
 	"strings"
 
@@ -22,9 +23,12 @@ const (
 	versionNameMarker = "versionName"
 )
 
+var ignoredCommentRegex = regexp.MustCompile(`\s*^(?i:\+|copyright)`)
+
 type groupVersionInfo struct {
 	schema.GroupVersion
 	*loader.Package
+	doc   string
 	kinds map[string]struct{}
 	types map[string]*types.Type
 }
@@ -58,7 +62,7 @@ func Process(config *config.Config) ([]types.GroupVersionDetails, error) {
 	// build the return array
 	var gvDetails []types.GroupVersionDetails
 	for _, gvi := range p.groupVersions {
-		details := types.GroupVersionDetails{GroupVersion: gvi.GroupVersion}
+		details := types.GroupVersionDetails{GroupVersion: gvi.GroupVersion, Doc: gvi.doc}
 		for k, _ := range gvi.kinds {
 			details.Kinds = append(details.Kinds, k)
 		}
@@ -207,10 +211,31 @@ func (p *processor) extractGroupVersionIfExists(collector *markers.Collector, pk
 			Group:   groupName.(string),
 			Version: version,
 		},
+		doc:     p.extractPkgDocumentation(pkg),
 		Package: pkg,
 	}
 
 	return gvInfo
+}
+
+func (p *processor) extractPkgDocumentation(pkg *loader.Package) string {
+	var pkgComments []string
+
+	pkg.NeedSyntax()
+	for _, n := range pkg.Syntax {
+		if n.Doc == nil {
+			continue
+		}
+		comment := n.Doc.Text()
+		commentLines := strings.Split(comment, "\n")
+		for _, line := range commentLines {
+			if !ignoredCommentRegex.MatchString(line) {
+				pkgComments = append(pkgComments, line)
+			}
+		}
+	}
+
+	return strings.Join(pkgComments, "\n")
 }
 
 func (p *processor) processType(pkg *loader.Package, info *markers.TypeInfo, depth int) *types.Type {
