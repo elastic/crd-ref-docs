@@ -1,5 +1,8 @@
-name: Go
-on: [push]
+name: Build
+on:
+  push:
+    branches:
+      - '*'
 jobs:
 
   build:
@@ -19,6 +22,9 @@ jobs:
     - name: Get dependencies
       run: |
         go get -v -t -d ./...
+
+    - name: Run tests
+      run: go test -v ./...
 
     - name: Build
       run: go build -v .
