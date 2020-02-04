@@ -22,5 +22,30 @@ crd-ref-docs \
     --source-path=$GOPATH/src/github.com/elastic/cloud-on-k8s/pkg/apis \
     --config=config.yaml \
     --renderer=asciidoctor \
-    --templates-dir=templates/asciidoctor
+    --templates-dir=templates/asciidoctor \
+    --output-path=out.asciidoc
+```
+
+
+### Configuration
+
+Configuration options such as types and fields to exclude from the documentation can be specified using a YAML file.
+
+```yaml
+processor:
+  # RE2 regular expressions describing types that should be excluded from the generated documentation.
+  ignoreTypes:
+    - "(Elasticsearch|Kibana|ApmServer)List$"
+    - "(Elasticsearch|Kibana|ApmServer)Health$"
+    - "(Elasticsearch|Kibana|ApmServer|Reconciler)Status$"
+    - "ElasticsearchSettings$"
+    - "Associa(ted|tor|tionStatus|tionConf)$"
+  # RE2 regular expressions describing type fields that should be excluded from the generated documentation.
+  ignoreFields:
+    - "status$"
+    - "TypeMeta$"
+
+render:
+  # Version of Kubernetes to use when generating links to Kubernetes API documentation.
+  kubernetesVersion: 1.15
 ```
