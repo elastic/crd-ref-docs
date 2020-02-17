@@ -73,19 +73,6 @@ func Process(config *config.Config) ([]types.GroupVersionDetails, error) {
 				typeDef.References = append(typeDef.References, rd)
 			}
 		}
-
-		// sort the references
-		sort.SliceStable(typeDef.References, func(i, j int) bool {
-			if typeDef.References[i].Name < typeDef.References[j].Name {
-				return true
-			}
-
-			if typeDef.References[i].Name == typeDef.References[j].Name {
-				return typeDef.References[i].Package < typeDef.References[j].Package
-			}
-
-			return false
-		})
 	}
 
 	// build the return array
