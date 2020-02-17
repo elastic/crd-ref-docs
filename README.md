@@ -1,3 +1,6 @@
+![](https://github.com/elastic/crd-ref-docs/workflows/Build/badge.svg)
+
+
 CRD Reference Documentation Generator
 ======================================
 
