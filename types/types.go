@@ -174,6 +174,26 @@ func (t *Type) IsAlias() bool {
 	return t.Kind == AliasKind
 }
 
+func (t *Type) SortedReferences() []*Type {
+	if t == nil || len(t.References) == 0 {
+		return nil
+	}
+
+	sort.Slice(t.References, func(i, j int) bool {
+		if t.References[i].Name < t.References[j].Name {
+			return true
+		}
+
+		if t.References[i].Name == t.References[j].Name {
+			return t.References[i].Package < t.References[j].Package
+		}
+
+		return false
+	})
+
+	return t.References
+}
+
 // Field describes a field in a struct.
 type Field struct {
 	Name     string

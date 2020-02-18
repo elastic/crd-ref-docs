@@ -10,7 +10,7 @@
 {{ if $type.References -}}
 .Appears In:
 ****
-{{- range $type.References }}
+{{- range $type.SortedReferences }}
 - {{ asciidocRenderTypeLink . }}
 {{- end }}
 ****
