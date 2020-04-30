@@ -29,8 +29,9 @@ func compileConfig(conf *config.Config) (cc *compiledConfig, err error) {
 	}
 
 	cc = &compiledConfig{
-		ignoreTypes:  make([]*regexp.Regexp, len(conf.Processor.IgnoreTypes)),
-		ignoreFields: make([]*regexp.Regexp, len(conf.Processor.IgnoreFields)),
+		ignoreTypes:         make([]*regexp.Regexp, len(conf.Processor.IgnoreTypes)),
+		ignoreFields:        make([]*regexp.Regexp, len(conf.Processor.IgnoreFields)),
+		ignoreGroupVersions: make([]*regexp.Regexp, len(conf.Processor.IgnoreGroupVersions)),
 	}
 
 	for i, t := range conf.Processor.IgnoreTypes {
@@ -45,12 +46,33 @@ func compileConfig(conf *config.Config) (cc *compiledConfig, err error) {
 		}
 	}
 
+	for i, gv := range conf.Processor.IgnoreGroupVersions {
+		if cc.ignoreGroupVersions[i], err = regexp.Compile(gv); err != nil {
+			return nil, fmt.Errorf("failed to compile group-version regex '%s': %w", gv, err)
+		}
+	}
+
 	return
 }
 
 type compiledConfig struct {
-	ignoreTypes  []*regexp.Regexp
-	ignoreFields []*regexp.Regexp
+	ignoreTypes         []*regexp.Regexp
+	ignoreFields        []*regexp.Regexp
+	ignoreGroupVersions []*regexp.Regexp
+}
+
+func (cc *compiledConfig) shouldIgnoreGroupVersion(gv string) bool {
+	if cc == nil {
+		return false
+	}
+
+	for _, re := range cc.ignoreGroupVersions {
+		if re.MatchString(gv) {
+			return true
+		}
+	}
+
+	return false
 }
 
 func (cc *compiledConfig) shouldIgnoreType(fqn string) bool {

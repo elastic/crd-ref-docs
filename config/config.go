@@ -29,9 +29,10 @@ type Config struct {
 }
 
 type ProcessorConfig struct {
-	MaxDepth     int      `json:"maxDepth"`
-	IgnoreTypes  []string `json:"ignoreTypes"`
-	IgnoreFields []string `json:"ignoreFields"`
+	MaxDepth            int      `json:"maxDepth"`
+	IgnoreTypes         []string `json:"ignoreTypes"`
+	IgnoreFields        []string `json:"ignoreFields"`
+	IgnoreGroupVersions []string `json:"ignoreGroupVersions"`
 }
 
 type RenderConfig struct {

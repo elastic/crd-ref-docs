@@ -152,6 +152,10 @@ func (p *processor) findAPITypes(directory string) error {
 			continue
 		}
 
+		if p.shouldIgnoreGroupVersion(gvInfo.GroupVersion.String()) {
+			continue
+		}
+
 		// let the parser know that we need this package
 		p.parser.AddPackage(pkg)
 
