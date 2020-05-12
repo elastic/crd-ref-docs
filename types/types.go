@@ -207,6 +207,7 @@ func Key(t *Type) string {
 	if t.Package == "" {
 		return t.Name
 	}
+
 	return fmt.Sprintf("%s.%s", t.Package, t.Name)
 }
 
@@ -229,6 +230,7 @@ func (gvd GroupVersionDetails) TypeForKind(k string) *Type {
 func (gvd GroupVersionDetails) SortedTypes() []*Type {
 	typeList := make([]*Type, len(gvd.Types))
 	i := 0
+
 	for _, t := range gvd.Types {
 		typeList[i] = t
 		i++
@@ -239,4 +241,24 @@ func (gvd GroupVersionDetails) SortedTypes() []*Type {
 	})
 
 	return typeList
+}
+
+func (gvd GroupVersionDetails) SortedKinds() []string {
+	if len(gvd.Kinds) <= 1 {
+		return gvd.Kinds
+	}
+
+	kindsList := make([]string, len(gvd.Kinds))
+	i := 0
+
+	for _, k := range gvd.Kinds {
+		kindsList[i] = k
+		i++
+	}
+
+	sort.Slice(kindsList, func(i, j int) bool {
+		return kindsList[i] < kindsList[j]
+	})
+
+	return kindsList
 }

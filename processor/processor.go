@@ -92,6 +92,7 @@ func Process(config *config.Config) ([]types.GroupVersionDetails, error) {
 				zap.S().Fatalw("Type not loaded", "type", key)
 			}
 		}
+
 		gvDetails = append(gvDetails, details)
 	}
 
@@ -109,7 +110,6 @@ func Process(config *config.Config) ([]types.GroupVersionDetails, error) {
 	})
 
 	return gvDetails, nil
-
 }
 
 func newProcessor(compiledConfig *compiledConfig, maxDepth int) *processor {
