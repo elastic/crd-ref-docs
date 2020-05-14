@@ -1,0 +1,7 @@
+domain: test.k8s.elastic.co
+repo: github.com/elastic/crd-ref-docs
+resources:
+- group: webapp
+  kind: Guestbook
+  version: v1
+version: "2"
