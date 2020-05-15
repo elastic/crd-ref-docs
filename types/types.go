@@ -249,16 +249,8 @@ func (gvd GroupVersionDetails) SortedKinds() []string {
 	}
 
 	kindsList := make([]string, len(gvd.Kinds))
-	i := 0
-
-	for _, k := range gvd.Kinds {
-		kindsList[i] = k
-		i++
-	}
-
-	sort.Slice(kindsList, func(i, j int) bool {
-		return kindsList[i] < kindsList[j]
-	})
+	copy(kindsList, gvd.Kinds)
+	sort.Strings(kindsList)
 
 	return kindsList
 }
