@@ -1,0 +1,100 @@
+// Generated documentation. Please do not edit.
+:anchor_prefix: k8s-api
+
+[id="{p}-api-reference"]
+== API Reference
+
+.Packages
+- xref:{anchor_prefix}-webapp-test-k8s-elastic-co-v1[$$webapp.test.k8s.elastic.co/v1$$]
+
+
+[id="{anchor_prefix}-webapp-test-k8s-elastic-co-v1"]
+=== webapp.test.k8s.elastic.co/v1
+
+Package v1 contains API Schema definitions for the webapp v1 API group
+
+.Resource Types
+- xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbook[$$Guestbook$$]
+- xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbooklist[$$GuestbookList$$]
+
+
+
+[id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbook"]
+==== Guestbook 
+
+Guestbook is the Schema for the guestbooks API.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbooklist[$$GuestbookList$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`apiVersion`* __string__ | `webapp.test.k8s.elastic.co/v1`
+| *`kind`* __string__ | `Guestbook`
+| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.15/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
+
+| *`spec`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookspec[$$GuestbookSpec$$]__ | 
+|===
+
+
+[id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookentry"]
+==== GuestbookEntry 
+
+
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookspec[$$GuestbookSpec$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`name`* __string__ | Name of the guest
+| *`time`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.15/#time-v1-meta[$$Time$$]__ | Time of entry
+| *`comment`* __string__ | Comment by guest
+|===
+
+
+[id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbooklist"]
+==== GuestbookList 
+
+GuestbookList contains a list of Guestbook.
+
+
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`apiVersion`* __string__ | `webapp.test.k8s.elastic.co/v1`
+| *`kind`* __string__ | `GuestbookList`
+| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.15/#listmeta-v1-meta[$$ListMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
+
+| *`items`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbook[$$Guestbook$$]__ | 
+|===
+
+
+[id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookspec"]
+==== GuestbookSpec 
+
+GuestbookSpec defines the desired state of Guestbook.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbook[$$Guestbook$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`page`* __integer__ | Page indicates the page number
+| *`entries`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookentry[$$GuestbookEntry$$] array__ | Entries contain guest book entries for the page
+| *`selector`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.15/#labelselector-v1-meta[$$LabelSelector$$]__ | Selector selects something
+|===
+
+
+
+

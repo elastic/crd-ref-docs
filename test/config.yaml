@@ -1,0 +1,11 @@
+processor:
+  ignoreGroupVersions:
+    - "GVK"
+  ignoreTypes:
+    - "Status$"
+  ignoreFields:
+    - "status$"
+    - "TypeMeta$"
+
+render:
+  kubernetesVersion: 1.18
