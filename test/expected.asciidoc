@@ -43,7 +43,7 @@ Guestbook is the Schema for the guestbooks API.
 [id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookentry"]
 ==== GuestbookEntry 
 
-
+GuestbookEntry defines an entry in a guest book.
 
 .Appears In:
 ****
@@ -57,6 +57,18 @@ Guestbook is the Schema for the guestbooks API.
 | *`time`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.15/#time-v1-meta[$$Time$$]__ | Time of entry
 | *`comment`* __string__ | Comment by guest
 |===
+
+
+[id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookheader"]
+==== GuestbookHeader (string) 
+
+
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookspec[$$GuestbookSpec$$]
+****
+
 
 
 [id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbooklist"]
@@ -93,6 +105,7 @@ GuestbookSpec defines the desired state of Guestbook.
 | *`page`* __integer__ | Page indicates the page number
 | *`entries`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookentry[$$GuestbookEntry$$] array__ | Entries contain guest book entries for the page
 | *`selector`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.15/#labelselector-v1-meta[$$LabelSelector$$]__ | Selector selects something
+| *`headers`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookheader[$$GuestbookHeader$$] array__ | Headers contains a list of header items to include in the page
 |===
 
 
