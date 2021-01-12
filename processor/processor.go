@@ -377,6 +377,7 @@ func (p *processor) loadType(pkg *loader.Package, t gotypes.Type, depth int) *ty
 		if typeDef.UnderlyingType != nil && typeDef.UnderlyingType.Kind == types.BasicKind {
 			typeDef.Package = ""
 		}
+		return typeDef
 
 	case *gotypes.Slice:
 		typeDef.Kind = types.SliceKind
@@ -384,6 +385,7 @@ func (p *processor) loadType(pkg *loader.Package, t gotypes.Type, depth int) *ty
 		if typeDef.UnderlyingType != nil && typeDef.UnderlyingType.Kind == types.BasicKind {
 			typeDef.Package = ""
 		}
+		return typeDef
 
 	case *gotypes.Array:
 		typeDef.Kind = types.ArrayKind
@@ -391,6 +393,7 @@ func (p *processor) loadType(pkg *loader.Package, t gotypes.Type, depth int) *ty
 		if typeDef.UnderlyingType != nil && typeDef.UnderlyingType.Kind == types.BasicKind {
 			typeDef.Package = ""
 		}
+		return typeDef
 
 	case *gotypes.Map:
 		typeDef.Kind = types.MapKind

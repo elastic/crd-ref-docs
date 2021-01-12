@@ -115,7 +115,7 @@ func (t *Type) IsBasic() bool {
 	switch t.Kind {
 	case BasicKind:
 		return true
-	case AliasKind, SliceKind, ArrayKind, PointerKind:
+	case SliceKind, ArrayKind, PointerKind:
 		return t.UnderlyingType != nil && t.UnderlyingType.IsBasic()
 	case MapKind:
 		return t.KeyType != nil && t.KeyType.IsBasic() && t.ValueType != nil && t.ValueType.IsBasic()

@@ -29,6 +29,8 @@ type GuestbookSpec struct {
 	Entries []GuestbookEntry `json:"entries,omitempty"`
 	// Selector selects something
 	Selector metav1.LabelSelector `json:"selector,omitempty"`
+	// Headers contains a list of header items to include in the page
+	Headers []GuestbookHeader `json:"headers,omitempty"`
 }
 
 // GuestbookEntry defines an entry in a guest book.
@@ -45,6 +47,9 @@ type GuestbookEntry struct {
 type GuestbookStatus struct {
 	Status string `json:"status"`
 }
+
+// GuestbookHeaders are strings to include at the top of a page.
+type GuestbookHeader string
 
 // +kubebuilder:object:root=true
 
