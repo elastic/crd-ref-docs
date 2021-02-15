@@ -440,11 +440,6 @@ func mkType(pkg *loader.Package, t gotypes.Type) *types.Type {
 }
 
 func (p *processor) loadAliasType(typeDef *types.Type, pkg *loader.Package, underlying gotypes.Type, depth int) *types.Type {
-	if bt, ok := underlying.(*gotypes.Basic); ok {
-		typeDef.UnderlyingType = &types.Type{Name: bt.String(), Kind: types.BasicKind}
-		return typeDef
-	}
-
 	tPkg := pkg
 
 	// check whether this type is imported
@@ -464,6 +459,12 @@ func (p *processor) loadAliasType(typeDef *types.Type, pkg *loader.Package, unde
 	tInfo := p.parser.LookupType(tPkg, typeDef.Name)
 	if tInfo == nil {
 		zap.S().Warnw("Failed to find type", "name", typeDef.Name, "package", typeDef.Package)
+		return typeDef
+	}
+
+	if bt, ok := underlying.(*gotypes.Basic); ok {
+		typeDef.UnderlyingType = &types.Type{Name: bt.String(), Kind: types.BasicKind}
+		typeDef.Doc = tInfo.Doc
 		return typeDef
 	}
 

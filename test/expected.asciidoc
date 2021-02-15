@@ -56,13 +56,14 @@ GuestbookEntry defines an entry in a guest book.
 | *`name`* __string__ | Name of the guest
 | *`time`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.15/#time-v1-meta[$$Time$$]__ | Time of entry
 | *`comment`* __string__ | Comment by guest
+| *`rating`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-rating[$$Rating$$]__ | Rating provided by the guest
 |===
 
 
 [id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookheader"]
 ==== GuestbookHeader (string) 
 
-
+GuestbookHeaders are strings to include at the top of a page.
 
 .Appears In:
 ****
@@ -108,6 +109,18 @@ GuestbookSpec defines the desired state of Guestbook.
 | *`headers`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookheader[$$GuestbookHeader$$] array__ | Headers contains a list of header items to include in the page
 |===
 
+
+
+
+[id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-rating"]
+==== Rating (string) 
+
+Rating is the rating provided by a guest.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookentry[$$GuestbookEntry$$]
+****
 
 
 

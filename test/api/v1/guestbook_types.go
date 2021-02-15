@@ -41,6 +41,8 @@ type GuestbookEntry struct {
 	Time metav1.Time `json:"time,omitempty"`
 	// Comment by guest
 	Comment string `json:"comment,omitempty"`
+	// Rating provided by the guest
+	Rating Rating `json:"rating,omitempty"`
 }
 
 // GuestbookStatus defines the observed state of Guestbook.
@@ -70,6 +72,9 @@ type GuestbookList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []Guestbook `json:"items"`
 }
+
+// Rating is the rating provided by a guest.
+type Rating string
 
 func init() {
 	SchemeBuilder.Register(&Guestbook{}, &GuestbookList{})
