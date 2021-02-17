@@ -1,4 +1,4 @@
-= Contributing to crd-ref-docs
+# Contributing to crd-ref-docs
 
 Thank you for your interest in crd-ref-docs. We welcome pull requests from the community. Please make sure the following requirements are met when submitting your PR.
 
