@@ -35,6 +35,8 @@ func New(conf *config.Config) (Renderer, error) {
 	switch conf.Renderer {
 	case "asciidoctor":
 		return NewAsciidoctorRenderer(conf)
+	case "restructuredtext":
+		return NewReStructuredTextRenderer(conf)
 	default:
 		return nil, fmt.Errorf("unknown renderer: %s", conf.Renderer)
 	}
