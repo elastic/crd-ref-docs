@@ -18,6 +18,7 @@ package renderer
 
 import (
 	"fmt"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
@@ -25,6 +26,7 @@ import (
 
 	"github.com/Masterminds/sprig"
 	"github.com/elastic/crd-ref-docs/config"
+	"github.com/elastic/crd-ref-docs/templates"
 	"github.com/elastic/crd-ref-docs/types"
 )
 
@@ -47,7 +49,19 @@ func NewAsciidoctorRenderer(conf *config.Config) (*AsciidoctorRenderer, error) {
 
 func (adr *AsciidoctorRenderer) Render(gvd []types.GroupVersionDetails) error {
 	funcMap := combinedFuncMap(funcMap{prefix: "asciidoc", funcs: adr.ToFuncMap()}, funcMap{funcs: sprig.TxtFuncMap()})
-	tmpl, err := loadTemplate(adr.conf.TemplatesDir, funcMap)
+
+	var tpls fs.FS
+	if adr.conf.TemplatesDir != "" {
+		tpls = os.DirFS(adr.conf.TemplatesDir)
+	} else {
+		sub, err := fs.Sub(templates.Root, "asciidoctor")
+		if err != nil {
+			return err
+		}
+		tpls = sub
+	}
+
+	tmpl, err := loadTemplate(tpls, funcMap)
 	if err != nil {
 		return err
 	}
