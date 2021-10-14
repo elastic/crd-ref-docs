@@ -18,17 +18,34 @@ Pre-built Linux binaries can be downloaded from the Github Releases tab. Alterna
 go get -u github.com/elastic/crd-ref-docs
 ```
 
-The tool can be invoked as follows to generate documentation in Asciidoc format:
+The tool can be invoked as follows to generate documentation:
+
+```
+crd-ref-docs \
+    --source-path=$GOPATH/src/github.com/elastic/cloud-on-k8s/pkg/apis \
+    --config=config.yaml
+```
+
+By default, documentation is rendererd in Asciidoc format.
+In order to generate documentation in Markdown format, you will have to specify the `markdown` renderer:
+
+```
+crd-ref-docs \
+    --source-path=$GOPATH/src/github.com/elastic/cloud-on-k8s/pkg/apis \
+    --config=config.yaml \
+    --renderer=markdown
+```
+
+Default templates are embedded in the binary.
+You may provide your own templates by specifying the templates directory:
 
 ```
 crd-ref-docs \
     --source-path=$GOPATH/src/github.com/elastic/cloud-on-k8s/pkg/apis \
     --config=config.yaml \
     --renderer=asciidoctor \
-    --templates-dir=templates/asciidoctor \
-    --output-path=out.asciidoc
+    --templates-dir=templates/asciidoctor
 ```
-
 
 ### Configuration
 
@@ -50,5 +67,5 @@ processor:
 
 render:
   # Version of Kubernetes to use when generating links to Kubernetes API documentation.
-  kubernetesVersion: 1.15
+  kubernetesVersion: 1.22
 ```
