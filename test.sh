@@ -23,13 +23,13 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TEMP_DIR=$(mktemp -d -t crd-ref-docs-XXXXX)
+ACTUAL="${TEMP_DIR}/out.asciidoc"
 DEFAULT_ARGS=(--log-level=ERROR --source-path="${SCRIPT_DIR}/test" --renderer=asciidoctor --output-path="${TEMP_DIR}/out.asciidoc")
 
 trap '[[ $TEMP_DIR ]] && rm -rf "$TEMP_DIR"' EXIT
 
 run_test() {
     ARGS=("${DEFAULT_ARGS[@]}" "$@")
-    ACTUAL="${TEMP_DIR}/out.asciidoc"
     rm -f "$ACTUAL"
 
     (
