@@ -18,7 +18,7 @@ package renderer
 
 import (
 	"fmt"
-	"path/filepath"
+	"io/fs"
 	"text/template"
 
 	"github.com/elastic/crd-ref-docs/config"
@@ -40,8 +40,8 @@ func New(conf *config.Config) (Renderer, error) {
 	}
 }
 
-func loadTemplate(templatesDir string, funcs template.FuncMap) (*template.Template, error) {
-	return template.New("").Funcs(funcs).ParseGlob(filepath.Join(templatesDir, "*.tpl"))
+func loadTemplate(templatesFS fs.FS, funcs template.FuncMap) (*template.Template, error) {
+	return template.New("").Funcs(funcs).ParseFS(templatesFS, "*.tpl")
 }
 
 type funcMap struct {

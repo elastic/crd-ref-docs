@@ -22,21 +22,30 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
 TEMP_DIR=$(mktemp -d -t crd-ref-docs-XXXXX)
+ACTUAL="${TEMP_DIR}/out.asciidoc"
+DEFAULT_ARGS=(--log-level=ERROR --source-path="${SCRIPT_DIR}/test" --renderer=asciidoctor --output-path="${ACTUAL}")
+
 trap '[[ $TEMP_DIR ]] && rm -rf "$TEMP_DIR"' EXIT
 
+run_test() {
+    ARGS=("${DEFAULT_ARGS[@]}" "$@")
+    rm -f "$ACTUAL"
 
-(
-    cd "$SCRIPT_DIR"
-    go run main.go --log-level=ERROR --source-path="${SCRIPT_DIR}/test" --renderer=asciidoctor --templates-dir="${SCRIPT_DIR}/templates/asciidoctor" --output-path="${TEMP_DIR}/out.asciidoc"
-    DIFF=$(diff -a -y --suppress-common-lines "${SCRIPT_DIR}/test/expected.asciidoc" "${TEMP_DIR}/out.asciidoc") || true
-    if [ "$DIFF" ]; then
-        echo "ERROR: outputs differ"
-        echo ""
-        echo "$DIFF"
-        exit 1
-    else
-        echo "OK"
-    fi
-)
+    (
+        cd "$SCRIPT_DIR"
+        go run main.go "${ARGS[@]}"
+        DIFF=$(diff -a -y --suppress-common-lines "${SCRIPT_DIR}/test/expected.asciidoc" "$ACTUAL") || true
+        if [ "$DIFF" ]; then
+            echo "ERROR: outputs differ"
+            echo ""
+            echo "$DIFF"
+            exit 1
+        else
+            echo "OK"
+        fi
+    )
+}
+
+run_test
+run_test --templates-dir=templates/asciidoctor
