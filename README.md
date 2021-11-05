@@ -26,7 +26,7 @@ crd-ref-docs \
     --config=config.yaml
 ```
 
-By default, documentation is rendererd in Asciidoc format.
+By default, documentation is rendered in Asciidoc format.
 In order to generate documentation in Markdown format, you will have to specify the `markdown` renderer:
 
 ```
