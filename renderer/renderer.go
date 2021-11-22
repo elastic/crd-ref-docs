@@ -19,6 +19,8 @@ package renderer
 import (
 	"fmt"
 	"io/fs"
+	"os"
+	"path/filepath"
 	"text/template"
 
 	"github.com/elastic/crd-ref-docs/config"
@@ -35,6 +37,8 @@ func New(conf *config.Config) (Renderer, error) {
 	switch conf.Renderer {
 	case "asciidoctor":
 		return NewAsciidoctorRenderer(conf)
+	case "markdown":
+		return NewMarkdownRenderer(conf)
 	default:
 		return nil, fmt.Errorf("unknown renderer: %s", conf.Renderer)
 	}
@@ -58,4 +62,17 @@ func combinedFuncMap(funcs ...funcMap) template.FuncMap {
 	}
 
 	return m
+}
+
+func createOutFile(outputPath string, defaultFileName string) (*os.File, error) {
+	finfo, err := os.Stat(outputPath)
+	if err != nil && !os.IsNotExist(err) {
+		return nil, err
+	}
+
+	if finfo != nil && finfo.IsDir() {
+		outputPath = filepath.Join(outputPath, defaultFileName)
+	}
+
+	return os.Create(outputPath)
 }

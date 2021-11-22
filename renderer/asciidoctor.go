@@ -20,7 +20,6 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
-	"path/filepath"
 	"strings"
 	"text/template"
 
@@ -66,20 +65,7 @@ func (adr *AsciidoctorRenderer) Render(gvd []types.GroupVersionDetails) error {
 		return err
 	}
 
-	outputFile := adr.conf.OutputPath
-	finfo, err := os.Stat(outputFile)
-	if err != nil && !os.IsNotExist(err) {
-		return err
-	}
-
-	if finfo != nil && finfo.IsDir() {
-		outputFile = filepath.Join(outputFile, "out.asciidoc")
-	}
-
-	f, err := os.Create(outputFile)
-	if err != nil {
-		return err
-	}
+	f, err := createOutFile(adr.conf.OutputPath, "out.asciidoc")
 	defer f.Close()
 
 	return tmpl.ExecuteTemplate(f, mainTemplate, gvd)

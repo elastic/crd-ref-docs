@@ -23,29 +23,77 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TEMP_DIR=$(mktemp -d -t crd-ref-docs-XXXXX)
-ACTUAL="${TEMP_DIR}/out.asciidoc"
-DEFAULT_ARGS=(--log-level=ERROR --source-path="${SCRIPT_DIR}/test" --renderer=asciidoctor --output-path="${ACTUAL}")
+DEFAULT_ARGS=(--log-level=ERROR --source-path="${SCRIPT_DIR}/test" --output-path="${TEMP_DIR}/out")
 
 trap '[[ $TEMP_DIR ]] && rm -rf "$TEMP_DIR"' EXIT
 
 run_test() {
-    ARGS=("${DEFAULT_ARGS[@]}" "$@")
-    rm -f "$ACTUAL"
+    local actual="${TEMP_DIR}/out"
+    rm -f "$actual"
+
+    local renderer=asciidoctor
+    local templates_dir=
+
+    while :; do
+        case "${1:-}" in
+            --renderer)
+                if [[ -n "${2:-}" ]]; then
+                    renderer="$2"
+                    shift
+                else
+                    printf "ERROR: '--renderer' cannot be empty.\n\n" >&2
+                    exit 1
+                fi
+                ;;
+            --templates-dir)
+                if [[ -n "${2:-}" ]]; then
+                    templates_dir="$2"
+                    shift
+                else
+                    printf "ERROR: '--templates-dir' cannot be empty.\n\n" >&2
+                    exit 1
+                fi
+                ;;
+            *)
+                break
+                ;;
+        esac
+
+        shift
+    done
+
+    local args=("${DEFAULT_ARGS[@]}" --renderer="$renderer")
+    if [[ -n "$templates_dir" ]]; then
+        args+=(--templates-dir="$templates_dir")
+    fi
+
+    local expected
+    if [[ "$renderer" == "asciidoctor" ]]; then
+        expected=expected.asciidoc
+    else
+        expected=expected.md
+    fi
 
     (
         cd "$SCRIPT_DIR"
-        go run main.go "${ARGS[@]}"
-        DIFF=$(diff -a -y --suppress-common-lines "${SCRIPT_DIR}/test/expected.asciidoc" "$ACTUAL") || true
-        if [ "$DIFF" ]; then
+        cmd=(go run main.go "${args[@]}")
+        echo "${cmd[@]}"
+
+        "${cmd[@]}"
+
+        local diff
+        if diff=$(diff -a -y --suppress-common-lines "${SCRIPT_DIR}/test/${expected}" "$actual"); then
+            echo "OK"
+        else
             echo "ERROR: outputs differ"
             echo ""
-            echo "$DIFF"
+            echo "$diff"
             exit 1
-        else
-            echo "OK"
         fi
     )
 }
 
 run_test
-run_test --templates-dir=templates/asciidoctor
+run_test --renderer asciidoctor --templates-dir templates/asciidoctor
+run_test --renderer markdown
+run_test --renderer markdown --templates-dir templates/markdown
