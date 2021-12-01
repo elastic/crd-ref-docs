@@ -42,7 +42,7 @@ _Appears in:_
 
 | Field | Description |
 | --- | --- |
-| `name` _string_ | Name of the guest |
+| `name` _string_ | Name | of the guest |
 | `time` _[Time](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#time-v1-meta)_ | Time of entry |
 | `comment` _string_ | Comment by guest |
 | `rating` _[Rating](#rating)_ | Rating provided by the guest |

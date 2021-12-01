@@ -83,6 +83,7 @@ func (adr *AsciidoctorRenderer) ToFuncMap() template.FuncMap {
 		"SafeID":             adr.SafeID,
 		"ShouldRenderType":   adr.ShouldRenderType,
 		"TypeID":             adr.TypeID,
+		"Escape":             adr.Escape,
 	}
 }
 
@@ -139,4 +140,16 @@ func (adr *AsciidoctorRenderer) RenderGVLink(gv types.GroupVersionDetails) strin
 
 func (adr *AsciidoctorRenderer) RenderAnchorID(id string) string {
 	return fmt.Sprintf("%s%s", asciidocAnchorPrefix, adr.SafeID(id))
+}
+
+func (adr *AsciidoctorRenderer) Escape(text string) string {
+	escaped := ""
+	for _, r := range text {
+		if r == '|' {
+			escaped += "\\|"
+		} else {
+			escaped += string(r)
+		}
+	}
+	return escaped
 }

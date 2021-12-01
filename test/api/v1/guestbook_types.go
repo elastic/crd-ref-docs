@@ -35,7 +35,7 @@ type GuestbookSpec struct {
 
 // GuestbookEntry defines an entry in a guest book.
 type GuestbookEntry struct {
-	// Name of the guest
+	// Name | of the guest
 	Name string `json:"name,omitempty"`
 	// Time of entry
 	Time metav1.Time `json:"time,omitempty"`
