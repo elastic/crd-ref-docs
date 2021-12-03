@@ -21,9 +21,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/elastic/crd-ref-docs/config"
-	"github.com/elastic/crd-ref-docs/processor"
-	"github.com/elastic/crd-ref-docs/renderer"
+	"github.com/margocrawf/crd-ref-docs/config"
+	"github.com/margocrawf/crd-ref-docs/processor"
+	"github.com/margocrawf/crd-ref-docs/renderer"
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"

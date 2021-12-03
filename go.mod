@@ -1,4 +1,4 @@
-module github.com/elastic/crd-ref-docs
+module github.com/margocrawf/crd-ref-docs
 
 go 1.17
 

@@ -23,8 +23,8 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/elastic/crd-ref-docs/config"
-	"github.com/elastic/crd-ref-docs/types"
+	"github.com/margocrawf/crd-ref-docs/config"
+	"github.com/margocrawf/crd-ref-docs/types"
 	"go.uber.org/zap"
 )
 
