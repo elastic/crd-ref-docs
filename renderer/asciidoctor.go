@@ -83,7 +83,7 @@ func (adr *AsciidoctorRenderer) ToFuncMap() template.FuncMap {
 		"SafeID":             adr.SafeID,
 		"ShouldRenderType":   adr.ShouldRenderType,
 		"TypeID":             adr.TypeID,
-		"Escape":             adr.Escape,
+		"RenderFieldDoc":     adr.RenderFieldDoc,
 	}
 }
 
@@ -142,14 +142,8 @@ func (adr *AsciidoctorRenderer) RenderAnchorID(id string) string {
 	return fmt.Sprintf("%s%s", asciidocAnchorPrefix, adr.SafeID(id))
 }
 
-func (adr *AsciidoctorRenderer) Escape(text string) string {
-	escaped := ""
-	for _, r := range text {
-		if r == '|' {
-			escaped += "\\|"
-		} else {
-			escaped += string(r)
-		}
-	}
-	return escaped
+func (adr *AsciidoctorRenderer) RenderFieldDoc(text string) string {
+	// escape the pipe character, which has special meaning for asciidoc as a way to format tables,
+	// so that including | in a comment does not result in wonky tables
+	return strings.ReplaceAll(text, "|", "\\|")
 }
