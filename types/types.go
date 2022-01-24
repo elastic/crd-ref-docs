@@ -111,6 +111,22 @@ type Type struct {
 	References     []*Type                  `json:"-"`              // other types that refer to this type
 }
 
+func (t *Type) Copy() *Type {
+	return &Type{
+		Name:           t.Name,
+		Package:        t.Package,
+		Doc:            t.Doc,
+		GVK:            t.GVK,
+		Kind:           t.Kind,
+		Imported:       t.Imported,
+		UnderlyingType: t.UnderlyingType,
+		KeyType:        t.KeyType,
+		ValueType:      t.ValueType,
+		Fields:         t.Fields,
+		References:     t.References,
+	}
+}
+
 func (t *Type) IsBasic() bool {
 	switch t.Kind {
 	case BasicKind:

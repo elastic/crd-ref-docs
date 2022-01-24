@@ -86,7 +86,7 @@ GuestbookList contains a list of Guestbook.
 | *`kind`* __string__ | `GuestbookList`
 | *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#listmeta-v1-meta[$$ListMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
 
-| *`items`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbook[$$Guestbook$$]__ | 
+| *`items`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbook[$$Guestbook$$] array__ | 
 |===
 
 

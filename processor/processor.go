@@ -360,40 +360,57 @@ func (p *processor) loadType(pkg *loader.Package, t gotypes.Type, depth int) *ty
 		return nil
 	}
 
-	if x, ok := p.types[types.Key(typeDef)]; ok {
-		return x
-	}
-
 	zap.S().Debugw("Load", "package", typeDef.Package, "name", typeDef.Name)
 
 	switch x := t.(type) {
-	case *gotypes.Basic:
-		typeDef.Kind = types.BasicKind
-		typeDef.Package = ""
-
 	case *gotypes.Pointer:
+		if y, ok := p.types[types.Key(typeDef)]; ok {
+			typeDef = y.Copy()
+			typeDef.UnderlyingType = y
+		} else {
+			typeDef.UnderlyingType = p.loadType(pkg, x.Elem(), depth+1)
+		}
 		typeDef.Kind = types.PointerKind
-		typeDef.UnderlyingType = p.loadType(pkg, x.Elem(), depth+1)
 		if typeDef.UnderlyingType != nil && typeDef.UnderlyingType.Kind == types.BasicKind {
 			typeDef.Package = ""
 		}
 		return typeDef
 
 	case *gotypes.Slice:
+		if y, ok := p.types[types.Key(typeDef)]; ok {
+			typeDef = y.Copy()
+			typeDef.UnderlyingType = y
+		} else {
+			typeDef.UnderlyingType = p.loadType(pkg, x.Elem(), depth+1)
+		}
 		typeDef.Kind = types.SliceKind
-		typeDef.UnderlyingType = p.loadType(pkg, x.Elem(), depth+1)
 		if typeDef.UnderlyingType != nil && typeDef.UnderlyingType.Kind == types.BasicKind {
 			typeDef.Package = ""
 		}
 		return typeDef
 
 	case *gotypes.Array:
+		if y, ok := p.types[types.Key(typeDef)]; ok {
+			typeDef = y.Copy()
+			typeDef.UnderlyingType = y
+		} else {
+			typeDef.UnderlyingType = p.loadType(pkg, x.Elem(), depth+1)
+		}
 		typeDef.Kind = types.ArrayKind
-		typeDef.UnderlyingType = p.loadType(pkg, x.Elem(), depth+1)
 		if typeDef.UnderlyingType != nil && typeDef.UnderlyingType.Kind == types.BasicKind {
 			typeDef.Package = ""
 		}
 		return typeDef
+	}
+
+	if x, ok := p.types[types.Key(typeDef)]; ok {
+		return x
+	}
+
+	switch x := t.(type) {
+	case *gotypes.Basic:
+		typeDef.Kind = types.BasicKind
+		typeDef.Package = ""
 
 	case *gotypes.Map:
 		typeDef.Kind = types.MapKind
