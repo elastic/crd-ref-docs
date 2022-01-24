@@ -53,7 +53,7 @@ GuestbookEntry defines an entry in a guest book.
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`name`* __string__ | Name of the guest
+| *`name`* __string__ | Name of the guest (pipe \| should be escaped)
 | *`time`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#time-v1-meta[$$Time$$]__ | Time of entry
 | *`comment`* __string__ | Comment by guest
 | *`rating`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-rating[$$Rating$$]__ | Rating provided by the guest
