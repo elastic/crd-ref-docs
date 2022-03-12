@@ -2,10 +2,13 @@ processor:
   ignoreGroupVersions:
     - "GVK"
   ignoreTypes:
-    - "Status$"
+    - "Embedded[0-9]$"
+  embeddedIgnoreTypes:
+    - "TypeMeta$"
+    - "ObjectMeta$"
+    - "ListMeta$"
   ignoreFields:
     - "status$"
-    - "TypeMeta$"
 
 render:
   kubernetesVersion: 1.22

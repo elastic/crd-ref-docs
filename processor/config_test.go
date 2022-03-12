@@ -11,6 +11,7 @@ func TestCompiledConfig(t *testing.T) {
 	conf := &config.Config{
 		Processor: config.ProcessorConfig{
 			IgnoreTypes:         []string{"typex$"},
+			EmbeddedIgnoreTypes: []string{"typex$"},
 			IgnoreFields:        []string{`mytype\.Fieldy$`},
 			IgnoreGroupVersions: []string{"groupz/v1$"},
 		},
@@ -22,6 +23,11 @@ func TestCompiledConfig(t *testing.T) {
 	t.Run("ignoreType", func(t *testing.T) {
 		require.True(t, cc.shouldIgnoreType("mytypex"))
 		require.False(t, cc.shouldIgnoreType("typexyz"))
+	})
+
+	t.Run("imbeddedIgnoreTypes", func(t *testing.T) {
+		require.True(t, cc.shouldIgnoreEmbeddedType("mytypex"))
+		require.False(t, cc.shouldIgnoreEmbeddedType("typexyz"))
 	})
 
 	t.Run("ignoreField", func(t *testing.T) {

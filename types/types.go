@@ -22,6 +22,7 @@ import (
 	"sort"
 	"strings"
 
+	"go.uber.org/zap"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
@@ -107,7 +108,7 @@ type Type struct {
 	UnderlyingType *Type                    `json:"underlyingType"` // for aliases, slices and pointers
 	KeyType        *Type                    `json:"keyType"`        // for maps
 	ValueType      *Type                    `json:"valueType"`      // for maps
-	Fields         []*Field                 `json:"fields"`         // for structs
+	Fields         Fields                   `json:"fields"`         // for structs
 	References     []*Type                  `json:"-"`              // other types that refer to this type
 }
 
@@ -142,7 +143,7 @@ func (t *Type) IsBasic() bool {
 	}
 }
 
-func (t *Type) Members() []*Field {
+func (t *Type) Members() Fields {
 	if t == nil {
 		return nil
 	}
@@ -210,12 +211,75 @@ func (t *Type) SortedReferences() []*Type {
 	return t.References
 }
 
+func (t *Type) ContainsEmbeddedField() bool {
+	for _, f := range t.Members() {
+		if f.Embedded {
+			return true
+		}
+	}
+	return false
+}
+
+// TypeMap is a map of Type elements
+type TypeMap map[string]*Type
+
+func (types TypeMap) InlineEmbeddedFields() {
+	// If C is embedded in B, and B is embedded in A; the fields in C are
+	// inlined in B before the fields in B is inlined in A. The ideal order of
+	// iterating and embedding types is NOT known. Worst-case, only one type's
+	// fields are inlined in its parent type in each iteration.
+	maxDepth := 100
+	var numEmbeddedFields int
+	for iteration := 0; iteration < maxDepth; iteration++ {
+		numEmbeddedFields = 0
+		for _, t := range types {
+			// By iterating backwards, it is safe to delete field at current index
+			// and append the embedded fields it contains.
+			for i := len(t.Fields) - 1; i >= 0; i-- {
+				if !t.Fields[i].Embedded {
+					continue
+				}
+				numEmbeddedFields += 1
+
+				embeddedType, ok := types[Key(t.Fields[i].Type)]
+				if !ok {
+					zap.S().Warnw("Unable to find embedded type", "type", t,
+						"embeddedType", t.Fields[i].Type)
+					continue
+				}
+
+				// Only inline embedded type's fields if the embedded type
+				// itself has no embedded types yet to be inlined.
+				if !embeddedType.ContainsEmbeddedField() {
+					zap.S().Debugw("Inlining embedded type", "type", t,
+						"embeddedType", t.Fields[i].Type)
+					t.Fields.inlineEmbedded(i, embeddedType)
+				}
+			}
+		}
+		if numEmbeddedFields == 0 {
+			return
+		}
+	}
+	zap.S().Warnw("Failed to inline all embedded types", "remaining", numEmbeddedFields)
+}
+
 // Field describes a field in a struct.
 type Field struct {
 	Name     string
 	Embedded bool
 	Doc      string
 	Type     *Type
+}
+
+type Fields []*Field
+
+// inlineEmbedded replaces field at index i with the fields of provided type.
+func (fields *Fields) inlineEmbedded(i int, embedded *Type) {
+	new := make([]*Field, 0, len(*fields)+len(embedded.Fields)-1)
+	new = append(new, (*fields)[:i]...)
+	new = append(new, embedded.Fields...)
+	*fields = append(new, (*fields)[i+1:]...)
 }
 
 // Key generates the unique name for the give type.
@@ -232,7 +296,7 @@ type GroupVersionDetails struct {
 	schema.GroupVersion
 	Doc   string
 	Kinds []string
-	Types map[string]*Type
+	Types TypeMap
 }
 
 func (gvd GroupVersionDetails) GroupVersionString() string {

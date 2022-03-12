@@ -14,9 +14,30 @@
 Package v1 contains API Schema definitions for the webapp v1 API group
 
 .Resource Types
+- xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-embedded[$$Embedded$$]
 - xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbook[$$Guestbook$$]
 - xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbooklist[$$GuestbookList$$]
 
+
+
+[id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-embedded"]
+==== Embedded 
+
+
+
+
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`apiVersion`* __string__ | `webapp.test.k8s.elastic.co/v1`
+| *`kind`* __string__ | `Embedded`
+| *`a`* __string__ | 
+| *`b`* __string__ | 
+| *`c`* __string__ | 
+| *`d`* __string__ | 
+| *`e`* __string__ | 
+|===
 
 
 [id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbook"]
@@ -34,8 +55,6 @@ Guestbook is the Schema for the guestbooks API.
 | Field | Description
 | *`apiVersion`* __string__ | `webapp.test.k8s.elastic.co/v1`
 | *`kind`* __string__ | `Guestbook`
-| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
-
 | *`spec`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookspec[$$GuestbookSpec$$]__ | 
 |===
 
@@ -84,8 +103,6 @@ GuestbookList contains a list of Guestbook.
 | Field | Description
 | *`apiVersion`* __string__ | `webapp.test.k8s.elastic.co/v1`
 | *`kind`* __string__ | `GuestbookList`
-| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#listmeta-v1-meta[$$ListMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
-
 | *`items`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbook[$$Guestbook$$] array__ | 
 |===
 
@@ -108,6 +125,8 @@ GuestbookSpec defines the desired state of Guestbook.
 | *`selector`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#labelselector-v1-meta[$$LabelSelector$$]__ | Selector selects something
 | *`headers`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookheader[$$GuestbookHeader$$] array__ | Headers contains a list of header items to include in the page
 |===
+
+
 
 
 [id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-rating"]

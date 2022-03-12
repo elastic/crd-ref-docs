@@ -21,6 +21,28 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+// +kubebuilder:object:root=true
+
+type Embedded struct {
+	A string `json:"a,omitempty"`
+	Embedded1 `json:",inline"`
+}
+type Embedded1 struct {
+	Embedded2 `json:",inline"`
+	E string `json:"e,omitempty"`
+}
+type Embedded2 struct {
+	B string `json:"b,omitempty"`
+	Embedded3 `json:",inline"`
+}
+type Embedded3 struct {
+	Embedded4 `json:",inline"`
+	D string `json:"d,omitempty"`
+}
+type Embedded4 struct {
+	C string `json:"c,omitempty"`
+}
+
 // GuestbookSpec defines the desired state of Guestbook.
 type GuestbookSpec struct {
 	// Page indicates the page number

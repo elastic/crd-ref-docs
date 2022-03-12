@@ -31,6 +31,7 @@ type Config struct {
 type ProcessorConfig struct {
 	MaxDepth            int      `json:"maxDepth"`
 	IgnoreTypes         []string `json:"ignoreTypes"`
+	EmbeddedIgnoreTypes []string `json:"embeddedIgnoreTypes"`
 	IgnoreFields        []string `json:"ignoreFields"`
 	IgnoreGroupVersions []string `json:"ignoreGroupVersions"`
 }

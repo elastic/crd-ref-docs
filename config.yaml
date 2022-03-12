@@ -5,9 +5,12 @@ processor:
     - "(Elasticsearch|Kibana|ApmServer|Reconciler)Status$"
     - "ElasticsearchSettings$"
     - "Associa(ted|tor|tionStatus|tionConf)$"
+  embeddedIgnoreTypes:
+    - "TypeMeta$"
+    - "ObjectMeta$"
+    - "ListMeta$"
   ignoreFields:
     - "status$"
-    - "TypeMeta$"
 
 render:
   kubernetesVersion: 1.22

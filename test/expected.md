@@ -9,9 +9,29 @@
 Package v1 contains API Schema definitions for the webapp v1 API group
 
 ### Resource Types
+- [Embedded](#embedded)
 - [Guestbook](#guestbook)
 - [GuestbookList](#guestbooklist)
 
+
+
+#### Embedded
+
+
+
+
+
+
+
+| Field | Description |
+| --- | --- |
+| `apiVersion` _string_ | `webapp.test.k8s.elastic.co/v1`
+| `kind` _string_ | `Embedded`
+| `a` _string_ |  |
+| `b` _string_ |  |
+| `c` _string_ |  |
+| `d` _string_ |  |
+| `e` _string_ |  |
 
 
 #### Guestbook
@@ -27,7 +47,6 @@ _Appears in:_
 | --- | --- |
 | `apiVersion` _string_ | `webapp.test.k8s.elastic.co/v1`
 | `kind` _string_ | `Guestbook`
-| `metadata` _[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |
 | `spec` _[GuestbookSpec](#guestbookspec)_ |  |
 
 
@@ -71,7 +90,6 @@ GuestbookList contains a list of Guestbook.
 | --- | --- |
 | `apiVersion` _string_ | `webapp.test.k8s.elastic.co/v1`
 | `kind` _string_ | `GuestbookList`
-| `metadata` _[ListMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#listmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |
 | `items` _[Guestbook](#guestbook) array_ |  |
 
 
@@ -90,6 +108,8 @@ _Appears in:_
 | `entries` _[GuestbookEntry](#guestbookentry) array_ | Entries contain guest book entries for the page |
 | `selector` _[LabelSelector](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#labelselector-v1-meta)_ | Selector selects something |
 | `headers` _[GuestbookHeader](#guestbookheader) array_ | Headers contains a list of header items to include in the page |
+
+
 
 
 #### Rating
