@@ -110,8 +110,6 @@ GuestbookSpec defines the desired state of Guestbook.
 |===
 
 
-
-
 [id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-rating"]
 ==== Rating (string) 
 

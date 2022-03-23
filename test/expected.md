@@ -92,8 +92,6 @@ _Appears in:_
 | `headers` _[GuestbookHeader](#guestbookheader) array_ | Headers contains a list of header items to include in the page |
 
 
-
-
 #### Rating
 
 _Underlying type:_ `string`
