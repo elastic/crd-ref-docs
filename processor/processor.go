@@ -61,7 +61,7 @@ func Process(config *config.Config) ([]types.GroupVersionDetails, error) {
 		return nil, fmt.Errorf("failed to find API types in directory %s:%w", config.SourcePath, err)
 	}
 
-	p.types.InlineEmbeddedFields()
+	p.types.InlineTypes()
 
 	// collect references between types
 	for typeName, refs := range p.references {
@@ -89,8 +89,6 @@ func Process(config *config.Config) ([]types.GroupVersionDetails, error) {
 		for name, t := range gvi.types {
 			key := types.Key(t)
 
-			// Skip types that are processed due to beeing embedded and inlined
-			// in parent type, but not rendered themselves.
 			if p.shouldIgnoreType(key) {
 				zap.S().Debugw("Skipping excluded type", "type", name)
 				continue
@@ -274,11 +272,6 @@ func (p *processor) processType(pkg *loader.Package, info *markers.TypeInfo, dep
 		Doc:     info.Doc,
 	}
 
-	if p.shouldIgnoreType(types.Key(typeDef)) && p.shouldIgnoreEmbeddedType(types.Key(typeDef)) {
-		zap.S().Debugw("Skipping excluded type", "type", typeDef.String())
-		return nil
-	}
-
 	// if the field list is non-empty, this is a struct
 	if len(info.Fields) > 0 {
 		typeDef.Kind = types.StructKind
@@ -335,17 +328,14 @@ func (p *processor) processStructFields(parentType *types.Type, pkg *loader.Pack
 			continue
 		}
 
-		if fieldDef.Embedded && fieldDef.Name == "" {
-			fieldDef.Name = fieldDef.Type.Name
+		if fieldDef.Embedded {
+			fieldDef.Inlined = fieldDef.Name == ""
+			if fieldDef.Name == "" {
+				fieldDef.Name = fieldDef.Type.Name
+			}
 		}
 
-		if fieldDef.Embedded {
-			if p.shouldIgnoreEmbeddedType(types.Key(fieldDef.Type)) {
-				zap.S().Debugw("Skipping excluded embedded type",
-					"type", parentType.String(), "embeddedType", fieldDef.Type.Name)
-				continue
-			}
-		} else if p.shouldIgnoreField(parentTypeKey, fieldDef.Name) {
+		if p.shouldIgnoreField(parentTypeKey, fieldDef.Name) {
 			zap.S().Debugw("Skipping excluded field", "type", parentType.String(), "field", fieldDef.Name)
 			continue
 		}
@@ -366,10 +356,6 @@ func (p *processor) loadType(pkg *loader.Package, t gotypes.Type, depth int) *ty
 	}
 
 	typeDef := mkType(pkg, t)
-	if p.shouldIgnoreType(types.Key(typeDef)) && p.shouldIgnoreEmbeddedType(types.Key(typeDef)) {
-		zap.S().Debugw("Skipping excluded type", "type", t.String())
-		return nil
-	}
 
 	zap.S().Debugw("Load", "package", typeDef.Package, "name", typeDef.Name)
 

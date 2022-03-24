@@ -211,9 +211,9 @@ func (t *Type) SortedReferences() []*Type {
 	return t.References
 }
 
-func (t *Type) ContainsEmbeddedField() bool {
+func (t *Type) ContainsInlinedTypes() bool {
 	for _, f := range t.Members() {
-		if f.Embedded {
+		if f.Inlined {
 			return true
 		}
 	}
@@ -223,23 +223,23 @@ func (t *Type) ContainsEmbeddedField() bool {
 // TypeMap is a map of Type elements
 type TypeMap map[string]*Type
 
-func (types TypeMap) InlineEmbeddedFields() {
-	// If C is embedded in B, and B is embedded in A; the fields in C are
-	// inlined in B before the fields in B is inlined in A. The ideal order of
-	// iterating and embedding types is NOT known. Worst-case, only one type's
+func (types TypeMap) InlineTypes() {
+	// If C is inlined in B, and B is inlined in A; the fields of C are copied
+	// into B before the fields of B is copied into A. The ideal order of
+	// iterating and inlining fields is NOT known. Worst-case, only one type's
 	// fields are inlined in its parent type in each iteration.
 	maxDepth := 100
-	var numEmbeddedFields int
+	var numTypesToBeInlined int
 	for iteration := 0; iteration < maxDepth; iteration++ {
-		numEmbeddedFields = 0
+		numTypesToBeInlined = 0
 		for _, t := range types {
 			// By iterating backwards, it is safe to delete field at current index
-			// and append the embedded fields it contains.
+			// and copy the fields of the inlined type.
 			for i := len(t.Fields) - 1; i >= 0; i-- {
-				if !t.Fields[i].Embedded {
+				if !t.Fields[i].Inlined {
 					continue
 				}
-				numEmbeddedFields += 1
+				numTypesToBeInlined += 1
 
 				embeddedType, ok := types[Key(t.Fields[i].Type)]
 				if !ok {
@@ -248,37 +248,38 @@ func (types TypeMap) InlineEmbeddedFields() {
 					continue
 				}
 
-				// Only inline embedded type's fields if the embedded type
-				// itself has no embedded types yet to be inlined.
-				if !embeddedType.ContainsEmbeddedField() {
+				// Only inline type's fields if the inlined type itself has no
+				// types yet to be inlined.
+				if !embeddedType.ContainsInlinedTypes() {
 					zap.S().Debugw("Inlining embedded type", "type", t,
 						"embeddedType", t.Fields[i].Type)
-					t.Fields.inlineEmbedded(i, embeddedType)
+					t.Fields.inlineType(i, embeddedType)
 				}
 			}
 		}
-		if numEmbeddedFields == 0 {
+		if numTypesToBeInlined == 0 {
 			return
 		}
 	}
-	zap.S().Warnw("Failed to inline all embedded types", "remaining", numEmbeddedFields)
+	zap.S().Warnw("Failed to inline all inlined types", "remaining", numTypesToBeInlined)
 }
 
 // Field describes a field in a struct.
 type Field struct {
 	Name     string
 	Embedded bool
+	Inlined  bool
 	Doc      string
 	Type     *Type
 }
 
 type Fields []*Field
 
-// inlineEmbedded replaces field at index i with the fields of provided type.
-func (fields *Fields) inlineEmbedded(i int, embedded *Type) {
-	new := make([]*Field, 0, len(*fields)+len(embedded.Fields)-1)
+// inlineType replaces field at index i with the fields of inlined type.
+func (fields *Fields) inlineType(i int, inlined *Type) {
+	new := make([]*Field, 0, len(*fields)+len(inlined.Fields)-1)
 	new = append(new, (*fields)[:i]...)
-	new = append(new, embedded.Fields...)
+	new = append(new, inlined.Fields...)
 	*fields = append(new, (*fields)[i+1:]...)
 }
 

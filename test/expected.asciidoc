@@ -55,6 +55,8 @@ Guestbook is the Schema for the guestbooks API.
 | Field | Description
 | *`apiVersion`* __string__ | `webapp.test.k8s.elastic.co/v1`
 | *`kind`* __string__ | `Guestbook`
+| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
+
 | *`spec`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookspec[$$GuestbookSpec$$]__ | 
 |===
 
@@ -103,6 +105,8 @@ GuestbookList contains a list of Guestbook.
 | Field | Description
 | *`apiVersion`* __string__ | `webapp.test.k8s.elastic.co/v1`
 | *`kind`* __string__ | `GuestbookList`
+| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#listmeta-v1-meta[$$ListMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
+
 | *`items`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbook[$$Guestbook$$] array__ | 
 |===
 

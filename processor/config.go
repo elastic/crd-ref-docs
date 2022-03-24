@@ -30,7 +30,6 @@ func compileConfig(conf *config.Config) (cc *compiledConfig, err error) {
 
 	cc = &compiledConfig{
 		ignoreTypes:         make([]*regexp.Regexp, len(conf.Processor.IgnoreTypes)),
-		embeddedIgnoreTypes: make([]*regexp.Regexp, len(conf.Processor.EmbeddedIgnoreTypes)),
 		ignoreFields:        make([]*regexp.Regexp, len(conf.Processor.IgnoreFields)),
 		ignoreGroupVersions: make([]*regexp.Regexp, len(conf.Processor.IgnoreGroupVersions)),
 	}
@@ -38,12 +37,6 @@ func compileConfig(conf *config.Config) (cc *compiledConfig, err error) {
 	for i, t := range conf.Processor.IgnoreTypes {
 		if cc.ignoreTypes[i], err = regexp.Compile(t); err != nil {
 			return nil, fmt.Errorf("failed to compile type regex '%s': %w", t, err)
-		}
-	}
-
-	for i, f := range conf.Processor.EmbeddedIgnoreTypes {
-		if cc.embeddedIgnoreTypes[i], err = regexp.Compile(f); err != nil {
-			return nil, fmt.Errorf("failed to compile type regex '%s': %w", f, err)
 		}
 	}
 
@@ -64,7 +57,6 @@ func compileConfig(conf *config.Config) (cc *compiledConfig, err error) {
 
 type compiledConfig struct {
 	ignoreTypes         []*regexp.Regexp
-	embeddedIgnoreTypes []*regexp.Regexp
 	ignoreFields        []*regexp.Regexp
 	ignoreGroupVersions []*regexp.Regexp
 }
@@ -89,20 +81,6 @@ func (cc *compiledConfig) shouldIgnoreType(fqn string) bool {
 	}
 
 	for _, re := range cc.ignoreTypes {
-		if re.MatchString(fqn) {
-			return true
-		}
-	}
-
-	return false
-}
-
-func (cc *compiledConfig) shouldIgnoreEmbeddedType(fqn string) bool {
-	if cc == nil {
-		return false
-	}
-
-	for _, re := range cc.embeddedIgnoreTypes {
 		if re.MatchString(fqn) {
 			return true
 		}
