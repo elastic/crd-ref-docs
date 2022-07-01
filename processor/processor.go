@@ -272,6 +272,11 @@ func (p *processor) processType(pkg *loader.Package, info *markers.TypeInfo, dep
 		Doc:     info.Doc,
 	}
 
+	if p.useRawDocstring && info.RawDecl != nil {
+		// use raw docstring to support multi-line and indent preservation
+		typeDef.Doc = strings.TrimSuffix(info.RawDecl.Doc.Text(), "\n")
+	}
+
 	// if the field list is non-empty, this is a struct
 	if len(info.Fields) > 0 {
 		typeDef.Kind = types.StructKind

@@ -32,6 +32,7 @@ func compileConfig(conf *config.Config) (cc *compiledConfig, err error) {
 		ignoreTypes:         make([]*regexp.Regexp, len(conf.Processor.IgnoreTypes)),
 		ignoreFields:        make([]*regexp.Regexp, len(conf.Processor.IgnoreFields)),
 		ignoreGroupVersions: make([]*regexp.Regexp, len(conf.Processor.IgnoreGroupVersions)),
+		useRawDocstring:     conf.Processor.UseRawDocstring,
 	}
 
 	for i, t := range conf.Processor.IgnoreTypes {
@@ -59,6 +60,7 @@ type compiledConfig struct {
 	ignoreTypes         []*regexp.Regexp
 	ignoreFields        []*regexp.Regexp
 	ignoreGroupVersions []*regexp.Regexp
+	useRawDocstring     bool
 }
 
 func (cc *compiledConfig) shouldIgnoreGroupVersion(gv string) bool {
