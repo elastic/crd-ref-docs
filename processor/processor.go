@@ -46,7 +46,7 @@ type groupVersionInfo struct {
 	*loader.Package
 	doc   string
 	kinds map[string]struct{}
-	types map[string]*types.Type
+	types types.TypeMap
 }
 
 func Process(config *config.Config) ([]types.GroupVersionDetails, error) {
@@ -60,6 +60,8 @@ func Process(config *config.Config) ([]types.GroupVersionDetails, error) {
 	if err := p.findAPITypes(config.SourcePath); err != nil {
 		return nil, fmt.Errorf("failed to find API types in directory %s:%w", config.SourcePath, err)
 	}
+
+	p.types.InlineTypes()
 
 	// collect references between types
 	for typeName, refs := range p.references {
@@ -83,11 +85,16 @@ func Process(config *config.Config) ([]types.GroupVersionDetails, error) {
 			details.Kinds = append(details.Kinds, k)
 		}
 
-		details.Types = make(map[string]*types.Type)
-		for t, _ := range gvi.types {
-			key := fmt.Sprintf("%s.%s", gvi.Package.PkgPath, t)
+		details.Types = make(types.TypeMap)
+		for name, t := range gvi.types {
+			key := types.Key(t)
+
+			if p.shouldIgnoreType(key) {
+				zap.S().Debugw("Skipping excluded type", "type", name)
+				continue
+			}
 			if typeDef, ok := p.types[key]; ok && typeDef != nil {
-				details.Types[t] = typeDef
+				details.Types[name] = typeDef
 			} else {
 				zap.S().Fatalw("Type not loaded", "type", key)
 			}
@@ -121,7 +128,7 @@ func newProcessor(compiledConfig *compiledConfig, maxDepth int) *processor {
 			Checker:   &loader.TypeChecker{},
 		},
 		groupVersions: make(map[schema.GroupVersion]*groupVersionInfo),
-		types:         make(map[string]*types.Type),
+		types:         make(types.TypeMap),
 		references:    make(map[string]map[string]struct{}),
 	}
 
@@ -134,7 +141,7 @@ type processor struct {
 	maxDepth      int
 	parser        *crd.Parser
 	groupVersions map[schema.GroupVersion]*groupVersionInfo
-	types         map[string]*types.Type
+	types         types.TypeMap
 	references    map[string]map[string]struct{}
 }
 
@@ -167,7 +174,7 @@ func (p *processor) findAPITypes(directory string) error {
 		}
 
 		if gvInfo.types == nil {
-			gvInfo.types = make(map[string]*types.Type)
+			gvInfo.types = make(types.TypeMap)
 		}
 
 		// locate the kinds
@@ -265,11 +272,6 @@ func (p *processor) processType(pkg *loader.Package, info *markers.TypeInfo, dep
 		Doc:     info.Doc,
 	}
 
-	if p.shouldIgnoreType(types.Key(typeDef)) {
-		zap.S().Debugw("Skipping excluded type", "type", typeDef.String())
-		return nil
-	}
-
 	// if the field list is non-empty, this is a struct
 	if len(info.Fields) > 0 {
 		typeDef.Kind = types.StructKind
@@ -301,11 +303,6 @@ func (p *processor) processStructFields(parentType *types.Type, pkg *loader.Pack
 	parentTypeKey := types.Key(parentType)
 
 	for _, f := range info.Fields {
-		if p.shouldIgnoreField(parentTypeKey, f.Name) {
-			zap.S().Debugw("Skipping excluded field", "type", parentType.String(), "field", f.Name)
-			continue
-		}
-
 		t := pkg.TypesInfo.TypeOf(f.RawField.Type)
 		if t == nil {
 			zap.S().Debugw("Failed to determine type of field", "field", f.Name)
@@ -331,11 +328,15 @@ func (p *processor) processStructFields(parentType *types.Type, pkg *loader.Pack
 			continue
 		}
 
-		if fieldDef.Embedded && fieldDef.Name == "" {
-			fieldDef.Name = fieldDef.Type.Name
+		if fieldDef.Embedded {
+			fieldDef.Inlined = fieldDef.Name == ""
+			if fieldDef.Name == "" {
+				fieldDef.Name = fieldDef.Type.Name
+			}
 		}
 
 		if p.shouldIgnoreField(parentTypeKey, fieldDef.Name) {
+			zap.S().Debugw("Skipping excluded field", "type", parentType.String(), "field", fieldDef.Name)
 			continue
 		}
 
@@ -355,10 +356,6 @@ func (p *processor) loadType(pkg *loader.Package, t gotypes.Type, depth int) *ty
 	}
 
 	typeDef := mkType(pkg, t)
-	if p.shouldIgnoreType(types.Key(typeDef)) {
-		zap.S().Debugw("Skipping excluded type", "type", t.String())
-		return nil
-	}
 
 	zap.S().Debugw("Load", "package", typeDef.Package, "name", typeDef.Name)
 
