@@ -33,6 +33,7 @@ type ProcessorConfig struct {
 	IgnoreTypes         []string `json:"ignoreTypes"`
 	IgnoreFields        []string `json:"ignoreFields"`
 	IgnoreGroupVersions []string `json:"ignoreGroupVersions"`
+	UseRawDocstring     bool     `json:"useRawDocstring"`
 }
 
 type RenderConfig struct {
