@@ -30,8 +30,27 @@ Package v1 contains API Schema definitions for the webapp v1 API group
 | `a` _string_ |  |
 | `b` _string_ |  |
 | `c` _string_ |  |
+| `x` _string_ |  |
 | `d` _string_ |  |
 | `e` _string_ |  |
+
+
+#### EmbeddedX
+
+
+
+
+
+_Appears in:_
+- [Embedded](#embedded)
+- [Embedded1](#embedded1)
+- [Embedded2](#embedded2)
+- [Embedded3](#embedded3)
+- [Embedded4](#embedded4)
+
+| Field | Description |
+| --- | --- |
+| `x` _string_ |  |
 
 
 #### Guestbook
