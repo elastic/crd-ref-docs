@@ -37,7 +37,14 @@ type ProcessorConfig struct {
 }
 
 type RenderConfig struct {
-	KubernetesVersion string `json:"kubernetesVersion"`
+	KnownTypes        []*KnownType `json:"knownTypes"`
+	KubernetesVersion string       `json:"kubernetesVersion"`
+}
+
+type KnownType struct {
+	Name    string `json:"name"`
+	Package string `json:"package"`
+	Link    string `json:"link"`
 }
 
 type Flags struct {
