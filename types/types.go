@@ -19,11 +19,13 @@ package types
 import (
 	"encoding/json"
 	"fmt"
+	"reflect"
 	"sort"
 	"strings"
 
 	"go.uber.org/zap"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"sigs.k8s.io/controller-tools/pkg/markers"
 )
 
 // Kind describes the kind of the type (alias, array, etc.)
@@ -270,6 +272,8 @@ type Field struct {
 	Embedded bool
 	Inlined  bool
 	Doc      string
+	Markers  markers.MarkerValues
+	Tag      reflect.StructTag
 	Type     *Type
 }
 

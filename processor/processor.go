@@ -318,6 +318,8 @@ func (p *processor) processStructFields(parentType *types.Type, pkg *loader.Pack
 			Name:     f.Name,
 			Doc:      f.Doc,
 			Embedded: f.Name == "",
+			Markers:  f.Markers,
+			Tag:      f.Tag,
 		}
 
 		if tagVal, ok := f.Tag.Lookup("json"); ok {
