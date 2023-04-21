@@ -490,15 +490,14 @@ func (p *processor) loadAliasType(typeDef *types.Type, pkg *loader.Package, unde
 	return p.processType(tPkg, tInfo, depth+1)
 }
 
-// Every child thas has a reference to 'originalRef', will also get a reference
-// to 'additionalRef'.
-func (p *processor) propagateReference(originalRef *types.Type, additionalRef *types.Type) {
-	originalTypeKey := types.Key(originalRef)
-	additionalTypeKey := types.Key(additionalRef)
+// Every child that has a reference to 'originalType', will also get a reference to 'additionaType'.
+func (p *processor) propagateReference(originalType *types.Type, additionaType *types.Type) {
+	originalTypeKey := types.Key(originalType)
+	additionalTypeKey := types.Key(additionaType)
 
-	for _, parents := range p.references {
-		if _, ok := parents[originalTypeKey]; ok {
-			parents[additionalTypeKey] = struct{}{}
+	for _, parentRefs := range p.references {
+		if _, ok := parentRefs[originalTypeKey]; ok {
+			parentRefs[additionalTypeKey] = struct{}{}
 		}
 	}
 }
