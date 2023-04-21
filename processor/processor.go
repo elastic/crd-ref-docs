@@ -61,7 +61,7 @@ func Process(config *config.Config) ([]types.GroupVersionDetails, error) {
 		return nil, fmt.Errorf("failed to find API types in directory %s:%w", config.SourcePath, err)
 	}
 
-	p.types.InlineTypes()
+	p.types.InlineTypes(p.propagateReference)
 
 	// collect references between types
 	for typeName, refs := range p.references {
@@ -488,6 +488,18 @@ func (p *processor) loadAliasType(typeDef *types.Type, pkg *loader.Package, unde
 	}
 
 	return p.processType(tPkg, tInfo, depth+1)
+}
+
+// Every child that has a reference to 'originalType', will also get a reference to 'additionalType'.
+func (p *processor) propagateReference(originalType *types.Type, additionalType *types.Type) {
+	originalTypeKey := types.Key(originalType)
+	additionalTypeKey := types.Key(additionalType)
+
+	for _, parentRefs := range p.references {
+		if _, ok := parentRefs[originalTypeKey]; ok {
+			parentRefs[additionalTypeKey] = struct{}{}
+		}
+	}
 }
 
 func (p *processor) addReference(parent *types.Type, child *types.Type) {

@@ -35,8 +35,30 @@ Package v1 contains API Schema definitions for the webapp v1 API group
 | *`a`* __string__ | 
 | *`b`* __string__ | 
 | *`c`* __string__ | 
+| *`x`* __string__ | 
 | *`d`* __string__ | 
 | *`e`* __string__ | 
+|===
+
+
+[id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-embeddedx"]
+==== EmbeddedX 
+
+
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-embedded[$$Embedded$$]
+- xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-embedded1[$$Embedded1$$]
+- xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-embedded2[$$Embedded2$$]
+- xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-embedded3[$$Embedded3$$]
+- xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-embedded4[$$Embedded4$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`x`* __string__ | 
 |===
 
 

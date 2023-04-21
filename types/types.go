@@ -223,7 +223,7 @@ func (t *Type) ContainsInlinedTypes() bool {
 // TypeMap is a map of Type elements
 type TypeMap map[string]*Type
 
-func (types TypeMap) InlineTypes() {
+func (types TypeMap) InlineTypes(propagateReference func(original *Type, additional *Type)) {
 	// If C is inlined in B, and B is inlined in A; the fields of C are copied
 	// into B before the fields of B is copied into A. The ideal order of
 	// iterating and inlining fields is NOT known. Worst-case, only one type's
@@ -254,6 +254,7 @@ func (types TypeMap) InlineTypes() {
 					zap.S().Debugw("Inlining embedded type", "type", t,
 						"embeddedType", t.Fields[i].Type)
 					t.Fields.inlineType(i, embeddedType)
+					propagateReference(embeddedType, t)
 				}
 			}
 		}

@@ -40,7 +40,11 @@ type Embedded3 struct {
 	D         string `json:"d,omitempty"`
 }
 type Embedded4 struct {
-	C string `json:"c,omitempty"`
+	C         string `json:"c,omitempty"`
+	EmbeddedX `json:",inline"`
+}
+type EmbeddedX struct {
+	X string `json:"x,omitempty"`
 }
 
 // GuestbookSpec defines the desired state of Guestbook.
