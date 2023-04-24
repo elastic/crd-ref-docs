@@ -15,7 +15,7 @@ Package v1 contains API Schema definitions for the webapp v1 API group
 
 
 
-#### Embeddded
+#### Embedded
 
 
 
