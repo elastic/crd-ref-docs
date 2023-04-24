@@ -74,6 +74,10 @@ func (f *Functions) LinkForType(t *types.Type) (link string, local bool) {
 		return f.LinkForKubeType(t), false
 	}
 
+	if kt, ok := f.IsKnownType(t); ok {
+		return f.LinkForKnownType(kt), false
+	}
+
 	if t.IsBasic() || t.Imported {
 		return "", false
 	}
@@ -111,6 +115,20 @@ func (f *Functions) BasicTypeName(name string) string {
 	default:
 		return name
 	}
+}
+
+func (f *Functions) IsKnownType(t *types.Type) (*config.KnownType, bool) {
+	for _, kt := range f.conf.Render.KnownTypes {
+		if kt.Package == t.Package && t.Name == kt.Name {
+			return kt, true
+		}
+	}
+
+	return nil, false
+}
+
+func (f *Functions) LinkForKnownType(kt *config.KnownType) string {
+	return kt.Link
 }
 
 type kubernetesHelper struct {

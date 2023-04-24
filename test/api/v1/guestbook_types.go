@@ -19,6 +19,7 @@ package v1
 
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	gwapiv1b1 "sigs.k8s.io/gateway-api/apis/v1beta1"
 )
 
 // +kubebuilder:object:root=true
@@ -57,6 +58,8 @@ type GuestbookSpec struct {
 	Selector metav1.LabelSelector `json:"selector,omitempty"`
 	// Headers contains a list of header items to include in the page
 	Headers []GuestbookHeader `json:"headers,omitempty"`
+	// CertificateRef is a reference to a secret containing a certificate
+	CertificateRef gwapiv1b1.SecretObjectReference `json:"certificateRef"`
 }
 
 // GuestbookEntry defines an entry in a guest book.
