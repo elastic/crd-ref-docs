@@ -24,8 +24,11 @@ jobs:
         run: |
           go get -v -t -d ./...
 
-      - name: Run tests
+      - name: Run go tests
         run: go test -v ./...
 
       - name: Build
         run: go build -v .
+
+      - name: Run e2e tests
+        run: ./test.sh
