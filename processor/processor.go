@@ -283,7 +283,7 @@ func (p *processor) processType(pkg *loader.Package, info *markers.TypeInfo, dep
 		return p.processStructFields(typeDef, pkg, info, depth)
 	}
 
-	t := pkg.TypesInfo.TypeOf(info.RawSpec.Type)
+	t := pkg.TypesInfo.TypeOf(info.RawSpec.Name)
 	if t == nil {
 		zap.S().Warnw("Failed to determine AST type", "package", pkg.PkgPath, "type", info.Name)
 		typeDef.Kind = types.UnknownKind

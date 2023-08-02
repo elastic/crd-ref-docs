@@ -48,6 +48,12 @@ type EmbeddedX struct {
 	X string `json:"x,omitempty"`
 }
 
+// NOTE: Rating is placed here to ensure that it is parsed as a standalone type
+// before it is parsed as a struct field.
+
+// Rating is the rating provided by a guest.
+type Rating string
+
 // GuestbookSpec defines the desired state of Guestbook.
 type GuestbookSpec struct {
 	// Page indicates the page number
@@ -101,9 +107,6 @@ type GuestbookList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []Guestbook `json:"items"`
 }
-
-// Rating is the rating provided by a guest.
-type Rating string
 
 func init() {
 	SchemeBuilder.Register(&Guestbook{}, &GuestbookList{})
