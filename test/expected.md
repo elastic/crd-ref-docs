@@ -27,6 +27,7 @@ Package v1 contains API Schema definitions for the webapp v1 API group
 | --- | --- |
 | `apiVersion` _string_ | `webapp.test.k8s.elastic.co/v1`
 | `kind` _string_ | `Embedded`
+| `metadata` _[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |
 | `a` _string_ |  |
 | `b` _string_ |  |
 | `c` _string_ |  |
@@ -66,7 +67,7 @@ _Appears in:_
 | --- | --- |
 | `apiVersion` _string_ | `webapp.test.k8s.elastic.co/v1`
 | `kind` _string_ | `Guestbook`
-| `metadata` _[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |
+| `metadata` _[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |
 | `spec` _[GuestbookSpec](#guestbookspec)_ |  |
 
 
@@ -82,7 +83,7 @@ _Appears in:_
 | Field | Description |
 | --- | --- |
 | `name` _string_ | Name of the guest (pipe | should be escaped) |
-| `time` _[Time](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#time-v1-meta)_ | Time of entry |
+| `time` _[Time](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#time-v1-meta)_ | Time of entry |
 | `comment` _string_ | Comment by guest |
 | `rating` _[Rating](#rating)_ | Rating provided by the guest |
 
@@ -110,7 +111,7 @@ GuestbookList contains a list of Guestbook.
 | --- | --- |
 | `apiVersion` _string_ | `webapp.test.k8s.elastic.co/v1`
 | `kind` _string_ | `GuestbookList`
-| `metadata` _[ListMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#listmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |
+| `metadata` _[ListMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#listmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |
 | `items` _[Guestbook](#guestbook) array_ |  |
 
 
@@ -127,7 +128,7 @@ _Appears in:_
 | --- | --- |
 | `page` _integer_ | Page indicates the page number |
 | `entries` _[GuestbookEntry](#guestbookentry) array_ | Entries contain guest book entries for the page |
-| `selector` _[LabelSelector](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/#labelselector-v1-meta)_ | Selector selects something |
+| `selector` _[LabelSelector](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#labelselector-v1-meta)_ | Selector selects something |
 | `headers` _[GuestbookHeader](#guestbookheader) array_ | Headers contains a list of header items to include in the page |
 | `certificateRef` _[SecretObjectReference](https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1beta1.SecretObjectReference)_ | CertificateRef is a reference to a secret containing a certificate |
 

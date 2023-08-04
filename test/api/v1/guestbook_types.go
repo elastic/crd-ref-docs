@@ -22,9 +22,12 @@ import (
 	gwapiv1b1 "sigs.k8s.io/gateway-api/apis/v1beta1"
 )
 
-// +kubebuilder:object:root=true
+//+kubebuilder:object:root=true
 
 type Embedded struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+
 	A         string `json:"a,omitempty"`
 	Embedded1 `json:",inline"`
 }
@@ -88,7 +91,8 @@ type GuestbookStatus struct {
 // GuestbookHeaders are strings to include at the top of a page.
 type GuestbookHeader string
 
-// +kubebuilder:object:root=true
+//+kubebuilder:object:root=true
+//+kubebuilder:subresource:status
 
 // Guestbook is the Schema for the guestbooks API.
 type Guestbook struct {
@@ -99,7 +103,7 @@ type Guestbook struct {
 	Status GuestbookStatus `json:"status,omitempty"`
 }
 
-// +kubebuilder:object:root=true
+//+kubebuilder:object:root=true
 
 // GuestbookList contains a list of Guestbook.
 type GuestbookList struct {
