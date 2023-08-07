@@ -268,8 +268,8 @@ func (types TypeMap) InlineTypes(propagateReference func(original *Type, additio
 // Field describes a field in a struct.
 type Field struct {
 	Name     string
-	Embedded bool
-	Inlined  bool
+	Embedded bool // Embedded struct in Go typing
+	Inlined  bool // Inlined struct in serialization
 	Doc      string
 	Type     *Type
 }

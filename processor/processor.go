@@ -308,12 +308,6 @@ func (p *processor) processStructFields(parentType *types.Type, pkg *loader.Pack
 	parentTypeKey := types.Key(parentType)
 
 	for _, f := range info.Fields {
-		t := pkg.TypesInfo.TypeOf(f.RawField.Type)
-		if t == nil {
-			zap.S().Debugw("Failed to determine type of field", "field", f.Name)
-			continue
-		}
-
 		fieldDef := &types.Field{
 			Name:     f.Name,
 			Doc:      f.Doc,
@@ -325,6 +319,15 @@ func (p *processor) processStructFields(parentType *types.Type, pkg *loader.Pack
 			if len(args) > 0 && args[0] != "" {
 				fieldDef.Name = args[0]
 			}
+			if len(args) > 1 && args[1] == "inline" {
+				fieldDef.Inlined = true
+			}
+		}
+
+		t := pkg.TypesInfo.TypeOf(f.RawField.Type)
+		if t == nil {
+			zap.S().Debugw("Failed to determine type of field", "field", fieldDef.Name)
+			continue
 		}
 
 		logger.Debugw("Loading field type", "field", fieldDef.Name)
@@ -333,11 +336,8 @@ func (p *processor) processStructFields(parentType *types.Type, pkg *loader.Pack
 			continue
 		}
 
-		if fieldDef.Embedded {
-			fieldDef.Inlined = fieldDef.Name == ""
-			if fieldDef.Name == "" {
-				fieldDef.Name = fieldDef.Type.Name
-			}
+		if fieldDef.Name == "" {
+			fieldDef.Name = fieldDef.Type.Name
 		}
 
 		if p.shouldIgnoreField(parentTypeKey, fieldDef.Name) {
@@ -346,8 +346,6 @@ func (p *processor) processStructFields(parentType *types.Type, pkg *loader.Pack
 		}
 
 		parentType.Fields = append(parentType.Fields, fieldDef)
-
-		// add to references map
 		p.addReference(parentType, fieldDef.Type)
 	}
 
