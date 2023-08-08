@@ -124,7 +124,7 @@ func newProcessor(compiledConfig *compiledConfig, maxDepth int) *processor {
 		compiledConfig: compiledConfig,
 		maxDepth:       maxDepth,
 		parser: &crd.Parser{
-			Collector: &markers.Collector{Registry: &markers.Registry{}},
+			Collector: &markers.Collector{Registry: mkRegistry()},
 			Checker:   &loader.TypeChecker{},
 		},
 		groupVersions: make(map[schema.GroupVersion]*groupVersionInfo),
@@ -152,9 +152,8 @@ func (p *processor) findAPITypes(directory string) error {
 		return err
 	}
 
-	collector := &markers.Collector{Registry: mkRegistry()}
 	for _, pkg := range pkgs {
-		gvInfo := p.extractGroupVersionIfExists(collector, pkg)
+		gvInfo := p.extractGroupVersionIfExists(p.parser.Collector, pkg)
 		if gvInfo == nil {
 			continue
 		}
@@ -178,7 +177,7 @@ func (p *processor) findAPITypes(directory string) error {
 		}
 
 		// locate the kinds
-		markers.EachType(collector, pkg, func(info *markers.TypeInfo) {
+		markers.EachType(p.parser.Collector, pkg, func(info *markers.TypeInfo) {
 			// ignore types explicitly listed by the user
 			if p.shouldIgnoreType(fmt.Sprintf("%s.%s", pkg.PkgPath, info.Name)) {
 				return
