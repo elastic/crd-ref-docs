@@ -95,7 +95,7 @@ func (m *MarkdownRenderer) RenderType(t *types.Type) string {
 		sb.WriteString(", values:")
 		sb.WriteString(m.RenderTypeLink(t.ValueType))
 		sb.WriteString(")")
-	case types.ArrayKind, types.SliceKind:
+	case types.SliceKind:
 		sb.WriteString(m.RenderTypeLink(t.UnderlyingType))
 		sb.WriteString(" array")
 	default:

@@ -101,7 +101,7 @@ func (adr *AsciidoctorRenderer) RenderType(t *types.Type) string {
 		sb.WriteString(", values:")
 		sb.WriteString(adr.RenderTypeLink(t.ValueType))
 		sb.WriteString(")")
-	case types.ArrayKind, types.SliceKind:
+	case types.SliceKind:
 		sb.WriteString(adr.RenderTypeLink(t.UnderlyingType))
 		sb.WriteString(" array")
 	default:
