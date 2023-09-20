@@ -77,7 +77,9 @@ type GuestbookEntry struct {
 	Name string `json:"name,omitempty"`
 	// Time of entry
 	Time metav1.Time `json:"time,omitempty"`
-	// Comment by guest
+	// Comment by guest. This can be a multi-line comment.
+	//
+	// Just like this one.
 	Comment string `json:"comment,omitempty"`
 	// Rating provided by the guest
 	Rating Rating `json:"rating,omitempty"`

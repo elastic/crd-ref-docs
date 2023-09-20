@@ -143,7 +143,14 @@ func (adr *AsciidoctorRenderer) RenderAnchorID(id string) string {
 }
 
 func (adr *AsciidoctorRenderer) RenderFieldDoc(text string) string {
-	// escape the pipe character, which has special meaning for asciidoc as a way to format tables,
-	// so that including | in a comment does not result in wonky tables
-	return strings.ReplaceAll(text, "|", "\\|")
+	// Escape the pipe character, which has special meaning for asciidoc as a way to format tables,
+	// so that including | in a comment does not result in wonky tables.
+	out := strings.ReplaceAll(text, "|", "\\|")
+
+	// Replace newlines with spaces so that they don't break the asciidoc formatting.
+	lines := strings.Split(out, "\n")
+	for i := range lines {
+		lines[i] = strings.TrimSpace(lines[i])
+	}
+	return strings.Join(lines, " ")
 }

@@ -78,6 +78,7 @@ func (m *MarkdownRenderer) ToFuncMap() template.FuncMap {
 		"SafeID":             m.SafeID,
 		"ShouldRenderType":   m.ShouldRenderType,
 		"TypeID":             m.TypeID,
+		"RenderFieldDoc":     m.RenderFieldDoc,
 	}
 }
 
@@ -139,4 +140,13 @@ func (m *MarkdownRenderer) RenderExternalLink(link, text string) string {
 
 func (m *MarkdownRenderer) RenderGVLink(gv types.GroupVersionDetails) string {
 	return m.RenderLocalLink(gv.GroupVersionString())
+}
+
+func (m *MarkdownRenderer) RenderFieldDoc(text string) string {
+	// Escape the pipe character, which has special meaning for Markdown as a way to format tables
+	// so that including | in a comment does not result in wonky tables.
+	out := strings.ReplaceAll(text, "|", "\\|")
+
+	// Replace newlines with 2 line breaks so that they don't break the Markdown table formatting.
+	return strings.ReplaceAll(out, "\n", "<br /><br />")
 }
