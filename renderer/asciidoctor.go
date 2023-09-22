@@ -147,10 +147,13 @@ func (adr *AsciidoctorRenderer) RenderFieldDoc(text string) string {
 	// so that including | in a comment does not result in wonky tables.
 	out := strings.ReplaceAll(text, "|", "\\|")
 
-	// Replace newlines with spaces so that they don't break the asciidoc formatting.
+	// Trim any leading and trailing whitespace from each line.
 	lines := strings.Split(out, "\n")
 	for i := range lines {
 		lines[i] = strings.TrimSpace(lines[i])
 	}
-	return strings.Join(lines, " ")
+
+	// Replace newlines with hard line breaks so that newlines are rendered as expected.
+	// See: https://docs.asciidoctor.org/asciidoc/latest/blocks/hard-line-breaks
+	return strings.Join(lines, " +\n\n")
 }
