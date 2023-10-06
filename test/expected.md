@@ -164,7 +164,7 @@ Underlying tests that Underlying1's underlying type is Underlying2 instead of st
 
 #### Underlying1
 
-_Underlying type:_ `string`
+_Underlying type:_ `[Underlying2](#underlying2)`
 
 
 
@@ -172,6 +172,15 @@ _Appears in:_
 - [Underlying](#underlying)
 
 
+
+#### Underlying2
+
+_Underlying type:_ `string`
+
+
+
+_Appears in:_
+- [Underlying1](#underlying1)
 
 
 

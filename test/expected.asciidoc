@@ -188,7 +188,7 @@ Underlying tests that Underlying1's underlying type is Underlying2 instead of st
 
 
 [id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-underlying1"]
-==== Underlying1 (string) 
+==== Underlying1 (xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-underlying2[$$Underlying2$$]) 
 
 
 
@@ -198,6 +198,16 @@ Underlying tests that Underlying1's underlying type is Underlying2 instead of st
 ****
 
 
+
+[id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-underlying2"]
+==== Underlying2 (string) 
+
+
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-underlying1[$$Underlying1$$]
+****
 
 
 
