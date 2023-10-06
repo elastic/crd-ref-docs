@@ -31,7 +31,6 @@ type Kind int
 
 const (
 	AliasKind Kind = iota
-	ArrayKind
 	BasicKind
 	InterfaceKind
 	MapKind
@@ -51,8 +50,6 @@ func (k *Kind) UnmarshalJSON(b []byte) error {
 	switch strings.ToUpper(s) {
 	case "ALIAS":
 		*k = AliasKind
-	case "ARRAY":
-		*k = ArrayKind
 	case "BASIC":
 		*k = BasicKind
 	case "INTERFACE":
@@ -78,8 +75,6 @@ func (k Kind) MarshalJSON() ([]byte, error) {
 	switch k {
 	case AliasKind:
 		kindStr = "ALIAS"
-	case ArrayKind:
-		kindStr = "ARRAY"
 	case BasicKind:
 		kindStr = "BASIC"
 	case InterfaceKind:
@@ -99,6 +94,7 @@ func (k Kind) MarshalJSON() ([]byte, error) {
 
 // Type describes a declared type
 type Type struct {
+	UID            string                   `json:"uid"`
 	Name           string                   `json:"name"`
 	Package        string                   `json:"package"`
 	Doc            string                   `json:"doc"`
@@ -112,27 +108,11 @@ type Type struct {
 	References     []*Type                  `json:"-"`              // other types that refer to this type
 }
 
-func (t *Type) Copy() *Type {
-	return &Type{
-		Name:           t.Name,
-		Package:        t.Package,
-		Doc:            t.Doc,
-		GVK:            t.GVK,
-		Kind:           t.Kind,
-		Imported:       t.Imported,
-		UnderlyingType: t.UnderlyingType,
-		KeyType:        t.KeyType,
-		ValueType:      t.ValueType,
-		Fields:         t.Fields,
-		References:     t.References,
-	}
-}
-
 func (t *Type) IsBasic() bool {
 	switch t.Kind {
 	case BasicKind:
 		return true
-	case SliceKind, ArrayKind, PointerKind:
+	case SliceKind, PointerKind:
 		return t.UnderlyingType != nil && t.UnderlyingType.IsBasic()
 	case MapKind:
 		return t.KeyType != nil && t.KeyType.IsBasic() && t.ValueType != nil && t.ValueType.IsBasic()
@@ -153,7 +133,7 @@ func (t *Type) Members() Fields {
 	}
 
 	switch t.Kind {
-	case AliasKind, SliceKind, ArrayKind, PointerKind:
+	case AliasKind, SliceKind, PointerKind:
 		return t.UnderlyingType.Members()
 	default:
 		return nil
@@ -173,7 +153,7 @@ func (t *Type) String() string {
 		sb.WriteString("]")
 		sb.WriteString(t.ValueType.String())
 		return sb.String()
-	case ArrayKind, SliceKind:
+	case SliceKind:
 		sb.WriteString("[]")
 	case PointerKind:
 		sb.WriteString("*")
@@ -241,7 +221,7 @@ func (types TypeMap) InlineTypes(propagateReference func(original *Type, additio
 				}
 				numTypesToBeInlined += 1
 
-				embeddedType, ok := types[Key(t.Fields[i].Type)]
+				embeddedType, ok := types[t.Fields[i].Type.UID]
 				if !ok {
 					zap.S().Warnw("Unable to find embedded type", "type", t,
 						"embeddedType", t.Fields[i].Type)
@@ -284,8 +264,10 @@ func (fields *Fields) inlineType(i int, inlined *Type) {
 	*fields = append(new, (*fields)[i+1:]...)
 }
 
-// Key generates the unique name for the give type.
-func Key(t *Type) string {
+// Identifier generates the non-unique identifier for the type, disregarding it
+// being a e.g. a list or pointer, and will thus be the same for both *Foo and
+// Foo. Use Type's UID for a unique identifier.
+func Identifier(t *Type) string {
 	if t.Package == "" {
 		return t.Name
 	}

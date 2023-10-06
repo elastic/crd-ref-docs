@@ -51,6 +51,18 @@ type EmbeddedX struct {
 	X string `json:"x,omitempty"`
 }
 
+// Underlying tests that Underlying1's underlying type is Underlying2 instead of string.
+// +kubebuilder:object:root=true
+type Underlying struct {
+	A Underlying1 `json:"a,omitempty"`
+}
+
+// Underlying1 has an underlying type with an underlying type
+type Underlying1 Underlying2
+
+// Underlying2 is a string alias
+type Underlying2 string
+
 // NOTE: Rating is placed here to ensure that it is parsed as a standalone type
 // before it is parsed as a struct field.
 

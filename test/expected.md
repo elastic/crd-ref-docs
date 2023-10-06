@@ -12,6 +12,7 @@ Package v1 contains API Schema definitions for the webapp v1 API group
 - [Embedded](#embedded)
 - [Guestbook](#guestbook)
 - [GuestbookList](#guestbooklist)
+- [Underlying](#underlying)
 
 
 
@@ -90,7 +91,7 @@ _Appears in:_
 
 #### GuestbookHeader
 
-_Underlying type:_ `string`
+_Underlying type:_ _string_
 
 GuestbookHeaders are strings to include at the top of a page.
 
@@ -137,12 +138,49 @@ _Appears in:_
 
 #### Rating
 
-_Underlying type:_ `string`
+_Underlying type:_ _string_
 
 Rating is the rating provided by a guest.
 
 _Appears in:_
 - [GuestbookEntry](#guestbookentry)
+
+
+
+#### Underlying
+
+
+
+Underlying tests that Underlying1's underlying type is Underlying2 instead of string.
+
+
+
+| Field | Description |
+| --- | --- |
+| `apiVersion` _string_ | `webapp.test.k8s.elastic.co/v1`
+| `kind` _string_ | `Underlying`
+| `a` _[Underlying1](#underlying1)_ |  |
+
+
+#### Underlying1
+
+_Underlying type:_ _[Underlying2](#underlying2)_
+
+Underlying1 has an underlying type with an underlying type
+
+_Appears in:_
+- [Underlying](#underlying)
+
+
+
+#### Underlying2
+
+_Underlying type:_ _string_
+
+Underlying2 is a string alias
+
+_Appears in:_
+- [Underlying1](#underlying1)
 
 
 

@@ -58,7 +58,7 @@ func NewFunctions(conf *config.Config) (*Functions, error) {
 }
 
 func (f *Functions) TypeID(t *types.Type) string {
-	return f.SafeID(types.Key(t))
+	return f.SafeID(types.Identifier(t))
 }
 
 func (f *Functions) GroupVersionID(gv types.GroupVersionDetails) string {
@@ -95,7 +95,7 @@ func (f *Functions) SimplifiedTypeName(t *types.Type) string {
 		return f.BasicTypeName(t.Name)
 	case types.PointerKind:
 		return f.BasicTypeName(t.UnderlyingType.Name)
-	case types.ArrayKind, types.SliceKind:
+	case types.SliceKind:
 		return fmt.Sprintf("%s array", f.BasicTypeName(t.UnderlyingType.Name))
 	case types.MapKind:
 		return "object"

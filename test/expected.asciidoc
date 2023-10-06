@@ -17,11 +17,14 @@ Package v1 contains API Schema definitions for the webapp v1 API group
 - xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-embedded[$$Embedded$$]
 - xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbook[$$Guestbook$$]
 - xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbooklist[$$GuestbookList$$]
+- xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-underlying[$$Underlying$$]
 
 
 
 [id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-embedded"]
-==== Embedded 
+==== Embedded
+
+
 
 
 
@@ -44,7 +47,9 @@ Package v1 contains API Schema definitions for the webapp v1 API group
 
 
 [id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-embeddedx"]
-==== EmbeddedX 
+==== EmbeddedX
+
+
 
 
 
@@ -65,7 +70,9 @@ Package v1 contains API Schema definitions for the webapp v1 API group
 
 
 [id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbook"]
-==== Guestbook 
+==== Guestbook
+
+
 
 Guestbook is the Schema for the guestbooks API.
 
@@ -86,7 +93,9 @@ Guestbook is the Schema for the guestbooks API.
 
 
 [id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookentry"]
-==== GuestbookEntry 
+==== GuestbookEntry
+
+
 
 GuestbookEntry defines an entry in a guest book.
 
@@ -106,7 +115,9 @@ GuestbookEntry defines an entry in a guest book.
 
 
 [id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookheader"]
-==== GuestbookHeader (string) 
+==== GuestbookHeader
+
+_Underlying type:_ _string_
 
 GuestbookHeaders are strings to include at the top of a page.
 
@@ -118,7 +129,9 @@ GuestbookHeaders are strings to include at the top of a page.
 
 
 [id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbooklist"]
-==== GuestbookList 
+==== GuestbookList
+
+
 
 GuestbookList contains a list of Guestbook.
 
@@ -136,7 +149,9 @@ GuestbookList contains a list of Guestbook.
 
 
 [id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookspec"]
-==== GuestbookSpec 
+==== GuestbookSpec
+
+
 
 GuestbookSpec defines the desired state of Guestbook.
 
@@ -159,13 +174,61 @@ GuestbookSpec defines the desired state of Guestbook.
 
 
 [id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-rating"]
-==== Rating (string) 
+==== Rating
+
+_Underlying type:_ _string_
 
 Rating is the rating provided by a guest.
 
 .Appears In:
 ****
 - xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookentry[$$GuestbookEntry$$]
+****
+
+
+
+[id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-underlying"]
+==== Underlying
+
+
+
+Underlying tests that Underlying1's underlying type is Underlying2 instead of string.
+
+
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`apiVersion`* __string__ | `webapp.test.k8s.elastic.co/v1`
+| *`kind`* __string__ | `Underlying`
+| *`a`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-underlying1[$$Underlying1$$]__ | 
+|===
+
+
+[id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-underlying1"]
+==== Underlying1
+
+_Underlying type:_ _xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-underlying2[$$Underlying2$$]_
+
+Underlying1 has an underlying type with an underlying type
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-underlying[$$Underlying$$]
+****
+
+
+
+[id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-underlying2"]
+==== Underlying2
+
+_Underlying type:_ _string_
+
+Underlying2 is a string alias
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-underlying1[$$Underlying1$$]
 ****
 
 
