@@ -17,6 +17,7 @@ Package v1 contains API Schema definitions for the webapp v1 API group
 - xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-embedded[$$Embedded$$]
 - xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbook[$$Guestbook$$]
 - xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbooklist[$$GuestbookList$$]
+- xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-underlying[$$Underlying$$]
 
 
 
@@ -167,6 +168,36 @@ Rating is the rating provided by a guest.
 ****
 - xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookentry[$$GuestbookEntry$$]
 ****
+
+
+
+[id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-underlying"]
+==== Underlying 
+
+Underlying tests that Underlying1's underlying type is Underlying2 instead of string.
+
+
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`apiVersion`* __string__ | `webapp.test.k8s.elastic.co/v1`
+| *`kind`* __string__ | `Underlying`
+| *`a`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-underlying1[$$Underlying1$$]__ | 
+|===
+
+
+[id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-underlying1"]
+==== Underlying1 (string) 
+
+
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-underlying[$$Underlying$$]
+****
+
+
 
 
 

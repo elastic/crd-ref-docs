@@ -12,6 +12,7 @@ Package v1 contains API Schema definitions for the webapp v1 API group
 - [Embedded](#embedded)
 - [Guestbook](#guestbook)
 - [GuestbookList](#guestbooklist)
+- [Underlying](#underlying)
 
 
 
@@ -143,6 +144,34 @@ Rating is the rating provided by a guest.
 
 _Appears in:_
 - [GuestbookEntry](#guestbookentry)
+
+
+
+#### Underlying
+
+
+
+Underlying tests that Underlying1's underlying type is Underlying2 instead of string.
+
+
+
+| Field | Description |
+| --- | --- |
+| `apiVersion` _string_ | `webapp.test.k8s.elastic.co/v1`
+| `kind` _string_ | `Underlying`
+| `a` _[Underlying1](#underlying1)_ |  |
+
+
+#### Underlying1
+
+_Underlying type:_ `string`
+
+
+
+_Appears in:_
+- [Underlying](#underlying)
+
+
 
 
 
