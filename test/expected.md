@@ -91,7 +91,7 @@ _Appears in:_
 
 #### GuestbookHeader
 
-_Underlying type:_ `string`
+_Underlying type:_ _string_
 
 GuestbookHeaders are strings to include at the top of a page.
 
@@ -138,7 +138,7 @@ _Appears in:_
 
 #### Rating
 
-_Underlying type:_ `string`
+_Underlying type:_ _string_
 
 Rating is the rating provided by a guest.
 
@@ -164,7 +164,7 @@ Underlying tests that Underlying1's underlying type is Underlying2 instead of st
 
 #### Underlying1
 
-_Underlying type:_ `[Underlying2](#underlying2)`
+_Underlying type:_ _[Underlying2](#underlying2)_
 
 Underlying1 has an underlying type with an underlying type
 
@@ -175,7 +175,7 @@ _Appears in:_
 
 #### Underlying2
 
-_Underlying type:_ `string`
+_Underlying type:_ _string_
 
 Underlying2 is a string alias
 
