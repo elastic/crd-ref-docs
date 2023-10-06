@@ -57,7 +57,10 @@ type Underlying struct {
 	A Underlying1 `json:"a,omitempty"`
 }
 
+// Underlying1 has an underlying type with an underlying type
 type Underlying1 Underlying2
+
+// Underlying2 is a string alias
 type Underlying2 string
 
 // NOTE: Rating is placed here to ensure that it is parsed as a standalone type

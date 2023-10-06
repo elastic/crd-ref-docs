@@ -166,7 +166,7 @@ Underlying tests that Underlying1's underlying type is Underlying2 instead of st
 
 _Underlying type:_ `[Underlying2](#underlying2)`
 
-
+Underlying1 has an underlying type with an underlying type
 
 _Appears in:_
 - [Underlying](#underlying)
@@ -177,7 +177,7 @@ _Appears in:_
 
 _Underlying type:_ `string`
 
-
+Underlying2 is a string alias
 
 _Appears in:_
 - [Underlying1](#underlying1)
