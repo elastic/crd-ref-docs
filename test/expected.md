@@ -138,7 +138,7 @@ _Appears in:_
 
 #### Rating
 
-_Underlying type:_ _string_
+_Underlying type:_ _integer_
 
 Rating is the rating provided by a guest.
 
