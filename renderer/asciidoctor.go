@@ -143,7 +143,17 @@ func (adr *AsciidoctorRenderer) RenderAnchorID(id string) string {
 }
 
 func (adr *AsciidoctorRenderer) RenderFieldDoc(text string) string {
-	// escape the pipe character, which has special meaning for asciidoc as a way to format tables,
-	// so that including | in a comment does not result in wonky tables
-	return strings.ReplaceAll(text, "|", "\\|")
+	// Escape the pipe character, which has special meaning for asciidoc as a way to format tables,
+	// so that including | in a comment does not result in wonky tables.
+	out := strings.ReplaceAll(text, "|", "\\|")
+
+	// Trim any leading and trailing whitespace from each line.
+	lines := strings.Split(out, "\n")
+	for i := range lines {
+		lines[i] = strings.TrimSpace(lines[i])
+	}
+
+	// Replace newlines with hard line breaks so that newlines are rendered as expected.
+	// See: https://docs.asciidoctor.org/asciidoc/latest/blocks/hard-line-breaks
+	return strings.Join(lines, " +\n\n")
 }
