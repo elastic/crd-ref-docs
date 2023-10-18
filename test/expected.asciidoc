@@ -178,7 +178,7 @@ GuestbookSpec defines the desired state of Guestbook.
 [id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-rating"]
 ==== Rating
 
-_Underlying type:_ _string_
+_Underlying type:_ _integer_
 
 Rating is the rating provided by a guest.
 

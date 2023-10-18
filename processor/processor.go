@@ -29,14 +29,13 @@ import (
 	"golang.org/x/tools/go/packages"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-tools/pkg/crd"
+	crdmarkers "sigs.k8s.io/controller-tools/pkg/crd/markers"
 	"sigs.k8s.io/controller-tools/pkg/loader"
 	"sigs.k8s.io/controller-tools/pkg/markers"
 )
 
 const (
-	groupNameMarker   = "groupName"
-	objectRootMarker  = "kubebuilder:object:root"
-	versionNameMarker = "versionName"
+	objectRootMarker = "kubebuilder:object:root"
 )
 
 var ignoredCommentRegex = regexp.MustCompile(`\s*^(?i:\+|copyright)`)
@@ -55,7 +54,10 @@ func Process(config *config.Config) ([]types.GroupVersionDetails, error) {
 		return nil, err
 	}
 
-	p := newProcessor(compiledConfig, config.Flags.MaxDepth)
+	p, err := newProcessor(compiledConfig, config.Flags.MaxDepth)
+	if err != nil {
+		return nil, err
+	}
 	// locate the packages annotated with group names
 	if err := p.findAPITypes(config.SourcePath); err != nil {
 		return nil, fmt.Errorf("failed to find API types in directory %s:%w", config.SourcePath, err)
@@ -119,12 +121,16 @@ func Process(config *config.Config) ([]types.GroupVersionDetails, error) {
 	return gvDetails, nil
 }
 
-func newProcessor(compiledConfig *compiledConfig, maxDepth int) *processor {
+func newProcessor(compiledConfig *compiledConfig, maxDepth int) (*processor, error) {
+	registry, err := mkRegistry()
+	if err != nil {
+		return nil, err
+	}
 	p := &processor{
 		compiledConfig: compiledConfig,
 		maxDepth:       maxDepth,
 		parser: &crd.Parser{
-			Collector: &markers.Collector{Registry: mkRegistry()},
+			Collector: &markers.Collector{Registry: registry},
 			Checker:   &loader.TypeChecker{},
 		},
 		groupVersions: make(map[schema.GroupVersion]*groupVersionInfo),
@@ -133,7 +139,7 @@ func newProcessor(compiledConfig *compiledConfig, maxDepth int) *processor {
 	}
 
 	crd.AddKnownTypes(p.parser)
-	return p
+	return p, err
 }
 
 type processor struct {
@@ -221,13 +227,13 @@ func (p *processor) extractGroupVersionIfExists(collector *markers.Collector, pk
 		return nil
 	}
 
-	groupName := markerValues.Get(groupNameMarker)
+	groupName := markerValues.Get("groupName")
 	if groupName == nil {
 		return nil
 	}
 
 	version := pkg.Name
-	if v := markerValues.Get(versionNameMarker); v != nil {
+	if v := markerValues.Get("versionName"); v != nil {
 		version = v.(string)
 	}
 
@@ -273,6 +279,7 @@ func (p *processor) processType(pkg *loader.Package, parentType *types.Type, t g
 	info := p.parser.LookupType(pkg, typeDef.Name)
 	if info != nil {
 		typeDef.Doc = info.Doc
+		typeDef.Markers = info.Markers
 
 		if p.useRawDocstring && info.RawDecl != nil {
 			// use raw docstring to support multi-line and indent preservation
@@ -377,6 +384,7 @@ func (p *processor) processStructFields(parentType *types.Type, pkg *loader.Pack
 	for _, f := range info.Fields {
 		fieldDef := &types.Field{
 			Name:     f.Name,
+			Markers:  f.Markers,
 			Doc:      f.Doc,
 			Embedded: f.Name == "",
 		}
@@ -470,10 +478,19 @@ func (p *processor) addReference(parent *types.Type, child *types.Type) {
 	}
 }
 
-func mkRegistry() *markers.Registry {
+func mkRegistry() (*markers.Registry, error) {
 	registry := &markers.Registry{}
-	registry.Define(groupNameMarker, markers.DescribesPackage, "")
-	registry.Define(objectRootMarker, markers.DescribesType, true)
-	registry.Define(versionNameMarker, markers.DescribesPackage, "")
-	return registry
+	err := registry.Define(objectRootMarker, markers.DescribesType, true)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, marker := range crdmarkers.AllDefinitions {
+		err = registry.Register(marker.Definition)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return registry, nil
 }

@@ -54,6 +54,7 @@ type EmbeddedX struct {
 // Underlying tests that Underlying1's underlying type is Underlying2 instead of string.
 // +kubebuilder:object:root=true
 type Underlying struct {
+	// +kubebuilder:default="b"
 	A Underlying1 `json:"a,omitempty"`
 }
 
@@ -67,11 +68,14 @@ type Underlying2 string
 // before it is parsed as a struct field.
 
 // Rating is the rating provided by a guest.
-type Rating string
+// +kubebuilder:validation:Minimum=1
+// +kubebuilder:validation:Maximum=5
+type Rating int
 
 // GuestbookSpec defines the desired state of Guestbook.
 type GuestbookSpec struct {
 	// Page indicates the page number
+	// +kubebuilder:default=1
 	Page *int `json:"page,omitempty"`
 	// Entries contain guest book entries for the page
 	Entries []GuestbookEntry `json:"entries,omitempty"`

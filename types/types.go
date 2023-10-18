@@ -24,6 +24,7 @@ import (
 
 	"go.uber.org/zap"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"sigs.k8s.io/controller-tools/pkg/markers"
 )
 
 // Kind describes the kind of the type (alias, array, etc.)
@@ -98,6 +99,7 @@ type Type struct {
 	Name           string                   `json:"name"`
 	Package        string                   `json:"package"`
 	Doc            string                   `json:"doc"`
+	Markers        markers.MarkerValues     `json:"markers"`
 	GVK            *schema.GroupVersionKind `json:"gvk"`
 	Kind           Kind                     `json:"kind"`
 	Imported       bool                     `json:"imported"`
@@ -251,6 +253,7 @@ type Field struct {
 	Embedded bool // Embedded struct in Go typing
 	Inlined  bool // Inlined struct in serialization
 	Doc      string
+	Markers  markers.MarkerValues
 	Type     *Type
 }
 
