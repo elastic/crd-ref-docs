@@ -99,6 +99,8 @@ type Type struct {
 	Name           string                   `json:"name"`
 	Package        string                   `json:"package"`
 	Doc            string                   `json:"doc"`
+	Default        string                   `json:"default"`
+	Validation     []string                 `json:"validation"`
 	Markers        markers.MarkerValues     `json:"markers"`
 	GVK            *schema.GroupVersionKind `json:"gvk"`
 	Kind           Kind                     `json:"kind"`
@@ -205,6 +207,17 @@ func (t *Type) ContainsInlinedTypes() bool {
 // TypeMap is a map of Type elements
 type TypeMap map[string]*Type
 
+// PropagateMarkers propagates markers to struct fields and certain types, from
+// their underlying types.
+func (types TypeMap) PropagateMarkers() {
+	for _, t := range types {
+		t.propagateMarkers()
+		for _, f := range t.Fields {
+			f.propagateMarkers()
+		}
+	}
+}
+
 func (types TypeMap) InlineTypes(propagateReference func(original *Type, additional *Type)) {
 	// If C is inlined in B, and B is inlined in A; the fields of C are copied
 	// into B before the fields of B is copied into A. The ideal order of
@@ -247,17 +260,52 @@ func (types TypeMap) InlineTypes(propagateReference func(original *Type, additio
 	zap.S().Warnw("Failed to inline all inlined types", "remaining", numTypesToBeInlined)
 }
 
+func (t *Type) propagateMarkers() {
+	if t.UnderlyingType == nil {
+		return
+	}
+
+	switch t.Kind {
+	case AliasKind, PointerKind:
+		t.UnderlyingType.propagateMarkers()
+
+		for name, marker := range t.UnderlyingType.Markers {
+			if _, ok := t.Markers[name]; !ok {
+				if t.Markers == nil {
+					t.Markers = make(markers.MarkerValues)
+				}
+				t.Markers[name] = marker
+			}
+		}
+	}
+}
+
 // Field describes a field in a struct.
 type Field struct {
-	Name     string
-	Embedded bool // Embedded struct in Go typing
-	Inlined  bool // Inlined struct in serialization
-	Doc      string
-	Markers  markers.MarkerValues
-	Type     *Type
+	Name       string
+	Embedded   bool // Embedded struct in Go typing
+	Inlined    bool // Inlined struct in serialization
+	Doc        string
+	Default    string
+	Validation []string
+	Markers    markers.MarkerValues
+	Type       *Type
 }
 
 type Fields []*Field
+
+func (f *Field) propagateMarkers() {
+	f.Type.propagateMarkers()
+
+	for name, marker := range f.Type.Markers {
+		if _, ok := f.Markers[name]; !ok {
+			if f.Markers == nil {
+				f.Markers = make(markers.MarkerValues)
+			}
+			f.Markers[name] = marker
+		}
+	}
+}
 
 // inlineType replaces field at index i with the fields of inlined type.
 func (fields *Fields) inlineType(i int, inlined *Type) {

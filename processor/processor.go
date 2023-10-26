@@ -64,6 +64,8 @@ func Process(config *config.Config) ([]types.GroupVersionDetails, error) {
 	}
 
 	p.types.InlineTypes(p.propagateReference)
+	p.types.PropagateMarkers()
+	p.parseMarkers()
 
 	// collect references between types
 	for typeName, refs := range p.references {
@@ -493,4 +495,45 @@ func mkRegistry() (*markers.Registry, error) {
 	}
 
 	return registry, nil
+}
+
+func parseMarkers(markers markers.MarkerValues) (string, []string) {
+	defaultValue := ""
+	validation := []string{}
+
+	markerNames := make([]string, 0, len(markers))
+	for name := range markers {
+		markerNames = append(markerNames, name)
+	}
+	sort.Strings(markerNames)
+
+	for _, name := range markerNames {
+		values := markers[name]
+		if strings.HasPrefix(name, "kubebuilder:validation:") {
+			name := strings.TrimPrefix(name, "kubebuilder:validation:")
+			validation = append(validation, fmt.Sprintf("%s: %v", name, values[len(values)-1]))
+		}
+
+		if name == "kubebuilder:default" {
+			if value, ok := values[len(values)-1].(crdmarkers.Default); ok {
+				defaultValue = fmt.Sprintf("%v", value.Value)
+				if strings.HasPrefix(defaultValue, "map[") {
+					defaultValue = strings.TrimPrefix(defaultValue, "map[")
+					defaultValue = strings.TrimSuffix(defaultValue, "]")
+					defaultValue = fmt.Sprintf("{ %s }", defaultValue)
+				}
+			}
+		}
+	}
+
+	return defaultValue, validation
+}
+
+func (p *processor) parseMarkers() {
+	for _, t := range p.types {
+		t.Default, t.Validation = parseMarkers(t.Markers)
+		for _, f := range t.Fields {
+			f.Default, f.Validation = parseMarkers(f.Markers)
+		}
+	}
 }

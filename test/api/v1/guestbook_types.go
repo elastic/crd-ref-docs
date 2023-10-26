@@ -90,12 +90,14 @@ type GuestbookSpec struct {
 // GuestbookEntry defines an entry in a guest book.
 type GuestbookEntry struct {
 	// Name of the guest (pipe | should be escaped)
+	// +kubebuilder:validation:MaxLength=80
 	Name string `json:"name,omitempty"`
 	// Time of entry
 	Time metav1.Time `json:"time,omitempty"`
 	// Comment by guest. This can be a multi-line comment.
 	//
 	// Just like this one.
+	// +kubebuilder:validation:Pattern=`[a-z0-9]`
 	Comment string `json:"comment,omitempty"`
 	// Rating provided by the guest
 	Rating Rating `json:"rating,omitempty"`
@@ -103,6 +105,7 @@ type GuestbookEntry struct {
 
 // GuestbookStatus defines the observed state of Guestbook.
 type GuestbookStatus struct {
+	// +kubebuilder:validation:Enum={OK, Error}
 	Status string `json:"status"`
 }
 
@@ -117,6 +120,7 @@ type Guestbook struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
+	// +kubebuilder:default={page: 1}
 	Spec   GuestbookSpec   `json:"spec,omitempty"`
 	Status GuestbookStatus `json:"status,omitempty"`
 }
