@@ -75,7 +75,7 @@ _Appears in:_
 | `apiVersion` _string_ | `webapp.test.k8s.elastic.co/v1` | | |
 | `kind` _string_ | `Guestbook` | | |
 | `metadata` _[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
-| `spec` _[GuestbookSpec](#guestbookspec)_ |  | { page:1 } |  |
+| `spec` _[GuestbookSpec](#guestbookspec)_ |  | \{ page:1 \} |  |
 
 
 #### GuestbookEntry
@@ -93,7 +93,7 @@ _Appears in:_
 | --- | --- | --- | --- |
 | `name` _string_ | Name of the guest (pipe \| should be escaped) |  | MaxLength: 80 <br /> |
 | `time` _[Time](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#time-v1-meta)_ | Time of entry |  |  |
-| `comment` _string_ | Comment by guest. This can be a multi-line comment. <br /><br /> Just like this one. |  | Pattern: [a-z0-9] <br /> |
+| `comment` _string_ | Comment by guest. This can be a multi-line comment. <br /><br /> Just like this one. |  | Pattern: `[a-z0-9]` <br /> |
 | `rating` _[Rating](#rating)_ | Rating provided by the guest |  | Maximum: 5 <br />Minimum: 1 <br /> |
 
 
@@ -141,12 +141,26 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `page` _integer_ | Page indicates the page number | 1 |  |
+| `page` _[PositiveInt](#positiveint)_ | Page indicates the page number | 1 | Minimum: 1 <br /> |
 | `entries` _[GuestbookEntry](#guestbookentry) array_ | Entries contain guest book entries for the page |  |  |
 | `selector` _[LabelSelector](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#labelselector-v1-meta)_ | Selector selects something |  |  |
-| `headers` _[GuestbookHeader](#guestbookheader) array_ | Headers contains a list of header items to include in the page |  |  |
+| `headers` _[GuestbookHeader](#guestbookheader) array_ | Headers contains a list of header items to include in the page |  | MaxItems: 10 <br />UniqueItems: true <br /> |
 | `certificateRef` _[SecretObjectReference](https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1beta1.SecretObjectReference)_ | CertificateRef is a reference to a secret containing a certificate |  |  |
 
+
+
+
+#### PositiveInt
+
+_Underlying type:_ _integer_
+
+
+
+_Validation:_
+- Minimum: 1
+
+_Appears in:_
+- [GuestbookSpec](#guestbookspec)
 
 
 
@@ -165,6 +179,8 @@ _Appears in:_
 
 
 
+
+
 #### Underlying
 
 
@@ -179,7 +195,8 @@ Underlying tests that Underlying1's underlying type is Underlying2 instead of st
 | --- | --- | --- | --- |
 | `apiVersion` _string_ | `webapp.test.k8s.elastic.co/v1` | | |
 | `kind` _string_ | `Underlying` | | |
-| `a` _[Underlying1](#underlying1)_ |  | b |  |
+| `metadata` _[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
+| `a` _[Underlying1](#underlying1)_ |  | b | MaxLength: 10 <br /> |
 
 
 #### Underlying1
@@ -188,7 +205,8 @@ _Underlying type:_ _[Underlying2](#underlying2)_
 
 Underlying1 has an underlying type with an underlying type
 
-
+_Validation:_
+- MaxLength: 10
 
 _Appears in:_
 - [Underlying](#underlying)
@@ -201,7 +219,8 @@ _Underlying type:_ _string_
 
 Underlying2 is a string alias
 
-
+_Validation:_
+- MaxLength: 10
 
 _Appears in:_
 - [Underlying1](#underlying1)

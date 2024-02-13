@@ -54,6 +54,9 @@ type EmbeddedX struct {
 // Underlying tests that Underlying1's underlying type is Underlying2 instead of string.
 // +kubebuilder:object:root=true
 type Underlying struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+
 	// +kubebuilder:default="b"
 	A Underlying1 `json:"a,omitempty"`
 }
@@ -62,30 +65,39 @@ type Underlying struct {
 type Underlying1 Underlying2
 
 // Underlying2 is a string alias
+// +kubebuilder:validation:MaxLength=10
 type Underlying2 string
 
 // NOTE: Rating is placed here to ensure that it is parsed as a standalone type
 // before it is parsed as a struct field.
 
 // Rating is the rating provided by a guest.
+// +kubebuilder:validation:Maximum=4
 // +kubebuilder:validation:Minimum=1
 // +kubebuilder:validation:Maximum=5
 type Rating int
 
 // GuestbookSpec defines the desired state of Guestbook.
+// +kubebuilder:validation:XValidation:rule="self.page < 200", message="Please start a new book."
 type GuestbookSpec struct {
 	// Page indicates the page number
 	// +kubebuilder:default=1
-	Page *int `json:"page,omitempty"`
+	// +kubebuilder:example=3
+	Page *PositiveInt `json:"page,omitempty"`
 	// Entries contain guest book entries for the page
 	Entries []GuestbookEntry `json:"entries,omitempty"`
 	// Selector selects something
 	Selector metav1.LabelSelector `json:"selector,omitempty"`
 	// Headers contains a list of header items to include in the page
+	// +kubebuilder:validation:MaxItems=10
+	// +kubebuilder:validation:UniqueItems=true
 	Headers []GuestbookHeader `json:"headers,omitempty"`
 	// CertificateRef is a reference to a secret containing a certificate
 	CertificateRef gwapiv1b1.SecretObjectReference `json:"certificateRef"`
 }
+
+// +kubebuilder:validation:Minimum=1
+type PositiveInt int
 
 // GuestbookEntry defines an entry in a guest book.
 type GuestbookEntry struct {
@@ -106,8 +118,11 @@ type GuestbookEntry struct {
 // GuestbookStatus defines the observed state of Guestbook.
 type GuestbookStatus struct {
 	// +kubebuilder:validation:Enum={OK, Error}
-	Status string `json:"status"`
+	Status Status `json:"status"`
 }
+
+// +kubebuilder:validation:Enum={OK, Unknown, Error}
+type Status string
 
 // GuestbookHeaders are strings to include at the top of a page.
 type GuestbookHeader string

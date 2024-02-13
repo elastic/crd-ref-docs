@@ -508,19 +508,29 @@ func parseMarkers(markers markers.MarkerValues) (string, []string) {
 	sort.Strings(markerNames)
 
 	for _, name := range markerNames {
-		values := markers[name]
+		value := markers[name][len(markers[name])-1]
+
 		if strings.HasPrefix(name, "kubebuilder:validation:") {
 			name := strings.TrimPrefix(name, "kubebuilder:validation:")
-			validation = append(validation, fmt.Sprintf("%s: %v", name, values[len(values)-1]))
+
+			switch name {
+			case "Pattern":
+				value = fmt.Sprintf("`%s`", value)
+			// FIXME: XValidation currently removed due to being long and difficult to read.
+			// E.g. "XValidation: {self.page < 200 Please start a new book.}"
+			case "XValidation":
+				continue
+			}
+			validation = append(validation, fmt.Sprintf("%s: %v", name, value))
 		}
 
 		if name == "kubebuilder:default" {
-			if value, ok := values[len(values)-1].(crdmarkers.Default); ok {
+			if value, ok := value.(crdmarkers.Default); ok {
 				defaultValue = fmt.Sprintf("%v", value.Value)
 				if strings.HasPrefix(defaultValue, "map[") {
 					defaultValue = strings.TrimPrefix(defaultValue, "map[")
 					defaultValue = strings.TrimSuffix(defaultValue, "]")
-					defaultValue = fmt.Sprintf("{ %s }", defaultValue)
+					defaultValue = fmt.Sprintf("\\{ %s \\}", defaultValue)
 				}
 			}
 		}
