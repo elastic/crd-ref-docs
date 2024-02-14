@@ -530,7 +530,7 @@ func parseMarkers(markers markers.MarkerValues) (string, []string) {
 				if strings.HasPrefix(defaultValue, "map[") {
 					defaultValue = strings.TrimPrefix(defaultValue, "map[")
 					defaultValue = strings.TrimSuffix(defaultValue, "]")
-					defaultValue = fmt.Sprintf("\\{ %s \\}", defaultValue)
+					defaultValue = fmt.Sprintf("{ %s }", defaultValue)
 				}
 			}
 		}
