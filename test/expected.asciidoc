@@ -94,7 +94,7 @@ Guestbook is the Schema for the guestbooks API.
 | *`kind`* __string__ | `Guestbook` | |
 | *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
  |  | 
-| *`spec`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookspec[$$GuestbookSpec$$]__ |  | \{ page:1 \} | 
+| *`spec`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookspec[$$GuestbookSpec$$]__ |  | { page:1 } | 
 |===
 
 
