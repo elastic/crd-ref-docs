@@ -31,7 +31,7 @@ _Appears in:_
 {{ end -}}
 
 {{ range $type.Members -}}
-| `{{ .Name  }}` _{{ markdownRenderType .Type }}_ | {{ template "type_members" . }} | {{ .Default }} | {{ range .Validation -}} {{ . }} <br />{{ end }} |
+| `{{ .Name  }}` _{{ markdownRenderType .Type }}_ | {{ template "type_members" . }} | {{ markdownRenderDefault .Default }} | {{ range .Validation -}} {{ . }} <br />{{ end }} |
 {{ end -}}
 
 {{ end -}}

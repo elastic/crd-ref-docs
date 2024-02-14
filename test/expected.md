@@ -75,7 +75,7 @@ _Appears in:_
 | `apiVersion` _string_ | `webapp.test.k8s.elastic.co/v1` | | |
 | `kind` _string_ | `Guestbook` | | |
 | `metadata` _[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
-| `spec` _[GuestbookSpec](#guestbookspec)_ |  | { page:1 } |  |
+| `spec` _[GuestbookSpec](#guestbookspec)_ |  | \{ page:1 \} |  |
 
 
 #### GuestbookEntry
