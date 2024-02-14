@@ -79,6 +79,7 @@ func (m *MarkdownRenderer) ToFuncMap() template.FuncMap {
 		"ShouldRenderType":   m.ShouldRenderType,
 		"TypeID":             m.TypeID,
 		"RenderFieldDoc":     m.RenderFieldDoc,
+		"RenderDefault":      m.RenderDefault,
 	}
 }
 
@@ -136,6 +137,13 @@ func (m *MarkdownRenderer) RenderLocalLink(text string) string {
 
 func (m *MarkdownRenderer) RenderExternalLink(link, text string) string {
 	return fmt.Sprintf("[%s](%s)", text, link)
+}
+
+func (m *MarkdownRenderer) RenderDefault(text string) string {
+	return strings.NewReplacer(
+		"{", "\\{",
+		"}", "\\}",
+	).Replace(text)
 }
 
 func (m *MarkdownRenderer) RenderGVLink(gv types.GroupVersionDetails) string {

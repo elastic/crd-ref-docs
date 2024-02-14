@@ -64,6 +64,8 @@ func Process(config *config.Config) ([]types.GroupVersionDetails, error) {
 	}
 
 	p.types.InlineTypes(p.propagateReference)
+	p.types.PropagateMarkers()
+	p.parseMarkers()
 
 	// collect references between types
 	for typeName, refs := range p.references {
@@ -493,4 +495,55 @@ func mkRegistry() (*markers.Registry, error) {
 	}
 
 	return registry, nil
+}
+
+func parseMarkers(markers markers.MarkerValues) (string, []string) {
+	defaultValue := ""
+	validation := []string{}
+
+	markerNames := make([]string, 0, len(markers))
+	for name := range markers {
+		markerNames = append(markerNames, name)
+	}
+	sort.Strings(markerNames)
+
+	for _, name := range markerNames {
+		value := markers[name][len(markers[name])-1]
+
+		if strings.HasPrefix(name, "kubebuilder:validation:") {
+			name := strings.TrimPrefix(name, "kubebuilder:validation:")
+
+			switch name {
+			case "Pattern":
+				value = fmt.Sprintf("`%s`", value)
+			// FIXME: XValidation currently removed due to being long and difficult to read.
+			// E.g. "XValidation: {self.page < 200 Please start a new book.}"
+			case "XValidation":
+				continue
+			}
+			validation = append(validation, fmt.Sprintf("%s: %v", name, value))
+		}
+
+		if name == "kubebuilder:default" {
+			if value, ok := value.(crdmarkers.Default); ok {
+				defaultValue = fmt.Sprintf("%v", value.Value)
+				if strings.HasPrefix(defaultValue, "map[") {
+					defaultValue = strings.TrimPrefix(defaultValue, "map[")
+					defaultValue = strings.TrimSuffix(defaultValue, "]")
+					defaultValue = fmt.Sprintf("{ %s }", defaultValue)
+				}
+			}
+		}
+	}
+
+	return defaultValue, validation
+}
+
+func (p *processor) parseMarkers() {
+	for _, t := range p.types {
+		t.Default, t.Validation = parseMarkers(t.Markers)
+		for _, f := range t.Fields {
+			f.Default, f.Validation = parseMarkers(f.Markers)
+		}
+	}
 }
