@@ -160,10 +160,12 @@ func (adr *AsciidoctorRenderer) RenderFieldDoc(text string) string {
 }
 
 func (adr *AsciidoctorRenderer) RenderValidation(text string) string {
-	return escapeEveryOtherAsterix(text)
+	return escapeFirstAsterixInEachPair(text)
 }
 
-func escapeEveryOtherAsterix(text string) string {
+// escapeFirstAsterixInEachPair escapes the first asterix in each pair of
+// asterixes in text. E.g. "*a*b*c*" -> "\*a*b\*c*" and "*a*b*" -> "\*a*b*".
+func escapeFirstAsterixInEachPair(text string) string {
 	index := -1
 	for i := 0; i < len(text); i++ {
 		if text[i] == '*' {
