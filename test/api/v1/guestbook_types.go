@@ -109,7 +109,7 @@ type GuestbookEntry struct {
 	// Comment by guest. This can be a multi-line comment.
 	//
 	// Just like this one.
-	// +kubebuilder:validation:Pattern=`[a-z0-9]`
+	// +kubebuilder:validation:Pattern=`0*[a-z0-9]*[a-z]*[0-9]*`
 	Comment string `json:"comment,omitempty"`
 	// Rating provided by the guest
 	Rating Rating `json:"rating,omitempty"`

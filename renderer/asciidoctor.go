@@ -84,6 +84,7 @@ func (adr *AsciidoctorRenderer) ToFuncMap() template.FuncMap {
 		"ShouldRenderType":   adr.ShouldRenderType,
 		"TypeID":             adr.TypeID,
 		"RenderFieldDoc":     adr.RenderFieldDoc,
+		"RenderValidation":   adr.RenderValidation,
 	}
 }
 
@@ -156,4 +157,22 @@ func (adr *AsciidoctorRenderer) RenderFieldDoc(text string) string {
 	// Replace newlines with hard line breaks so that newlines are rendered as expected.
 	// See: https://docs.asciidoctor.org/asciidoc/latest/blocks/hard-line-breaks
 	return strings.Join(lines, " +\n\n")
+}
+
+func (adr *AsciidoctorRenderer) RenderValidation(text string) string {
+	return escapeEveryOtherAsterix(text)
+}
+
+func escapeEveryOtherAsterix(text string) string {
+	escape := true
+	for i := 0; i < len(text); i++ {
+		if text[i] == '*' {
+			if escape {
+				text = text[:i] + "\\" + text[i:]
+				i++
+			}
+			escape = !escape
+		}
+	}
+	return text
 }
