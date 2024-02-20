@@ -103,6 +103,7 @@ type PositiveInt int
 type GuestbookEntry struct {
 	// Name of the guest (pipe | should be escaped)
 	// +kubebuilder:validation:MaxLength=80
+	// +kubebuilder:validation:Pattern=`0*[a-z0-9]*[a-z]*[0-9]`
 	Name string `json:"name,omitempty"`
 	// Time of entry
 	Time metav1.Time `json:"time,omitempty"`

@@ -164,14 +164,16 @@ func (adr *AsciidoctorRenderer) RenderValidation(text string) string {
 }
 
 func escapeEveryOtherAsterix(text string) string {
-	escape := true
+	index := -1
 	for i := 0; i < len(text); i++ {
 		if text[i] == '*' {
-			if escape {
-				text = text[:i] + "\\" + text[i:]
+			if index >= 0 {
+				text = text[:index] + "\\" + text[index:]
+				index = -1
 				i++
+			} else {
+				index = i
 			}
-			escape = !escape
 		}
 	}
 	return text
