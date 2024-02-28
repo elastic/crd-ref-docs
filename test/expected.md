@@ -91,9 +91,9 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `name` _string_ | Name of the guest (pipe \| should be escaped) |  | MaxLength: 80 <br /> |
+| `name` _string_ | Name of the guest (pipe \| should be escaped) |  | MaxLength: 80 <br />Pattern: `0*[a-z0-9]*[a-z]*[0-9]` <br /> |
 | `time` _[Time](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#time-v1-meta)_ | Time of entry |  |  |
-| `comment` _string_ | Comment by guest. This can be a multi-line comment. <br /><br /> Just like this one. |  | Pattern: `[a-z0-9]` <br /> |
+| `comment` _string_ | Comment by guest. This can be a multi-line comment. <br /><br /> Just like this one. |  | Pattern: `0*[a-z0-9]*[a-z]*[0-9]*` <br /> |
 | `rating` _[Rating](#rating)_ | Rating provided by the guest |  | Maximum: 5 <br />Minimum: 1 <br /> |
 
 

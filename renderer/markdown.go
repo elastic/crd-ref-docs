@@ -139,13 +139,6 @@ func (m *MarkdownRenderer) RenderExternalLink(link, text string) string {
 	return fmt.Sprintf("[%s](%s)", text, link)
 }
 
-func (m *MarkdownRenderer) RenderDefault(text string) string {
-	return strings.NewReplacer(
-		"{", "\\{",
-		"}", "\\}",
-	).Replace(text)
-}
-
 func (m *MarkdownRenderer) RenderGVLink(gv types.GroupVersionDetails) string {
 	return m.RenderLocalLink(gv.GroupVersionString())
 }
@@ -157,4 +150,11 @@ func (m *MarkdownRenderer) RenderFieldDoc(text string) string {
 
 	// Replace newlines with 2 line breaks so that they don't break the Markdown table formatting.
 	return strings.ReplaceAll(out, "\n", "<br /><br />")
+}
+
+func (m *MarkdownRenderer) RenderDefault(text string) string {
+	return strings.NewReplacer(
+		"{", "\\{",
+		"}", "\\}",
+	).Replace(text)
 }
