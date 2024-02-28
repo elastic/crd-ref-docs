@@ -45,7 +45,7 @@ func main() {
 	cmd.Flags().StringVar(&args.TemplatesDir, "templates-dir", "", "Path to the directory containing template files")
 	cmd.Flags().StringVar(&args.Renderer, "renderer", "asciidoctor", "Renderer to use ('asciidoctor' or 'markdown')")
 	cmd.Flags().StringVar(&args.OutputPath, "output-path", ".", "Path to output the rendered result")
-	cmd.Flags().IntVar(&args.MaxDepth, "max-depth", 6, "Maximum recursion level for type discovery")
+	cmd.Flags().IntVar(&args.MaxDepth, "max-depth", 10, "Maximum recursion level for type discovery")
 
 	cmd.Execute()
 }
