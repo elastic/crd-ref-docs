@@ -1,7 +1,29 @@
 # API Reference
 
 ## Packages
+- [webapp.test.k8s.elastic.co/common](#webapptestk8selasticcocommon)
 - [webapp.test.k8s.elastic.co/v1](#webapptestk8selasticcov1)
+
+
+## webapp.test.k8s.elastic.co/common
+
+Package common contains common API Schema definitions
+
+
+
+#### CommonString
+
+_Underlying type:_ _string_
+
+
+
+
+
+_Appears in:_
+- [GuestbookSpec](#guestbookspec)
+- [GuestbookStatus](#guestbookstatus)
+
+
 
 
 ## webapp.test.k8s.elastic.co/v1
