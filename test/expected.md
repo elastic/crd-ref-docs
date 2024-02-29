@@ -1,7 +1,29 @@
 # API Reference
 
 ## Packages
+- [webapp.test.k8s.elastic.co/common](#webapptestk8selasticcocommon)
 - [webapp.test.k8s.elastic.co/v1](#webapptestk8selasticcov1)
+
+
+## webapp.test.k8s.elastic.co/common
+
+Package common contains common API Schema definitions
+
+
+
+#### CommonString
+
+_Underlying type:_ _string_
+
+
+
+
+
+_Appears in:_
+- [GuestbookSpec](#guestbookspec)
+- [GuestbookStatus](#guestbookstatus)
+
+
 
 
 ## webapp.test.k8s.elastic.co/v1
@@ -146,6 +168,7 @@ _Appears in:_
 | `selector` _[LabelSelector](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#labelselector-v1-meta)_ | Selector selects something |  |  |
 | `headers` _[GuestbookHeader](#guestbookheader) array_ | Headers contains a list of header items to include in the page |  | MaxItems: 10 <br />UniqueItems: true <br /> |
 | `certificateRef` _[SecretObjectReference](https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1beta1.SecretObjectReference)_ | CertificateRef is a reference to a secret containing a certificate |  |  |
+| `str` _[CommonString](#commonstring)_ |  |  |  |
 
 
 

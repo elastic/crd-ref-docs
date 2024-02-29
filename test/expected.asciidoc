@@ -5,7 +5,33 @@
 == API Reference
 
 .Packages
+- xref:{anchor_prefix}-webapp-test-k8s-elastic-co-common[$$webapp.test.k8s.elastic.co/common$$]
 - xref:{anchor_prefix}-webapp-test-k8s-elastic-co-v1[$$webapp.test.k8s.elastic.co/v1$$]
+
+
+[id="{anchor_prefix}-webapp-test-k8s-elastic-co-common"]
+=== webapp.test.k8s.elastic.co/common
+
+Package common contains common API Schema definitions
+
+
+
+[id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-common-commonstring"]
+==== CommonString
+
+_Underlying type:_ _string_
+
+
+
+
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookspec[$$GuestbookSpec$$]
+- xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookstatus[$$GuestbookStatus$$]
+****
+
+
 
 
 [id="{anchor_prefix}-webapp-test-k8s-elastic-co-v1"]
@@ -192,6 +218,7 @@ GuestbookSpec defines the desired state of Guestbook.
 UniqueItems: true +
 
 | *`certificateRef`* __link:https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1beta1.SecretObjectReference[$$SecretObjectReference$$]__ | CertificateRef is a reference to a secret containing a certificate |  | 
+| *`str`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-common-commonstring[$$CommonString$$]__ |  |  | 
 |===
 
 
