@@ -115,19 +115,23 @@ GuestbookEntry defines an entry in a guest book.
 [cols="20a,50a,15a,15a", options="header"]
 |===
 | Field | Description | Default | Validation
-| *`name`* __string__ | Name of the guest (pipe \| should be escaped) |  | MaxLength: 80 +
+| *`name`* __string__ | Name of the guest (pipe \| should be escaped) + |  | MaxLength: 80 +
 Pattern: `0\*[a-z0-9]*[a-z]*[0-9]` +
 
-| *`time`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#time-v1-meta[$$Time$$]__ | Time of entry |  | 
+| *`time`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#time-v1-meta[$$Time$$]__ | Time of entry + |  | 
 | *`comment`* __string__ | Comment by guest. This can be a multi-line comment. +
+Like this one. +
+Now let's test a list: +
+* a +
+* b +
 
- +
 
- +
+Another isolated comment. +
 
-Just like this one. |  | Pattern: `0\*[a-z0-9]*[a-z]\*[0-9]*` +
 
-| *`rating`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-rating[$$Rating$$]__ | Rating provided by the guest |  | Maximum: 5 +
+Looks good? + |  | Pattern: `0\*[a-z0-9]*[a-z]\*[0-9]*` +
+
+| *`rating`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-rating[$$Rating$$]__ | Rating provided by the guest + |  | Maximum: 5 +
 Minimum: 1 +
 
 |===
@@ -188,14 +192,14 @@ GuestbookSpec defines the desired state of Guestbook.
 [cols="20a,50a,15a,15a", options="header"]
 |===
 | Field | Description | Default | Validation
-| *`page`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-positiveint[$$PositiveInt$$]__ | Page indicates the page number | 1 | Minimum: 1 +
+| *`page`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-positiveint[$$PositiveInt$$]__ | Page indicates the page number + | 1 | Minimum: 1 +
 
-| *`entries`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookentry[$$GuestbookEntry$$] array__ | Entries contain guest book entries for the page |  | 
-| *`selector`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#labelselector-v1-meta[$$LabelSelector$$]__ | Selector selects something |  | 
-| *`headers`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookheader[$$GuestbookHeader$$] array__ | Headers contains a list of header items to include in the page |  | MaxItems: 10 +
+| *`entries`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookentry[$$GuestbookEntry$$] array__ | Entries contain guest book entries for the page + |  | 
+| *`selector`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#labelselector-v1-meta[$$LabelSelector$$]__ | Selector selects something + |  | 
+| *`headers`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-guestbookheader[$$GuestbookHeader$$] array__ | Headers contains a list of header items to include in the page + |  | MaxItems: 10 +
 UniqueItems: true +
 
-| *`certificateRef`* __link:https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1beta1.SecretObjectReference[$$SecretObjectReference$$]__ | CertificateRef is a reference to a secret containing a certificate |  | 
+| *`certificateRef`* __link:https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1beta1.SecretObjectReference[$$SecretObjectReference$$]__ | CertificateRef is a reference to a secret containing a certificate + |  | 
 |===
 
 
