@@ -148,8 +148,8 @@ func (m *MarkdownRenderer) RenderFieldDoc(text string) string {
 	// so that including | in a comment does not result in wonky tables.
 	out := strings.ReplaceAll(text, "|", "\\|")
 
-	// Replace newlines with 2 line breaks so that they don't break the Markdown table formatting.
-	return strings.ReplaceAll(out, "\n", "<br /><br />")
+	// Replace newlines with 1 line break so that they don't break the Markdown table formatting.
+	return strings.ReplaceAll(out, "\n", "<br />")
 }
 
 func (m *MarkdownRenderer) RenderDefault(text string) string {

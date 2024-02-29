@@ -152,11 +152,14 @@ func (adr *AsciidoctorRenderer) RenderFieldDoc(text string) string {
 	lines := strings.Split(out, "\n")
 	for i := range lines {
 		lines[i] = strings.TrimSpace(lines[i])
+		// Replace newlines with hard line breaks so that newlines are rendered as expected for non-empty lines.
+		// See: https://docs.asciidoctor.org/asciidoc/latest/blocks/hard-line-breaks
+		if lines[i] != "" {
+			lines[i] = lines[i] + " +"
+		}
 	}
 
-	// Replace newlines with hard line breaks so that newlines are rendered as expected.
-	// See: https://docs.asciidoctor.org/asciidoc/latest/blocks/hard-line-breaks
-	return strings.Join(lines, " +\n\n")
+	return strings.Join(lines, "\n")
 }
 
 func (adr *AsciidoctorRenderer) RenderValidation(text string) string {
