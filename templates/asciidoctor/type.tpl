@@ -35,7 +35,7 @@
 {{ end -}}
 
 {{ range $type.Members -}}
-| *`{{ .Name  }}`* __{{ asciidocRenderType .Type }}__ | {{ template "type_members" . }} | {{ .Default }} | {{ range .Validation -}} {{ . }} +
+| *`{{ .Name  }}`* __{{ asciidocRenderType .Type }}__ | {{ template "type_members" . }} | {{ .Default }} | {{ range .Validation -}} {{ asciidocRenderValidation . }} +
 {{ end }}
 {{ end -}}
 |===
