@@ -64,7 +64,46 @@ func combinedFuncMap(funcs ...funcMap) template.FuncMap {
 	return m
 }
 
-func createOutFile(outputPath string, defaultFileName string) (*os.File, error) {
+// renderTemplate applies a given template to a set of GroupVersionDetails and writes the output to files, it supports
+// two output modes as specified in the configuration: single mode or group mode.
+// In single mode, all data is rendered into one output file.
+// In group mode, separate files are created for each group.
+func renderTemplate(tmpl *template.Template, conf *config.Config, fileExtension string, gvds []types.GroupVersionDetails) error {
+	switch conf.OutputMode {
+	case config.OutputModeSingle:
+		fileName := fmt.Sprintf("%s.%s", "out", fileExtension)
+		file, err := createOutFile(conf.OutputPath, false, fileName)
+		defer file.Close()
+		if err != nil {
+			return err
+		}
+
+		if err := tmpl.ExecuteTemplate(file, mainTemplate, gvds); err != nil {
+			return err
+		}
+
+	case config.OutputModeGroup:
+		for _, gvd := range gvds {
+			fileName := fmt.Sprintf("%s.%s", gvd.Group, fileExtension)
+			file, err := createOutFile(conf.OutputPath, true, fileName)
+			defer file.Close()
+			if err != nil {
+				return err
+			}
+
+			if err := tmpl.ExecuteTemplate(file, mainTemplate, []types.GroupVersionDetails{gvd}); err != nil {
+				return err
+			}
+		}
+	}
+
+	return nil
+}
+
+// createOutFile creates the file pointed to by outputPath if it does not exist, or if it exists and is a directory,
+// then creates a file in the directory using the given defaultFilename. If expectedDir is true, outputPath must be an
+// existing directory where defaultFileName is created.
+func createOutFile(outputPath string, expectedDir bool, defaultFileName string) (*os.File, error) {
 	finfo, err := os.Stat(outputPath)
 	if err != nil && !os.IsNotExist(err) {
 		return nil, err
@@ -72,6 +111,8 @@ func createOutFile(outputPath string, defaultFileName string) (*os.File, error) 
 
 	if finfo != nil && finfo.IsDir() {
 		outputPath = filepath.Join(outputPath, defaultFileName)
+	} else if expectedDir {
+		return nil, fmt.Errorf("output path must point to an existing directory")
 	}
 
 	return os.Create(outputPath)
