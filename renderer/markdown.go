@@ -61,10 +61,7 @@ func (m *MarkdownRenderer) Render(gvd []types.GroupVersionDetails) error {
 		return err
 	}
 
-	f, err := createOutFile(m.conf.OutputPath, "out.md")
-	defer f.Close()
-
-	return tmpl.ExecuteTemplate(f, mainTemplate, gvd)
+	return renderTemplate(tmpl, m.conf, "md", gvd)
 }
 
 func (m *MarkdownRenderer) ToFuncMap() template.FuncMap {
