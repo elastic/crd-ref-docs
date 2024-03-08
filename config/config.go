@@ -47,6 +47,11 @@ type KnownType struct {
 	Link    string `json:"link"`
 }
 
+const (
+	OutputModeSingle = "single"
+	OutputModeGroup  = "group"
+)
+
 type Flags struct {
 	Config       string
 	LogLevel     string
@@ -54,6 +59,7 @@ type Flags struct {
 	Renderer     string
 	SourcePath   string
 	TemplatesDir string
+	OutputMode   string
 	MaxDepth     int
 }
 

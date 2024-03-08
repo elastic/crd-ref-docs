@@ -18,6 +18,8 @@
 package v1
 
 import (
+	"github.com/elastic/crd-ref-docs/api/common"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	gwapiv1b1 "sigs.k8s.io/gateway-api/apis/v1beta1"
 )
@@ -94,6 +96,7 @@ type GuestbookSpec struct {
 	Headers []GuestbookHeader `json:"headers,omitempty"`
 	// CertificateRef is a reference to a secret containing a certificate
 	CertificateRef gwapiv1b1.SecretObjectReference `json:"certificateRef"`
+	String         common.CommonString             `json:"str"`
 }
 
 // +kubebuilder:validation:Minimum=1
@@ -126,7 +129,8 @@ type GuestbookEntry struct {
 // GuestbookStatus defines the observed state of Guestbook.
 type GuestbookStatus struct {
 	// +kubebuilder:validation:Enum={OK, Error}
-	Status Status `json:"status"`
+	Status Status              `json:"status"`
+	String common.CommonString `json:"str"`
 }
 
 // +kubebuilder:validation:Enum={OK, Unknown, Error}
