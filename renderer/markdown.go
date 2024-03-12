@@ -145,8 +145,12 @@ func (m *MarkdownRenderer) RenderFieldDoc(text string) string {
 	// so that including | in a comment does not result in wonky tables.
 	out := strings.ReplaceAll(text, "|", "\\|")
 
-	// Replace newlines with 2 line breaks so that they don't break the Markdown table formatting.
-	return strings.ReplaceAll(out, "\n", "<br /><br />")
+	// Replace newlines with 1 line break so that they don't break the Markdown table formatting.
+	out = strings.ReplaceAll(out, "\n", "<br />")
+	// and remove double newline generated for empty lines
+	// empty line is still rendered in the table, without removing the duplicate
+	// newline it would be rendered as two empty lines
+	return strings.ReplaceAll(out, "<br /><br />", "<br />")
 }
 
 func (m *MarkdownRenderer) RenderDefault(text string) string {

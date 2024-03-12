@@ -111,8 +111,15 @@ type GuestbookEntry struct {
 	// Time of entry
 	Time metav1.Time `json:"time,omitempty"`
 	// Comment by guest. This can be a multi-line comment.
+	// Like this one.
+	// Now let's test a list:
+	// * a
+	// * b
 	//
-	// Just like this one.
+	// Another isolated comment.
+	//
+	// Looks good?
+	//
 	// +kubebuilder:validation:Pattern=`0*[a-z0-9]*[a-z]*[0-9]*`
 	Comment string `json:"comment,omitempty"`
 	// Rating provided by the guest
