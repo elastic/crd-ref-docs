@@ -36,6 +36,7 @@ type Embedded struct {
 type Embedded1 struct {
 	Embedded2 `json:",inline"`
 	E         string `json:"e,omitempty"`
+	EmbeddedX `json:",inline"`
 }
 type Embedded2 struct {
 	B         string `json:"b,omitempty"`
@@ -46,8 +47,7 @@ type Embedded3 struct {
 	D         string `json:"d,omitempty"`
 }
 type Embedded4 struct {
-	C         string `json:"c,omitempty"`
-	EmbeddedX `json:",inline"`
+	C string `json:"c,omitempty"`
 }
 type EmbeddedX struct {
 	X string `json:"x,omitempty"`
