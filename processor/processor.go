@@ -272,7 +272,12 @@ func (p *processor) extractPkgDocumentation(pkg *loader.Package) string {
 }
 
 func (p *processor) processType(pkg *loader.Package, parentType *types.Type, t gotypes.Type, depth int) *types.Type {
-	typeDef := mkType(pkg, t)
+	typeDef, rawType := mkType(pkg, t)
+
+	if !rawType && p.shouldIgnoreType(typeDef.Name) {
+		zap.S().Debugw("Skipping excluded type", "type", t.String())
+		return nil
+	}
 
 	if processed, ok := p.types[typeDef.UID]; ok {
 		return processed
@@ -430,7 +435,7 @@ func (p *processor) processStructFields(parentType *types.Type, pkg *loader.Pack
 	}
 }
 
-func mkType(pkg *loader.Package, t gotypes.Type) *types.Type {
+func mkType(pkg *loader.Package, t gotypes.Type) (*types.Type, bool) {
 	qualifier := gotypes.RelativeTo(pkg.Types)
 	cleanTypeName := strings.TrimLeft(gotypes.TypeString(t, qualifier), "*[]")
 
@@ -449,7 +454,7 @@ func mkType(pkg *loader.Package, t gotypes.Type) *types.Type {
 		typeDef.Imported = true
 	}
 
-	return typeDef
+	return typeDef, rawType
 }
 
 // Every child that has a reference to 'originalType', will also get a reference to 'additionalType'.
