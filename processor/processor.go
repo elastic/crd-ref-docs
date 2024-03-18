@@ -273,9 +273,9 @@ func (p *processor) extractPkgDocumentation(pkg *loader.Package) string {
 
 func (p *processor) processType(pkg *loader.Package, parentType *types.Type, t gotypes.Type, depth int) *types.Type {
 	typeDef, rawType := mkType(pkg, t)
-
-	if !rawType && p.shouldIgnoreType(typeDef.Name) {
-		zap.S().Debugw("Skipping excluded type", "type", t.String())
+	typeID := types.Identifier(typeDef)
+	if !rawType && p.shouldIgnoreType(typeID) {
+		zap.S().Debugw("Skipping excluded type", "type", typeID)
 		return nil
 	}
 
