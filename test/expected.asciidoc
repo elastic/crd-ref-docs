@@ -66,11 +66,30 @@ Package v1 contains API Schema definitions for the webapp v1 API group
 | *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
  |  | 
 | *`a`* __string__ |  |  | 
-| *`b`* __string__ |  |  | 
-| *`c`* __string__ |  |  | 
-| *`x`* __string__ |  |  | 
-| *`d`* __string__ |  |  | 
 | *`e`* __string__ |  |  | 
+| *`x`* __string__ |  |  | 
+|===
+
+
+[id="{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-embedded1"]
+==== Embedded1
+
+
+
+
+
+
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-embedded[$$Embedded$$]
+****
+
+[cols="20a,50a,15a,15a", options="header"]
+|===
+| Field | Description | Default | Validation
+| *`e`* __string__ |  |  | 
+| *`x`* __string__ |  |  | 
 |===
 
 
@@ -87,9 +106,6 @@ Package v1 contains API Schema definitions for the webapp v1 API group
 ****
 - xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-embedded[$$Embedded$$]
 - xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-embedded1[$$Embedded1$$]
-- xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-embedded2[$$Embedded2$$]
-- xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-embedded3[$$Embedded3$$]
-- xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-embedded4[$$Embedded4$$]
 ****
 
 [cols="20a,50a,15a,15a", options="header"]

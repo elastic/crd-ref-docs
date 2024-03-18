@@ -2,7 +2,7 @@ processor:
   ignoreGroupVersions:
     - "GVK"
   ignoreTypes:
-    - "Embedded[0-9]$"
+    - "Embedded[2-4]$"
   ignoreFields:
     - "status$"
     - "TypeMeta$"
