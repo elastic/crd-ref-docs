@@ -54,11 +54,25 @@ Package v1 contains API Schema definitions for the webapp v1 API group
 | `kind` _string_ | `Embedded` | | |
 | `metadata` _[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
 | `a` _string_ |  |  |  |
-| `b` _string_ |  |  |  |
-| `c` _string_ |  |  |  |
-| `x` _string_ |  |  |  |
-| `d` _string_ |  |  |  |
 | `e` _string_ |  |  |  |
+| `x` _string_ |  |  |  |
+
+
+#### Embedded1
+
+
+
+
+
+
+
+_Appears in:_
+- [Embedded](#embedded)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `e` _string_ |  |  |  |
+| `x` _string_ |  |  |  |
 
 
 #### EmbeddedX
@@ -72,9 +86,6 @@ Package v1 contains API Schema definitions for the webapp v1 API group
 _Appears in:_
 - [Embedded](#embedded)
 - [Embedded1](#embedded1)
-- [Embedded2](#embedded2)
-- [Embedded3](#embedded3)
-- [Embedded4](#embedded4)
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
