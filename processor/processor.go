@@ -499,7 +499,20 @@ func mkRegistry(customMarkers []config.Marker) (*markers.Registry, error) {
 	}
 
 	for _, marker := range customMarkers {
-		if err := registry.Define(marker.Name, marker.Target, struct{}{}); err != nil {
+		t := markers.DescribesField
+		switch marker.Target {
+		case config.TargetTypePackage:
+			t = markers.DescribesPackage
+		case config.TargetTypeType:
+			t = markers.DescribesType
+		case config.TargetTypeField:
+			t = markers.DescribesField
+		default:
+			zap.S().Warnf("Skipping custom marker %s with unknown target type %s", marker.Name, marker.Target)
+			continue
+		}
+
+		if err := registry.Define(marker.Name, t, struct{}{}); err != nil {
 			return nil, fmt.Errorf("failed to define custom marker %s: %w", marker.Name, err)
 		}
 	}

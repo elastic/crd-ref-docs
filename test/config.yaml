@@ -8,7 +8,7 @@ processor:
     - "TypeMeta$"
   customMarkers:
     - name: "hidefromdoc"
-      target: 2
+      target: field
 
 render:
   kubernetesVersion: 1.25

@@ -21,7 +21,6 @@ import (
 	"os"
 
 	"github.com/goccy/go-yaml"
-	"sigs.k8s.io/controller-tools/pkg/markers"
 )
 
 type Config struct {
@@ -41,8 +40,16 @@ type ProcessorConfig struct {
 
 type Marker struct {
 	Name   string
-	Target markers.TargetType
+	Target TargetType
 }
+
+type TargetType string
+
+const (
+	TargetTypePackage TargetType = "package"
+	TargetTypeType    TargetType = "type"
+	TargetTypeField   TargetType = "field"
+)
 
 type RenderConfig struct {
 	KnownTypes        []*KnownType `json:"knownTypes"`
