@@ -14,6 +14,7 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
 package processor
 
 import (
@@ -124,7 +125,7 @@ func Process(config *config.Config) ([]types.GroupVersionDetails, error) {
 }
 
 func newProcessor(compiledConfig *compiledConfig, maxDepth int) (*processor, error) {
-	registry, err := mkRegistry()
+	registry, err := mkRegistry(compiledConfig.markers)
 	if err != nil {
 		return nil, err
 	}
@@ -485,17 +486,21 @@ func (p *processor) addReference(parent *types.Type, child *types.Type) {
 	}
 }
 
-func mkRegistry() (*markers.Registry, error) {
+func mkRegistry(customMarkers []config.Marker) (*markers.Registry, error) {
 	registry := &markers.Registry{}
-	err := registry.Define(objectRootMarker, markers.DescribesType, true)
-	if err != nil {
+	if err := registry.Define(objectRootMarker, markers.DescribesType, true); err != nil {
 		return nil, err
 	}
 
 	for _, marker := range crdmarkers.AllDefinitions {
-		err = registry.Register(marker.Definition)
-		if err != nil {
+		if err := registry.Register(marker.Definition); err != nil {
 			return nil, err
+		}
+	}
+
+	for _, marker := range customMarkers {
+		if err := registry.Define(marker.Name, marker.Target, struct{}{}); err != nil {
+			return nil, fmt.Errorf("failed to define custom marker %s: %w", marker.Name, err)
 		}
 	}
 

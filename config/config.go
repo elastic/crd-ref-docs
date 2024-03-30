@@ -14,12 +14,14 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
 package config
 
 import (
 	"os"
 
 	"github.com/goccy/go-yaml"
+	"sigs.k8s.io/controller-tools/pkg/markers"
 )
 
 type Config struct {
@@ -34,6 +36,12 @@ type ProcessorConfig struct {
 	IgnoreFields        []string `json:"ignoreFields"`
 	IgnoreGroupVersions []string `json:"ignoreGroupVersions"`
 	UseRawDocstring     bool     `json:"useRawDocstring"`
+	CustomMarkers       []Marker `json:"customMarkers"`
+}
+
+type Marker struct {
+	Name   string
+	Target markers.TargetType
 }
 
 type RenderConfig struct {
