@@ -47,6 +47,17 @@ crd-ref-docs \
     --templates-dir=templates/asciidoctor
 ```
 
+Default output mode writes all data to a single output file. 
+You can choose between single mode and group mode by specifying the output mode. 
+In group mode, separate files are created for each API group, ensuring that the specified output path is an existing directory.
+```
+crd-ref-docs \
+    --source-path=$GOPATH/src/github.com/elastic/cloud-on-k8s/pkg/apis \
+    --config=config.yaml \
+    --output-path=./docs \
+    --output-mode=group
+```
+
 ### Configuration
 
 Configuration options such as types and fields to exclude from the documentation can be specified using a YAML file.
