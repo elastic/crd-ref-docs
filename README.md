@@ -49,7 +49,7 @@ crd-ref-docs \
 
 Default output mode writes all data to a single output file. 
 You can choose between single mode and group mode by specifying the output mode. 
-In group mode, separate files are created for each API group, ensure the specified output path is an existing directory.
+In group mode, separate files are created for each API group, ensuring that the specified output path is an existing directory.
 ```
 crd-ref-docs \
     --source-path=$GOPATH/src/github.com/elastic/cloud-on-k8s/pkg/apis \
