@@ -6,6 +6,9 @@ processor:
   ignoreFields:
     - "status$"
     - "TypeMeta$"
+  customMarkers:
+    - name: "hidefromdoc"
+      target: field
 
 render:
   kubernetesVersion: 1.25

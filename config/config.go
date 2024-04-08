@@ -14,6 +14,7 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
 package config
 
 import (
@@ -34,7 +35,21 @@ type ProcessorConfig struct {
 	IgnoreFields        []string `json:"ignoreFields"`
 	IgnoreGroupVersions []string `json:"ignoreGroupVersions"`
 	UseRawDocstring     bool     `json:"useRawDocstring"`
+	CustomMarkers       []Marker `json:"customMarkers"`
 }
+
+type Marker struct {
+	Name   string
+	Target TargetType
+}
+
+type TargetType string
+
+const (
+	TargetTypePackage TargetType = "package"
+	TargetTypeType    TargetType = "type"
+	TargetTypeField   TargetType = "field"
+)
 
 type RenderConfig struct {
 	KnownTypes        []*KnownType `json:"knownTypes"`
