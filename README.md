@@ -97,7 +97,7 @@ render:
      link: https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1beta1.SecretObjectReference
 ```
 
-You can then add the `hidefromdoc` marker to the field you want to hide from the documentation.
+You can then add the `hidefromdoc` marker to the field you want to hidden from the documentation.
 
 ```go
 type Embedded1 struct {
@@ -108,4 +108,4 @@ type Embedded1 struct {
 }
 ```
 
-Then update the templates to render the custom markers. You can find the demo from [here](./test/templates/markdown/type.tpl).
+Then update the templates to render the custom markers. You can find an example [here](./test/templates/markdown/type.tpl).
