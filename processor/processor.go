@@ -19,6 +19,8 @@ package processor
 
 import (
 	"fmt"
+	"go/ast"
+	"go/token"
 	gotypes "go/types"
 	"regexp"
 	"sort"
@@ -327,6 +329,9 @@ func (p *processor) processType(pkg *loader.Package, parentType *types.Type, t g
 		if info != nil {
 			underlying = pkg.TypesInfo.TypeOf(info.RawSpec.Type)
 		}
+		if underlying.String() == "string" {
+			typeDef.Values = extractConstantsForAliasedString(pkg, typeDef.Name)
+		}
 		typeDef.UnderlyingType = p.processType(pkg, typeDef, underlying, depth+1)
 		p.addReference(typeDef, typeDef.UnderlyingType)
 
@@ -569,4 +574,36 @@ func (p *processor) parseMarkers() {
 			f.Default, f.Validation = parseMarkers(f.Markers)
 		}
 	}
+}
+
+func extractConstantsForAliasedString(pkg *loader.Package, name string) []types.Const {
+	consts := []types.Const{}
+	for _, f := range pkg.Syntax {
+		for _, d := range f.Decls {
+			switch n := d.(type) {
+			case *ast.GenDecl:
+				if n.Tok == token.CONST {
+					for _, s := range n.Specs {
+						switch v := s.(type) {
+						case *ast.ValueSpec:
+							if id, ok := v.Type.(*ast.Ident); ok && id.String() == name {
+								if len(v.Values) == 1 {
+									if b, ok := v.Values[0].(*ast.BasicLit); ok {
+										consts = append(consts, types.Const{
+											// Remove the '"' signs from the start and end of the value
+											Name: b.Value[1 : len(b.Value)-1],
+											Doc:  v.Doc.Text(),
+										})
+									}
+								}
+							}
+						default:
+						}
+					}
+				}
+			default:
+			}
+		}
+	}
+	return consts
 }

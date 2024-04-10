@@ -36,5 +36,13 @@ _Appears in:_
 
 {{ end -}}
 
+{{ if $type.Values -}} 
+| Field | Description |
+{{ range $type.Values -}}
+| `{{ .Name }}` | {{ markdownRenderFieldDoc .Doc }} |
+{{ end -}}
+{{ end -}}
+
+
 {{- end -}}
 {{- end -}}

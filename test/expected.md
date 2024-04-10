@@ -180,8 +180,26 @@ _Appears in:_
 | `headers` _[GuestbookHeader](#guestbookheader) array_ | Headers contains a list of header items to include in the page |  | MaxItems: 10 <br />UniqueItems: true <br /> |
 | `certificateRef` _[SecretObjectReference](https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1beta1.SecretObjectReference)_ | CertificateRef is a reference to a secret containing a certificate |  |  |
 | `str` _[CommonString](#commonstring)_ |  |  |  |
+| `enum` _[MyEnum](#myenum)_ | Enumeration is an example of an aliased enumeration type |  | Enum: [MyFirstValue MySecondValue] <br /> |
 
 
+
+
+#### MyEnum
+
+_Underlying type:_ _string_
+
+
+
+_Validation:_
+- Enum: [MyFirstValue MySecondValue]
+
+_Appears in:_
+- [GuestbookSpec](#guestbookspec)
+
+| Field | Description |
+| `MyFirstValue` | MyFirstValue is an interesting value to use<br /> |
+| `MySecondValue` | MySecondValue is what you use when you can't use MyFirstValue<br /> |
 
 
 #### PositiveInt
