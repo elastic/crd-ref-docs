@@ -17,6 +17,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"strings"
 	"time"
@@ -36,8 +37,11 @@ func main() {
 		Use:          "crd-ref-docs",
 		Short:        "Generate CRD reference documentation",
 		SilenceUsage: true,
+		Version:      version(),
 		RunE:         doRun,
 	}
+
+	cmd.SetVersionTemplate("{{ .Version}}\n")
 
 	cmd.Flags().StringVar(&args.LogLevel, "log-level", "INFO", "Log level")
 	cmd.Flags().StringVar(&args.Config, "config", "config.yaml", "Path to config file")
@@ -135,4 +139,14 @@ func initLogging(level string) {
 
 	zap.ReplaceGlobals(logger.Named("crd-ref-docs"))
 	zap.RedirectStdLog(logger.Named("stdlog"))
+}
+
+var (
+	buildVersion string
+	buildDate    string
+	buildCommit  string
+)
+
+func version() string {
+	return fmt.Sprintf("Version: %s, Commit: %s, BuildDate: %s", buildVersion, buildCommit, buildDate)
 }
