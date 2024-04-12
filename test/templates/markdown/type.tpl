@@ -39,9 +39,9 @@ _Appears in:_
 
 {{ end -}}
 
-{{ if $type.Values -}}
+{{ if $type.EnumValues -}}
 | Field | Description |
-{{ range $type.Values -}}
+{{ range $type.EnumValues -}}
 | `{{ .Name }}` | {{ markdownRenderFieldDoc .Doc }} |
 {{ end -}}
 {{ end -}}

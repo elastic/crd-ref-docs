@@ -110,7 +110,7 @@ type Type struct {
 	ValueType      *Type                    `json:"valueType"`      // for maps
 	Fields         Fields                   `json:"fields"`         // for structs
 	References     []*Type                  `json:"-"`              // other types that refer to this type
-	Values         []Const                  `json:"values"`         // for values of constants of aliased types
+	EnumValues     []EnumValue              `json:"enumValues"`     // for enum values of aliased string types
 }
 
 func (t *Type) IsBasic() bool {
@@ -371,8 +371,8 @@ func (gvd GroupVersionDetails) SortedKinds() []string {
 	return kindsList
 }
 
-// Const describes a constant value for enumerations
-type Const struct {
+// EnumValue describes a constant value for enumerations
+type EnumValue struct {
 	Name string
 	Doc  string
 }
