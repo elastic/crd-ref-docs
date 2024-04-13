@@ -32,12 +32,18 @@ _Appears in:_
 
 {{ range $type.Members -}}
 {{ with .Markers.hidefromdoc -}}
-{{ else }}
+{{ else -}}
 | `{{ .Name  }}` _{{ markdownRenderType .Type }}_ | {{ template "type_members" . }} | {{ markdownRenderDefault .Default }} | {{ range .Validation -}} {{ . }} <br />{{ end }} |
 {{ end -}}
 {{ end -}}
 
 {{ end -}}
 
+{{ if $type.EnumValues -}}
+| Field | Description |
+{{ range $type.EnumValues -}}
+| `{{ .Name }}` | {{ markdownRenderFieldDoc .Doc }} |
+{{ end -}}
+{{ end -}}
 {{- end -}}
 {{- end -}}

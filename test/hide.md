@@ -52,11 +52,8 @@ Package v1 contains API Schema definitions for the webapp v1 API group
 | --- | --- | --- | --- |
 | `apiVersion` _string_ | `webapp.test.k8s.elastic.co/v1` | | |
 | `kind` _string_ | `Embedded` | | |
-
 | `metadata` _[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
-
 | `a` _string_ |  |  |  |
-
 | `x` _string_ |  |  |  |
 
 
@@ -73,7 +70,6 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-
 | `x` _string_ |  |  |  |
 
 
@@ -91,7 +87,6 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-
 | `x` _string_ |  |  |  |
 
 
@@ -110,9 +105,7 @@ _Appears in:_
 | --- | --- | --- | --- |
 | `apiVersion` _string_ | `webapp.test.k8s.elastic.co/v1` | | |
 | `kind` _string_ | `Guestbook` | | |
-
 | `metadata` _[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
-
 | `spec` _[GuestbookSpec](#guestbookspec)_ |  | \{ page:1 \} |  |
 
 
@@ -129,13 +122,9 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-
 | `name` _string_ | Name of the guest (pipe \| should be escaped) |  | MaxLength: 80 <br />Pattern: `0*[a-z0-9]*[a-z]*[0-9]` <br /> |
-
 | `time` _[Time](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#time-v1-meta)_ | Time of entry |  |  |
-
 | `comment` _string_ | Comment by guest. This can be a multi-line comment.<br />Like this one.<br />Now let's test a list:<br />* a<br />* b<br /><br />Another isolated comment.<br /><br />Looks good? |  | Pattern: `0*[a-z0-9]*[a-z]*[0-9]*` <br /> |
-
 | `rating` _[Rating](#rating)_ | Rating provided by the guest |  | Maximum: 5 <br />Minimum: 1 <br /> |
 
 
@@ -166,9 +155,7 @@ GuestbookList contains a list of Guestbook.
 | --- | --- | --- | --- |
 | `apiVersion` _string_ | `webapp.test.k8s.elastic.co/v1` | | |
 | `kind` _string_ | `GuestbookList` | | |
-
 | `metadata` _[ListMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#listmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
-
 | `items` _[Guestbook](#guestbook) array_ |  |  |  |
 
 
@@ -185,20 +172,32 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-
 | `page` _[PositiveInt](#positiveint)_ | Page indicates the page number | 1 | Minimum: 1 <br /> |
-
 | `entries` _[GuestbookEntry](#guestbookentry) array_ | Entries contain guest book entries for the page |  |  |
-
 | `selector` _[LabelSelector](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#labelselector-v1-meta)_ | Selector selects something |  |  |
-
 | `headers` _[GuestbookHeader](#guestbookheader) array_ | Headers contains a list of header items to include in the page |  | MaxItems: 10 <br />UniqueItems: true <br /> |
-
 | `certificateRef` _[SecretObjectReference](https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1beta1.SecretObjectReference)_ | CertificateRef is a reference to a secret containing a certificate |  |  |
-
 | `str` _[CommonString](#commonstring)_ |  |  |  |
+| `enum` _[MyEnum](#myenum)_ | Enumeration is an example of an aliased enumeration type |  | Enum: [MyFirstValue MySecondValue] <br /> |
 
 
+
+
+#### MyEnum
+
+_Underlying type:_ _string_
+
+
+
+_Validation:_
+- Enum: [MyFirstValue MySecondValue]
+
+_Appears in:_
+- [GuestbookSpec](#guestbookspec)
+
+| Field | Description |
+| `MyFirstValue` | MyFirstValue is an interesting value to use<br /> |
+| `MySecondValue` | MySecondValue is what you use when you can't use MyFirstValue<br /> |
 
 
 #### PositiveInt
@@ -246,9 +245,7 @@ Underlying tests that Underlying1's underlying type is Underlying2 instead of st
 | --- | --- | --- | --- |
 | `apiVersion` _string_ | `webapp.test.k8s.elastic.co/v1` | | |
 | `kind` _string_ | `Underlying` | | |
-
 | `metadata` _[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  |  |
-
 | `a` _[Underlying1](#underlying1)_ |  | b | MaxLength: 10 <br /> |
 
 

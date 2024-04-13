@@ -36,5 +36,13 @@ _Appears in:_
 
 {{ end -}}
 
+{{ if $type.EnumValues -}} 
+| Field | Description |
+{{ range $type.EnumValues -}}
+| `{{ .Name }}` | {{ markdownRenderFieldDoc .Doc }} |
+{{ end -}}
+{{ end -}}
+
+
 {{- end -}}
 {{- end -}}

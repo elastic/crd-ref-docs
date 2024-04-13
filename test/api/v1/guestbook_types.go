@@ -98,7 +98,19 @@ type GuestbookSpec struct {
 	// CertificateRef is a reference to a secret containing a certificate
 	CertificateRef gwapiv1b1.SecretObjectReference `json:"certificateRef"`
 	String         common.CommonString             `json:"str"`
+	// Enumeration is an example of an aliased enumeration type
+	Enumeration MyEnum `json:"enum"`
 }
+
+// +kubebuilder:validation:Enum=MyFirstValue;MySecondValue
+type MyEnum string
+
+const (
+	// MyFirstValue is an interesting value to use
+	MyFirstValue MyEnum = "MyFirstValue"
+	// MySecondValue is what you use when you can't use MyFirstValue
+	MySecondValue MyEnum = "MySecondValue"
+)
 
 // +kubebuilder:validation:Minimum=1
 type PositiveInt int

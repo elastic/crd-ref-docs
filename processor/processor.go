@@ -19,6 +19,8 @@ package processor
 
 import (
 	"fmt"
+	"go/ast"
+	"go/token"
 	gotypes "go/types"
 	"regexp"
 	"sort"
@@ -327,6 +329,9 @@ func (p *processor) processType(pkg *loader.Package, parentType *types.Type, t g
 		if info != nil {
 			underlying = pkg.TypesInfo.TypeOf(info.RawSpec.Type)
 		}
+		if underlying.String() == "string" {
+			typeDef.EnumValues = lookupConstantValuesForAliasedType(pkg, typeDef.Name)
+		}
 		typeDef.UnderlyingType = p.processType(pkg, typeDef, underlying, depth+1)
 		p.addReference(typeDef, typeDef.UnderlyingType)
 
@@ -569,4 +574,38 @@ func (p *processor) parseMarkers() {
 			f.Default, f.Validation = parseMarkers(f.Markers)
 		}
 	}
+}
+
+func lookupConstantValuesForAliasedType(pkg *loader.Package, aliasTypeName string) []types.EnumValue {
+	values := []types.EnumValue{}
+	for _, file := range pkg.Syntax {
+		for _, decl := range file.Decls {
+			node, ok := decl.(*ast.GenDecl)
+			if !ok || node.Tok != token.CONST {
+				continue
+			}
+			for _, spec := range node.Specs {
+				// look for constant declaration
+				v, ok := spec.(*ast.ValueSpec)
+				if !ok {
+					continue
+				}
+				// value type must match the alias type name and have exactly one value
+				if id, ok := v.Type.(*ast.Ident); !ok || id.String() != aliasTypeName || len(v.Values) != 1 {
+					continue
+				}
+				// convert to a basic type to access to the value
+				b, ok := v.Values[0].(*ast.BasicLit)
+				if !ok {
+					continue
+				}
+				values = append(values, types.EnumValue{
+					// remove the '"' signs from the start and end of the value
+					Name: b.Value[1 : len(b.Value)-1],
+					Doc:  v.Doc.Text(),
+				})
+			}
+		}
+	}
+	return values
 }
