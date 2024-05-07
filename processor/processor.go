@@ -210,6 +210,17 @@ func (p *processor) findAPITypes(directory string) error {
 				gvInfo.types[info.Name] = typeDef
 			}
 
+			// load imported types in fields
+			for _, importedType := range typeDef.Members() {
+				if importedType.Type != nil && importedType.Type.UnderlyingType != nil && importedType.Type.UnderlyingType.Imported {
+					key = fmt.Sprintf("%s.%s", importedType.Type.UnderlyingType.Package, importedType.Type.Name)
+					typeDef, ok = p.types[key]
+					if ok {
+						gvInfo.types[importedType.Name] = typeDef
+					}
+				}
+			}
+
 			// is this a root object?
 			if root := info.Markers.Get(objectRootMarker); root != nil {
 				if gvInfo.kinds == nil {
