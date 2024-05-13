@@ -211,15 +211,7 @@ func (p *processor) findAPITypes(directory string) error {
 			}
 
 			// load imported types in fields
-			for _, importedType := range typeDef.Members() {
-				if importedType.Type != nil && importedType.Type.UnderlyingType != nil && importedType.Type.UnderlyingType.Imported {
-					key = fmt.Sprintf("%s.%s", importedType.Type.UnderlyingType.Package, importedType.Type.Name)
-					typeDef, ok = p.types[key]
-					if ok {
-						gvInfo.types[importedType.Name] = typeDef
-					}
-				}
-			}
+			p.loadImportedType(gvInfo, typeDef, true)
 
 			// is this a root object?
 			if root := info.Markers.Get(objectRootMarker); root != nil {
@@ -234,6 +226,20 @@ func (p *processor) findAPITypes(directory string) error {
 	}
 
 	return nil
+}
+
+func (p *processor) loadImportedType(gvInfo *groupVersionInfo, typeDef *types.Type, loadImportedOnly bool) {
+	for _, importedType := range typeDef.Members() {
+		if importedType.Type != nil && importedType.Type.UnderlyingType != nil && importedType.Type.UnderlyingType.Imported == loadImportedOnly {
+			key := fmt.Sprintf("%s.%s", importedType.Type.UnderlyingType.Package, importedType.Type.Name)
+			t, ok := p.types[key]
+			if ok {
+				gvInfo.types[importedType.Type.Name] = t
+			}
+
+			p.loadImportedType(gvInfo, importedType.Type, false)
+		}
+	}
 }
 
 func (p *processor) extractGroupVersionIfExists(collector *markers.Collector, pkg *loader.Package) *groupVersionInfo {
