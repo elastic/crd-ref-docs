@@ -14,6 +14,7 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
 package renderer
 
 import (
@@ -29,7 +30,7 @@ import (
 )
 
 const (
-	kubePackagesRegex   = `^k8s\.io/(?:api|apimachinery/pkg/apis)/`
+	kubePackagesRegex   = `^k8s\.io/(?:api|apimachinery|apiextensions-apiserver/pkg/apis)/`
 	kubeDocLinkTemplate = `https://kubernetes.io/docs/reference/generated/kubernetes-api/v{{ .kubeVersion }}/#{{ .type }}-{{ .version }}-{{ .group }}`
 )
 

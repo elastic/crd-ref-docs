@@ -68,6 +68,7 @@ Package v1 contains API Schema definitions for the webapp v1 API group
 | *`a`* __string__ |  |  | 
 | *`e`* __string__ |  |  | 
 | *`x`* __string__ |  |  | 
+| *`value`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#json-v1-apiextensions[$$JSON$$]__ |  |  | 
 |===
 
 
@@ -90,6 +91,7 @@ Package v1 contains API Schema definitions for the webapp v1 API group
 | Field | Description | Default | Validation
 | *`e`* __string__ |  |  | 
 | *`x`* __string__ |  |  | 
+| *`value`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#json-v1-apiextensions[$$JSON$$]__ |  |  | 
 |===
 
 
@@ -112,6 +114,7 @@ Package v1 contains API Schema definitions for the webapp v1 API group
 |===
 | Field | Description | Default | Validation
 | *`x`* __string__ |  |  | 
+| *`value`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#json-v1-apiextensions[$$JSON$$]__ |  |  | 
 |===
 
 
