@@ -169,10 +169,14 @@ func (k *kubernetesHelper) LinkForKubeType(t *types.Type) string {
 	if len(parts) < 2 {
 		zap.S().Fatalw("Unexpected Kubernetes package name", "type", t)
 	}
-
+	// TODO: if there're more alaises, we should export them to the config
+	group := strings.ToLower(parts[len(parts)-2])
+	if group == "apiextensions" {
+		group = "apiextensions-k8s-io"
+	}
 	args := map[string]string{
 		"kubeVersion": k.kubeVersion,
-		"group":       strings.ToLower(parts[len(parts)-2]),
+		"group":       group,
 		"version":     strings.ToLower(parts[len(parts)-1]),
 		"type":        strings.ToLower(t.Name),
 	}
