@@ -56,6 +56,7 @@ Package v1 contains API Schema definitions for the webapp v1 API group
 | `a` _string_ |  |  |  |
 | `e` _string_ |  |  |  |
 | `x` _string_ |  |  |  |
+| `value` _[JSON](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#json-v1-apiextensions-k8s-io)_ |  |  |  |
 
 
 #### Embedded1
@@ -73,6 +74,7 @@ _Appears in:_
 | --- | --- | --- | --- |
 | `e` _string_ |  |  |  |
 | `x` _string_ |  |  |  |
+| `value` _[JSON](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#json-v1-apiextensions-k8s-io)_ |  |  |  |
 
 
 #### EmbeddedX
@@ -90,6 +92,7 @@ _Appears in:_
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
 | `x` _string_ |  |  |  |
+| `value` _[JSON](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#json-v1-apiextensions-k8s-io)_ |  |  |  |
 
 
 #### Guestbook
