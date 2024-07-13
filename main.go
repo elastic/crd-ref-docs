@@ -47,7 +47,7 @@ func main() {
 	cmd.Flags().StringVar(&args.OutputPath, "output-path", ".", "Path to output the rendered result")
 	cmd.Flags().StringVar(&args.OutputMode, "output-mode", "single", "Output mode to generate a single file or one file per group ('group' or 'single')")
 	cmd.Flags().IntVar(&args.MaxDepth, "max-depth", 10, "Maximum recursion level for type discovery")
-
+	cmd.AddCommand(versionCmd)
 	cmd.Execute()
 }
 
