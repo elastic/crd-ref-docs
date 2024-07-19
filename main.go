@@ -34,11 +34,12 @@ var args = config.Flags{}
 
 func main() {
 	cmd := cobra.Command{
-		Use:          "crd-ref-docs",
-		Short:        "Generate CRD reference documentation",
-		SilenceUsage: true,
-		Version:      version(),
-		RunE:         doRun,
+		Use:           "crd-ref-docs",
+		Short:         "Generate CRD reference documentation",
+		SilenceUsage:  true,
+		SilenceErrors: true,
+		Version:       version(),
+		RunE:          doRun,
 	}
 
 	cmd.SetVersionTemplate("{{ .Version }}\n")
