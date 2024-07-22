@@ -169,8 +169,8 @@ func (k *kubernetesHelper) LinkForKubeType(t *types.Type) string {
 	if len(parts) < 2 {
 		zap.S().Fatalw("Unexpected Kubernetes package name", "type", t)
 	}
-	// TODO: if there're more alaises, we should export them to the config
 	group := strings.ToLower(parts[len(parts)-2])
+	// this is alias handling
 	if group == "apiextensions" {
 		group = "apiextensions-k8s-io"
 	}
