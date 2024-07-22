@@ -24,6 +24,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TEMP_DIR=$(mktemp -d -t crd-ref-docs-XXXXX)
 DEFAULT_ARGS=(--log-level=ERROR --source-path="${SCRIPT_DIR}/test" --output-path="${TEMP_DIR}/out" --config="${SCRIPT_DIR}/test/config.yaml")
+AUTO_FIX=${AUTO_FIX:-}
 
 trap '[[ $TEMP_DIR ]] && rm -rf "$TEMP_DIR"' EXIT
 
@@ -88,6 +89,10 @@ run_test() {
         if diff=$(diff -a -y --suppress-common-lines "${SCRIPT_DIR}/test/${expected}" "$actual"); then
             echo "OK"
         else
+            if [[ -n "$AUTO_FIX" ]]; then
+                echo "INFO: auto-fixing the output"
+                cp "$actual" "${SCRIPT_DIR}/test/${expected}"
+            fi
             echo "ERROR: outputs differ with ${expected}"
             echo ""
             echo "$diff"
