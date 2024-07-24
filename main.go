@@ -148,5 +148,5 @@ var (
 )
 
 func version() string {
-	return fmt.Sprintf("Version: %s, Commit: %s, BuildDate: %s", buildVersion, buildCommit, buildDate)
+	return fmt.Sprintf("Version: %s\nGitCommit: %s\nBuildDate: %s\n", buildVersion, buildCommit, buildDate)
 }
