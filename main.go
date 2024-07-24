@@ -41,7 +41,7 @@ func main() {
 		RunE:         doRun,
 	}
 
-	cmd.SetVersionTemplate("{{ .Version}}\n")
+	cmd.SetVersionTemplate("{{ .Version }}\n")
 
 	cmd.Flags().StringVar(&args.LogLevel, "log-level", "INFO", "Log level")
 	cmd.Flags().StringVar(&args.Config, "config", "config.yaml", "Path to config file")
