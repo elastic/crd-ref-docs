@@ -34,11 +34,12 @@ var args = config.Flags{}
 
 func main() {
 	cmd := cobra.Command{
-		Use:          "crd-ref-docs",
-		Short:        "Generate CRD reference documentation",
-		SilenceUsage: true,
-		Version:      version(),
-		RunE:         doRun,
+		Use:           "crd-ref-docs",
+		Short:         "Generate CRD reference documentation",
+		SilenceUsage:  true,
+		SilenceErrors: true,
+		Version:       version(),
+		RunE:          doRun,
 	}
 
 	cmd.SetVersionTemplate("{{ .Version }}\n")
@@ -52,7 +53,9 @@ func main() {
 	cmd.Flags().StringVar(&args.OutputMode, "output-mode", "single", "Output mode to generate a single file or one file per group ('group' or 'single')")
 	cmd.Flags().IntVar(&args.MaxDepth, "max-depth", 10, "Maximum recursion level for type discovery")
 
-	cmd.Execute()
+	if err := cmd.Execute(); err != nil {
+		os.Exit(1)
+	}
 }
 
 func doRun(_ *cobra.Command, _ []string) error {
