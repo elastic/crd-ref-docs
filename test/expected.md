@@ -201,6 +201,7 @@ _Appears in:_
 - [GuestbookSpec](#guestbookspec)
 
 | Field | Description |
+| --- | --- |
 | `MyFirstValue` | MyFirstValue is an interesting value to use<br /> |
 | `MySecondValue` | MySecondValue is what you use when you can't use MyFirstValue<br /> |
 
