@@ -56,6 +56,7 @@ Package v1 contains API Schema definitions for the webapp v1 API group
 | `a` _string_ |  |  |  |
 | `e` _string_ |  |  |  |
 | `x` _string_ |  |  |  |
+| `value` _[JSON](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#json-v1-apiextensions-k8s-io)_ |  |  |  |
 
 
 #### Embedded1
@@ -73,6 +74,7 @@ _Appears in:_
 | --- | --- | --- | --- |
 | `e` _string_ |  |  |  |
 | `x` _string_ |  |  |  |
+| `value` _[JSON](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#json-v1-apiextensions-k8s-io)_ |  |  |  |
 
 
 #### EmbeddedX
@@ -90,6 +92,7 @@ _Appears in:_
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
 | `x` _string_ |  |  |  |
+| `value` _[JSON](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#json-v1-apiextensions-k8s-io)_ |  |  |  |
 
 
 #### Guestbook
@@ -126,7 +129,7 @@ _Appears in:_
 | --- | --- | --- | --- |
 | `name` _string_ | Name of the guest (pipe \| should be escaped) |  | MaxLength: 80 <br />Pattern: `0*[a-z0-9]*[a-z]*[0-9]` <br /> |
 | `time` _[Time](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#time-v1-meta)_ | Time of entry |  |  |
-| `comment` _string_ | Comment by guest. This can be a multi-line comment.<br />Like this one.<br />Now let's test a list:<br />* a<br />* b<br /><br />Another isolated comment.<br /><br />Looks good? |  | Pattern: `0*[a-z0-9]*[a-z]*[0-9]*` <br /> |
+| `comment` _string_ | Comment by guest. This can be a multi-line comment.<br />Like this one.<br />Now let's test a list:<br />* a<br />* b<br /><br />Another isolated comment.<br /><br />Looks good? |  | Pattern: `0*[a-z0-9]*[a-z]*[0-9]*\|\s` <br /> |
 | `rating` _[Rating](#rating)_ | Rating provided by the guest |  | Maximum: 5 <br />Minimum: 1 <br /> |
 
 

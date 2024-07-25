@@ -14,6 +14,7 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
 package renderer
 
 import (
@@ -29,7 +30,7 @@ import (
 )
 
 const (
-	kubePackagesRegex   = `^k8s\.io/(?:api|apimachinery/pkg/apis)/`
+	kubePackagesRegex   = `^k8s\.io/(?:api|apimachinery|apiextensions-apiserver/pkg/apis)/`
 	kubeDocLinkTemplate = `https://kubernetes.io/docs/reference/generated/kubernetes-api/v{{ .kubeVersion }}/#{{ .type }}-{{ .version }}-{{ .group }}`
 )
 
@@ -168,10 +169,14 @@ func (k *kubernetesHelper) LinkForKubeType(t *types.Type) string {
 	if len(parts) < 2 {
 		zap.S().Fatalw("Unexpected Kubernetes package name", "type", t)
 	}
-
+	group := strings.ToLower(parts[len(parts)-2])
+	// this is alias handling
+	if group == "apiextensions" {
+		group = "apiextensions-k8s-io"
+	}
 	args := map[string]string{
 		"kubeVersion": k.kubeVersion,
-		"group":       strings.ToLower(parts[len(parts)-2]),
+		"group":       group,
 		"version":     strings.ToLower(parts[len(parts)-1]),
 		"type":        strings.ToLower(t.Name),
 	}

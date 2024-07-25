@@ -33,7 +33,7 @@ _Appears in:_
 {{ range $type.Members -}}
 {{ with .Markers.hidefromdoc -}}
 {{ else -}}
-| `{{ .Name  }}` _{{ markdownRenderType .Type }}_ | {{ template "type_members" . }} | {{ markdownRenderDefault .Default }} | {{ range .Validation -}} {{ . }} <br />{{ end }} |
+| `{{ .Name  }}` _{{ markdownRenderType .Type }}_ | {{ template "type_members" . }} | {{ markdownRenderDefault .Default }} | {{ range .Validation -}} {{ markdownRenderFieldDoc . }} <br />{{ end }} |
 {{ end -}}
 {{ end -}}
 

@@ -20,6 +20,7 @@ package v1
 import (
 	"github.com/elastic/crd-ref-docs/api/common"
 
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	gwapiv1b1 "sigs.k8s.io/gateway-api/apis/v1beta1"
 )
@@ -52,6 +53,8 @@ type Embedded4 struct {
 }
 type EmbeddedX struct {
 	X string `json:"x,omitempty"`
+
+	Value apiextensionsv1.JSON `json:"value,omitempty"`
 }
 
 // Underlying tests that Underlying1's underlying type is Underlying2 instead of string.
@@ -133,7 +136,7 @@ type GuestbookEntry struct {
 	//
 	// Looks good?
 	//
-	// +kubebuilder:validation:Pattern=`0*[a-z0-9]*[a-z]*[0-9]*`
+	// +kubebuilder:validation:Pattern=`0*[a-z0-9]*[a-z]*[0-9]*|\s`
 	Comment string `json:"comment,omitempty"`
 	// Rating provided by the guest
 	Rating Rating `json:"rating,omitempty"`

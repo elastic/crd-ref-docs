@@ -27,13 +27,31 @@ import (
 func TestKubernetesHelper(t *testing.T) {
 	conf := config.Config{
 		Render: config.RenderConfig{
-			KubernetesVersion: "1.15",
+			KubernetesVersion: "1.29",
 		},
 	}
 
 	kh, err := newKubernetesHelper(&conf)
 	require.NoError(t, err)
 
-	link := kh.LinkForKubeType(&types.Type{Package: "k8s.io/apimachinery/pkg/apis/meta/v1", Name: "ObjectMeta"})
-	require.Equal(t, "https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.15/#objectmeta-v1-meta", link)
+	cases := []struct {
+		input    *types.Type
+		excepted string
+	}{
+		{
+			input:    &types.Type{Package: "k8s.io/apimachinery/pkg/apis/meta/v1", Name: "ObjectMeta"},
+			excepted: "https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#objectmeta-v1-meta",
+		},
+		{
+			input:    &types.Type{Package: "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1", Name: "JSON"},
+			excepted: "https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#json-v1-apiextensions-k8s-io",
+		},
+	}
+
+	for _, tc := range cases {
+		t.Run("", func(t *testing.T) {
+			link := kh.LinkForKubeType(tc.input)
+			require.Equal(t, tc.excepted, link)
+		})
+	}
 }

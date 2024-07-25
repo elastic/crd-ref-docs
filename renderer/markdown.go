@@ -145,6 +145,10 @@ func (m *MarkdownRenderer) RenderFieldDoc(text string) string {
 	// so that including | in a comment does not result in wonky tables.
 	out := strings.ReplaceAll(text, "|", "\\|")
 
+	// Escape the curly bracket character.
+	out = strings.ReplaceAll(out, "{", "\\{")
+	out = strings.ReplaceAll(out, "}", "\\}")
+
 	// Replace newlines with 1 line break so that they don't break the Markdown table formatting.
 	out = strings.ReplaceAll(out, "\n", "<br />")
 	// and remove double newline generated for empty lines
