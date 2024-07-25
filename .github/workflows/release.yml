@@ -31,9 +31,9 @@ jobs:
       - run: ./test.sh
 
       - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v5
+        uses: goreleaser/goreleaser-action@v6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          version: '~> v1'
+          version: latest
           args: release --clean

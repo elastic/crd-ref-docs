@@ -19,6 +19,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"runtime/debug"
 	"strings"
 	"time"
 
@@ -38,7 +39,7 @@ func main() {
 		Short:         "Generate CRD reference documentation",
 		SilenceUsage:  true,
 		SilenceErrors: true,
-		Version:       version(),
+		Version:       printVersion(),
 		RunE:          doRun,
 	}
 
@@ -144,12 +145,56 @@ func initLogging(level string) {
 	zap.RedirectStdLog(logger.Named("stdlog"))
 }
 
+// Global build information variables defined via ldflags during release.
 var (
 	buildVersion string
 	buildDate    string
 	buildCommit  string
 )
 
+// printVersion prints the version, git commit and build date using global variables defined via ldflags during release,
+// or using values ​​from debug.ReadBuildInfo().
+func printVersion() string {
+	return fmt.Sprintf("Version: %s\nGitCommit: %s\nBuildDate: %s\n", version(), commit(), date())
+}
+
 func version() string {
-	return fmt.Sprintf("Version: %s\nGitCommit: %s\nBuildDate: %s\n", buildVersion, buildCommit, buildDate)
+	if buildVersion != "" {
+		return buildVersion
+	}
+	bi, ok := debug.ReadBuildInfo()
+	if ok && bi != nil && bi.Main.Version != "" {
+		return bi.Main.Version
+	}
+	return "(unknown)"
+}
+
+func date() string {
+	if buildDate != "" {
+		return buildDate
+	}
+	bi, ok := debug.ReadBuildInfo()
+	if ok {
+		for _, setting := range bi.Settings {
+			if setting.Key == "vcs.time" {
+				return setting.Value
+			}
+		}
+	}
+	return "(unknown)"
+}
+
+func commit() string {
+	if buildCommit != "" {
+		return buildCommit
+	}
+	bi, ok := debug.ReadBuildInfo()
+	if ok {
+		for _, setting := range bi.Settings {
+			if setting.Key == "vcs.revision" {
+				return setting.Value
+			}
+		}
+	}
+	return "(unknown)"
 }
