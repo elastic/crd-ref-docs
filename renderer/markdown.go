@@ -129,7 +129,12 @@ func (m *MarkdownRenderer) RenderLocalLink(text string) string {
 			")", "",
 		).Replace(text),
 	)
-	return fmt.Sprintf("[%s](#%s)", text, anchor)
+
+	// for mdx compatibility
+	label := strings.NewReplacer(
+		"{", "\\{").Replace(text)
+
+	return fmt.Sprintf("[%s](#%s)", label, anchor)
 }
 
 func (m *MarkdownRenderer) RenderExternalLink(link, text string) string {
@@ -148,6 +153,10 @@ func (m *MarkdownRenderer) RenderFieldDoc(text string) string {
 	// Escape the curly bracket character.
 	out = strings.ReplaceAll(out, "{", "\\{")
 	out = strings.ReplaceAll(out, "}", "\\}")
+
+	// escape inlined markup
+	out = strings.ReplaceAll(out, "<", "&lt;")
+	out = strings.ReplaceAll(out, ">", "&gt;")
 
 	// Replace newlines with 1 line break so that they don't break the Markdown table formatting.
 	out = strings.ReplaceAll(out, "\n", "<br />")
