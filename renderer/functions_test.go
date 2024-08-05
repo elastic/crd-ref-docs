@@ -36,22 +36,26 @@ func TestKubernetesHelper(t *testing.T) {
 
 	cases := []struct {
 		input    *types.Type
-		excepted string
+		expected string
 	}{
 		{
 			input:    &types.Type{Package: "k8s.io/apimachinery/pkg/apis/meta/v1", Name: "ObjectMeta"},
-			excepted: "https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#objectmeta-v1-meta",
+			expected: "https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#objectmeta-v1-meta",
 		},
 		{
 			input:    &types.Type{Package: "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1", Name: "JSON"},
-			excepted: "https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#json-v1-apiextensions-k8s-io",
+			expected: "https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#json-v1-apiextensions-k8s-io",
+		},
+		{
+			input:    &types.Type{Package: "k8s.io/apimachinery/pkg/api/resource", Name: "Quantity"},
+			expected: "https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#quantity-resource-core",
 		},
 	}
 
 	for _, tc := range cases {
 		t.Run("", func(t *testing.T) {
 			link := kh.LinkForKubeType(tc.input)
-			require.Equal(t, tc.excepted, link)
+			require.Equal(t, tc.expected, link)
 		})
 	}
 }

@@ -57,6 +57,7 @@ Package v1 contains API Schema definitions for the webapp v1 API group
 | `e` _string_ |  |  |  |
 | `x` _string_ |  |  |  |
 | `value` _[JSON](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#json-v1-apiextensions-k8s-io)_ |  |  |  |
+| `someQuantity` _[Quantity](https://pkg.go.dev/k8s.io/apimachinery/pkg/api/resource#Quantity)_ |  |  |  |
 
 
 #### Embedded1
@@ -75,6 +76,7 @@ _Appears in:_
 | `e` _string_ |  |  |  |
 | `x` _string_ |  |  |  |
 | `value` _[JSON](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#json-v1-apiextensions-k8s-io)_ |  |  |  |
+| `someQuantity` _[Quantity](https://pkg.go.dev/k8s.io/apimachinery/pkg/api/resource#Quantity)_ |  |  |  |
 
 
 #### EmbeddedX
@@ -93,6 +95,7 @@ _Appears in:_
 | --- | --- | --- | --- |
 | `x` _string_ |  |  |  |
 | `value` _[JSON](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#json-v1-apiextensions-k8s-io)_ |  |  |  |
+| `someQuantity` _[Quantity](https://pkg.go.dev/k8s.io/apimachinery/pkg/api/resource#Quantity)_ |  |  |  |
 
 
 #### Guestbook
