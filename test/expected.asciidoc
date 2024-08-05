@@ -68,7 +68,7 @@ Package v1 contains API Schema definitions for the webapp v1 API group
 | *`a`* __string__ |  |  | 
 | *`e`* __string__ |  |  | 
 | *`x`* __string__ |  |  | 
-| *`value`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#json-v1-apiextensions-k8s-io[$$JSON$$]__ |  |  |
+| *`value`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#json-v1-apiextensions-k8s-io[$$JSON$$]__ |  |  | 
 | *`someQuantity`* __link:https://pkg.go.dev/k8s.io/apimachinery/pkg/api/resource#Quantity[$$Quantity$$]__ |  |  | 
 |===
 
@@ -92,8 +92,8 @@ Package v1 contains API Schema definitions for the webapp v1 API group
 | Field | Description | Default | Validation
 | *`e`* __string__ |  |  | 
 | *`x`* __string__ |  |  | 
-| *`value`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#json-v1-apiextensions-k8s-io[$$JSON$$]__ |  |  |
-| *`someQuantity`* __link:https://pkg.go.dev/k8s.io/apimachinery/pkg/api/resource#Quantity[$$Quantity$$]__ |  |  |
+| *`value`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#json-v1-apiextensions-k8s-io[$$JSON$$]__ |  |  | 
+| *`someQuantity`* __link:https://pkg.go.dev/k8s.io/apimachinery/pkg/api/resource#Quantity[$$Quantity$$]__ |  |  | 
 |===
 
 
@@ -116,8 +116,8 @@ Package v1 contains API Schema definitions for the webapp v1 API group
 |===
 | Field | Description | Default | Validation
 | *`x`* __string__ |  |  | 
-| *`value`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#json-v1-apiextensions-k8s-io[$$JSON$$]__ |  |  |
-| *`someQuantity`* __link:https://pkg.go.dev/k8s.io/apimachinery/pkg/api/resource#Quantity[$$Quantity$$]__ |  |  |
+| *`value`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#json-v1-apiextensions-k8s-io[$$JSON$$]__ |  |  | 
+| *`someQuantity`* __link:https://pkg.go.dev/k8s.io/apimachinery/pkg/api/resource#Quantity[$$Quantity$$]__ |  |  | 
 |===
 
 
