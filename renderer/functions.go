@@ -20,8 +20,12 @@ package renderer
 import (
 	"bytes"
 	"fmt"
+	"go/types"
 	"regexp"
 	"strings"
+)
+
+import (
 	"text/template"
 
 	"github.com/elastic/crd-ref-docs/config"
