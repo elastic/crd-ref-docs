@@ -5,6 +5,10 @@
 
 {{ $gv.Doc }}
 
+{{- if index $gv.Markers "special" }}
+*Important: This package is special and should be treated differently.*
+{{- end }}
+
 {{- if $gv.Kinds  }}
 ### Resource Types
 {{- range $gv.SortedKinds }}

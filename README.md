@@ -84,7 +84,7 @@ render:
 
 #### Custom Markers
 
-You can add custom markers to your CRD types to provide additional information in the generated documentation. 
+You can add custom markers to your CRD types to provide additional information in the generated documentation.
 For example, you can add a `hidefromdoc` marker to indicate that a type is hide from the documentation.
 
 ```yaml
@@ -108,7 +108,9 @@ render:
      link: https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1beta1.SecretObjectReference
 ```
 
-You can then add the `hidefromdoc` marker to the field you want to hidden from the documentation.
+You can then add the `hidefromdoc` marker to the field you want to hidden from the documentation. Markers can be added
+to fields, types and packages. The `target` field in the configuration specifies the target of the marker (it can be either
+`field`, `type` or `package`).
 
 ```go
 type Embedded1 struct {

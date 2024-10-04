@@ -9,6 +9,7 @@
 
 Package common contains common API Schema definitions
 
+*Important: This package is special and should be treated differently.*
 
 
 #### CommonString
