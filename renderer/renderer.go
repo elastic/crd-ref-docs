@@ -21,6 +21,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"strings"
 	"text/template"
 
 	"github.com/elastic/crd-ref-docs/config"
@@ -84,7 +85,13 @@ func renderTemplate(tmpl *template.Template, conf *config.Config, fileExtension 
 
 	case config.OutputModeGroup:
 		for _, gvd := range gvds {
-			fileName := fmt.Sprintf("%s.%s", gvd.Group, fileExtension)
+
+			// create filename that contains the version to avoid multiple versions of the same group overriding each other
+			name := strings.NewReplacer(
+				"/", "-",
+			).Replace(fmt.Sprintf("%s", gvd.GroupVersion))
+
+			fileName := fmt.Sprintf("%s.%s", name, fileExtension)
 			file, err := createOutFile(conf.OutputPath, true, fileName)
 			defer file.Close()
 			if err != nil {
