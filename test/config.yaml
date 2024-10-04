@@ -9,6 +9,8 @@ processor:
   customMarkers:
     - name: "hidefromdoc"
       target: field
+    - name: "special"
+      target: package
 
 render:
   kubernetesVersion: 1.25

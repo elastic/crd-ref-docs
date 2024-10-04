@@ -9,6 +9,7 @@
 
 Package common contains common API Schema definitions
 
+*Important: This package is special and should be treated differently.*
 
 
 #### CommonString
@@ -277,6 +278,3 @@ _Validation:_
 
 _Appears in:_
 - [Underlying1](#underlying1)
-
-
-
