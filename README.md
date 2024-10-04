@@ -108,7 +108,7 @@ render:
      link: https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1beta1.SecretObjectReference
 ```
 
-You can then add the `hidefromdoc` marker to the field you want to hidden from the documentation. Markers can be added
+You can then add the `hidefromdoc` marker to the field you want to be hidden from the documentation. Markers can be added
 to fields, types and packages. The `target` field in the configuration specifies the target of the marker (it can be either
 `field`, `type` or `package`).
 
