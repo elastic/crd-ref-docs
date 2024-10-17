@@ -46,9 +46,10 @@ var ignoredCommentRegex = regexp.MustCompile(`\s*^(?i:\+|copyright)`)
 type groupVersionInfo struct {
 	schema.GroupVersion
 	*loader.Package
-	doc   string
-	kinds map[string]struct{}
-	types types.TypeMap
+	doc     string
+	kinds   map[string]struct{}
+	types   types.TypeMap
+	markers markers.MarkerValues
 }
 
 func Process(config *config.Config) ([]types.GroupVersionDetails, error) {
@@ -106,7 +107,7 @@ func Process(config *config.Config) ([]types.GroupVersionDetails, error) {
 				zap.S().Fatalw("Type not loaded", "type", key)
 			}
 		}
-
+		details.Markers = gvi.markers
 		gvDetails = append(gvDetails, details)
 	}
 
@@ -247,8 +248,9 @@ func (p *processor) extractGroupVersionIfExists(collector *markers.Collector, pk
 			Group:   groupName.(string),
 			Version: version,
 		},
-		doc:     p.extractPkgDocumentation(pkg),
 		Package: pkg,
+		doc:     p.extractPkgDocumentation(pkg),
+		markers: markerValues,
 	}
 
 	return gvInfo

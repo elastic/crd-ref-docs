@@ -17,4 +17,5 @@
 
 // Package common contains common API Schema definitions
 // +groupName=webapp.test.k8s.elastic.co
+// +special
 package common
