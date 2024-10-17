@@ -298,7 +298,7 @@ func (p *processor) processType(pkg *loader.Package, parentType *types.Type, t g
 	}
 
 	if depth > p.maxDepth {
-		zap.S().Debugw("Not loading type due to reaching max recursion depth", "type", t.String())
+		zap.S().Warnw("Not loading type due to reaching max recursion depth", "type", t.String())
 		typeDef.Kind = types.UnknownKind
 		return typeDef
 	}
