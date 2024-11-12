@@ -1,7 +1,7 @@
 {{- define "gvDetails" -}}
 {{- $gv := . -}}
 
-## {{ $gv.GroupVersionString }}
+## <a id="{{ markdownGroupVersionID $gv | markdownSafeID }}">{{ $gv.GroupVersionString }}</a>
 
 {{ $gv.Doc }}
 
