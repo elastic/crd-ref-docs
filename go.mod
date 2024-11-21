@@ -11,7 +11,7 @@ require (
 	github.com/stretchr/testify v1.9.0
 	go.uber.org/zap v1.27.0
 	golang.org/x/tools v0.26.0
-	k8s.io/apimachinery v0.31.1
+	k8s.io/apimachinery v0.31.3
 	sigs.k8s.io/controller-tools v0.14.0
 )
 
