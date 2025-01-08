@@ -1,8 +1,8 @@
 module github.com/elastic/crd-ref-docs
 
-go 1.22.0
+go 1.23.0
 
-toolchain go1.23.2
+toolchain go1.23.4
 
 require (
 	github.com/Masterminds/sprig v2.22.0+incompatible
@@ -11,7 +11,7 @@ require (
 	github.com/stretchr/testify v1.10.0
 	go.uber.org/zap v1.27.0
 	golang.org/x/tools v0.29.0
-	k8s.io/apimachinery v0.31.3
+	k8s.io/apimachinery v0.32.0
 	sigs.k8s.io/controller-tools v0.14.0
 )
 
@@ -47,7 +47,8 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	k8s.io/apiextensions-apiserver v0.29.0 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
-	k8s.io/utils v0.0.0-20240711033017-18e509b52bc8 // indirect
-	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
-	sigs.k8s.io/structured-merge-diff/v4 v4.4.1 // indirect
+	k8s.io/utils v0.0.0-20241104100929-3ea5e8cea738 // indirect
+	sigs.k8s.io/json v0.0.0-20241010143419-9aa6b5e7a4b3 // indirect
+	sigs.k8s.io/structured-merge-diff/v4 v4.4.2 // indirect
+	sigs.k8s.io/yaml v1.4.0 // indirect
 )
