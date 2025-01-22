@@ -12,7 +12,7 @@ require (
 	go.uber.org/zap v1.27.0
 	golang.org/x/tools v0.29.0
 	k8s.io/apimachinery v0.32.0
-	sigs.k8s.io/controller-tools v0.17.0
+	sigs.k8s.io/controller-tools v0.17.1
 )
 
 require (
