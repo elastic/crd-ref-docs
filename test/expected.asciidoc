@@ -246,6 +246,8 @@ UniqueItems: true +
 | *`str`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-common-commonstring[$$CommonString$$]__ |  |  | 
 | *`enum`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-myenum[$$MyEnum$$]__ | Enumeration is an example of an aliased enumeration type + |  | Enum: [MyFirstValue MySecondValue] +
 
+| *`digest`* __string__ | Digest is the content-addressable identifier of the guestbook + |  | Pattern: `^sha256:[a-fA-F0-9]\{64}$` +
+
 |===
 
 

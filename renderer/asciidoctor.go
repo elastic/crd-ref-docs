@@ -160,7 +160,8 @@ func (adr *AsciidoctorRenderer) RenderFieldDoc(text string) string {
 }
 
 func (adr *AsciidoctorRenderer) RenderValidation(text string) string {
-	return escapeFirstAsterixInEachPair(text)
+	renderedText := escapeFirstAsterixInEachPair(text)
+	return escapeCurlyBraces(renderedText)
 }
 
 // escapeFirstAsterixInEachPair escapes the first asterix in each pair of
@@ -179,4 +180,11 @@ func escapeFirstAsterixInEachPair(text string) string {
 		}
 	}
 	return text
+}
+
+// escapeCurlyBraces ensures sufficient escapes are added to curly braces, so they are not mistaken
+// for asciidoctor id attributes.
+func escapeCurlyBraces(text string) string {
+	// Per asciidoctor docs, only the leading curly brace needs to be escaped.
+	return strings.Replace(text, "{", "\\{", -1)
 }
