@@ -103,6 +103,9 @@ type GuestbookSpec struct {
 	String         common.CommonString             `json:"str"`
 	// Enumeration is an example of an aliased enumeration type
 	Enumeration MyEnum `json:"enum"`
+	// Digest is the content-addressable identifier of the guestbook
+	// +kubebuilder:validation:Pattern=`^sha256:[a-fA-F0-9]{64}$`
+	Digest string `json:"digest,omitempty"`
 }
 
 // +kubebuilder:validation:Enum=MyFirstValue;MySecondValue

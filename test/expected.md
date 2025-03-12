@@ -184,6 +184,7 @@ _Appears in:_
 | `certificateRef` _[SecretObjectReference](https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1beta1.SecretObjectReference)_ | CertificateRef is a reference to a secret containing a certificate |  |  |
 | `str` _[CommonString](#commonstring)_ |  |  |  |
 | `enum` _[MyEnum](#myenum)_ | Enumeration is an example of an aliased enumeration type |  | Enum: [MyFirstValue MySecondValue] <br /> |
+| `digest` _string_ | Digest is the content-addressable identifier of the guestbook |  | Pattern: `^sha256:[a-fA-F0-9]\{64\}$` <br /> |
 
 
 
