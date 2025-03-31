@@ -243,6 +243,7 @@ GuestbookSpec defines the desired state of Guestbook.
 UniqueItems: true +
 
 | *`certificateRef`* __link:https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1beta1.SecretObjectReference[$$SecretObjectReference$$]__ | CertificateRef is a reference to a secret containing a certificate + |  | 
+| *`quantity`* __link:https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/quantity/[$$Quantity$$]__ | Quantity is a k8s type, but config.yaml overrides its link + |  | 
 | *`str`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-common-commonstring[$$CommonString$$]__ |  |  | 
 | *`enum`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-myenum[$$MyEnum$$]__ | Enumeration is an example of an aliased enumeration type + |  | Enum: [MyFirstValue MySecondValue] +
 

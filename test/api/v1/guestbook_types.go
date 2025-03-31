@@ -19,6 +19,7 @@ package v1
 
 import (
 	"github.com/elastic/crd-ref-docs/api/common"
+	"k8s.io/apimachinery/pkg/api/resource"
 
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -100,7 +101,9 @@ type GuestbookSpec struct {
 	Headers []GuestbookHeader `json:"headers,omitempty"`
 	// CertificateRef is a reference to a secret containing a certificate
 	CertificateRef gwapiv1b1.SecretObjectReference `json:"certificateRef"`
-	String         common.CommonString             `json:"str"`
+	// Quantity is a k8s type, but config.yaml overrides its link
+	Quantity resource.Quantity   `json:"quantity,omitempty"`
+	String   common.CommonString `json:"str"`
 	// Enumeration is an example of an aliased enumeration type
 	Enumeration MyEnum `json:"enum"`
 	// Digest is the content-addressable identifier of the guestbook
