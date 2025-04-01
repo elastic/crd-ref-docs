@@ -2,7 +2,7 @@ module github.com/elastic/crd-ref-docs
 
 go 1.23.0
 
-toolchain go1.23.5
+toolchain go1.24.2
 
 require (
 	github.com/Masterminds/sprig v2.22.0+incompatible
