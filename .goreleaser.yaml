@@ -8,6 +8,8 @@ builds:
       - windows
       - darwin
     ldflags: -s -w -X main.buildVersion={{.Tag}} -X main.buildCommit={{.ShortCommit}} -X main.buildDate={{.Date}}
+    env:
+      - CGO_ENABLED=0
 archives:
   - name_template: >-
       {{- .ProjectName }}_
