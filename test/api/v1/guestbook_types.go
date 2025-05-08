@@ -127,6 +127,9 @@ type GuestbookEntry struct {
 	// +kubebuilder:validation:MaxLength=80
 	// +kubebuilder:validation:Pattern=`0*[a-z0-9]*[a-z]*[0-9]`
 	Name string `json:"name,omitempty"`
+	// Tags of the entry.
+	// +kubebuilder:validation:items:Pattern=`[a-z]*`
+	Tags []string `json:"tags"`
 	// Time of entry
 	Time metav1.Time `json:"time,omitempty"`
 	// Comment by guest. This can be a multi-line comment.
