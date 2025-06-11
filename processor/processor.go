@@ -544,6 +544,8 @@ func parseMarkers(markers markers.MarkerValues) (string, []string) {
 			name := strings.TrimPrefix(name, "kubebuilder:validation:")
 
 			switch name {
+			case "items:Pattern":
+				fallthrough
 			case "Pattern":
 				value = fmt.Sprintf("`%s`", value)
 			// FIXME: XValidation currently removed due to being long and difficult to read.
