@@ -18,3 +18,6 @@ render:
     - name: SecretObjectReference
       package: sigs.k8s.io/gateway-api/apis/v1beta1
       link: https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1beta1.SecretObjectReference
+    - name: Quantity
+      package: k8s.io/apimachinery/pkg/api/resource
+      link: https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/quantity/
