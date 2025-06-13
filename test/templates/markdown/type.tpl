@@ -2,7 +2,7 @@
 {{- $type := . -}}
 {{- if markdownShouldRenderType $type -}}
 
-#### {{ $type.Name }}
+#### <a id="{{ markdownTypeID $type | markdownSafeID }}">{{ $type.Name }}</a>
 
 {{ if $type.IsAlias }}_Underlying type:_ _{{ markdownRenderTypeLink $type.UnderlyingType  }}_{{ end }}
 
