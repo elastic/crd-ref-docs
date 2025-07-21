@@ -82,6 +82,7 @@ func (adr *AsciidoctorRenderer) ToFuncMap() template.FuncMap {
 		"TypeID":             adr.TypeID,
 		"RenderFieldDoc":     adr.RenderFieldDoc,
 		"RenderValidation":   adr.RenderValidation,
+		"TemplateValue":      adr.TemplateValue,
 	}
 }
 
@@ -138,6 +139,13 @@ func (adr *AsciidoctorRenderer) RenderGVLink(gv types.GroupVersionDetails) strin
 
 func (adr *AsciidoctorRenderer) RenderAnchorID(id string) string {
 	return fmt.Sprintf("%s%s", asciidocAnchorPrefix, adr.SafeID(id))
+}
+
+func (adr *AsciidoctorRenderer) TemplateValue(key string) string {
+	if adr == nil || adr.conf == nil {
+		return ""
+	}
+	return adr.conf.TemplateKeyValues.AsMap()[key]
 }
 
 func (adr *AsciidoctorRenderer) RenderFieldDoc(text string) string {
