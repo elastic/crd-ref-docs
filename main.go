@@ -53,6 +53,7 @@ func main() {
 	cmd.Flags().StringVar(&args.OutputPath, "output-path", ".", "Path to output the rendered result")
 	cmd.Flags().StringVar(&args.OutputMode, "output-mode", "single", "Output mode to generate a single file or one file per group ('group' or 'single')")
 	cmd.Flags().IntVar(&args.MaxDepth, "max-depth", 10, "Maximum recursion level for type discovery")
+	cmd.Flags().Var(&args.TemplateKeyValues, "template-value", "Can be used in template to pass in a version number or similar information. Example: --template-value=key1=value1 and {{ markdownTemplateValue \"k1\" }}")
 
 	if err := cmd.Execute(); err != nil {
 		os.Exit(1)

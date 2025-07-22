@@ -1,5 +1,7 @@
 # API Reference
 
+Here is a template value: `v1`.
+
 ## Packages
 - [webapp.test.k8s.elastic.co/common](#webapptestk8selasticcocommon)
 - [webapp.test.k8s.elastic.co/v1](#webapptestk8selasticcov1)
