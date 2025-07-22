@@ -35,7 +35,7 @@ func (kvs *KeyValueFlags) String() string {
 
 // Type implements pflag.Value
 func (kvs *KeyValueFlags) Type() string {
-	return "duration"
+	return "key value"
 }
 
 func (kvs *KeyValueFlags) AsMap() map[string]string {
