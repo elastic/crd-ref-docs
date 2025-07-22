@@ -3,6 +3,8 @@
 
 # API Reference
 
+Here is a template value: `{{ markdownTemplateValue "k1" }}`.
+
 ## Packages
 {{- range $groupVersions }}
 - {{ markdownRenderGVLink . }}

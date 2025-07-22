@@ -83,7 +83,7 @@ run_test() {
         cmd=(go run main.go "${args[@]}")
         echo "${cmd[@]}"
 
-        "${cmd[@]}"
+        "${cmd[@]}"  --template-value=k1=v1
 
         local diff
         if diff=$(diff -a -y --suppress-common-lines "${SCRIPT_DIR}/test/${expected}" "$actual"); then
