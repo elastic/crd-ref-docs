@@ -554,16 +554,18 @@ func parseMarkers(markers markers.MarkerValues) (string, []string) {
 			validation = append(validation, fmt.Sprintf("%s: %v", name, value))
 		}
 
-		if name == "kubebuilder:default" {
-			if value, ok := value.(crdmarkers.Default); ok {
-				defaultValue = fmt.Sprintf("%v", value.Value)
-				if strings.HasPrefix(defaultValue, "map[") {
-					defaultValue = strings.TrimPrefix(defaultValue, "map[")
-					defaultValue = strings.TrimSuffix(defaultValue, "]")
-					defaultValue = fmt.Sprintf("{ %s }", defaultValue)
-				}
-			}
+		switch v := value.(type) {
+		case crdmarkers.KubernetesDefault:
+			defaultValue = fmt.Sprintf("%v", v.Value)
+		case crdmarkers.Default:
+			defaultValue = fmt.Sprintf("%v", v.Value)
 		}
+	}
+
+	if strings.HasPrefix(defaultValue, "map[") {
+		defaultValue = strings.TrimPrefix(defaultValue, "map[")
+		defaultValue = strings.TrimSuffix(defaultValue, "]")
+		defaultValue = fmt.Sprintf("{ %s }", defaultValue)
 	}
 
 	return defaultValue, validation
