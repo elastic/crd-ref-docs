@@ -87,7 +87,7 @@ type Rating int
 // +kubebuilder:validation:XValidation:rule="self.page < 200", message="Please start a new book."
 type GuestbookSpec struct {
 	// Page indicates the page number
-	// +kubebuilder:default=1
+	// +default=1
 	// +kubebuilder:example=3
 	Page *PositiveInt `json:"page,omitempty"`
 	// Entries contain guest book entries for the page
