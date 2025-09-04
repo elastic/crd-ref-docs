@@ -40,6 +40,8 @@ func New(conf *config.Config) (Renderer, error) {
 		return NewAsciidoctorRenderer(conf)
 	case "markdown":
 		return NewMarkdownRenderer(conf)
+	case "mdx":
+		return NewMarkdownXRenderer(conf)
 	default:
 		return nil, fmt.Errorf("unknown renderer: %s", conf.Renderer)
 	}

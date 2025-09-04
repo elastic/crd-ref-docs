@@ -31,6 +31,15 @@ crd-ref-docs \
     --renderer=markdown
 ```
 
+Additionally, a very basic MDX renderer is provided:
+
+```
+crd-ref-docs \
+    --source-path=$GOPATH/src/github.com/elastic/cloud-on-k8s/pkg/apis \
+    --config=config.yaml \
+    --renderer=mdx
+```
+
 Default templates are embedded in the binary. You may provide your own templates by specifying the templates directory:
 
 ```
