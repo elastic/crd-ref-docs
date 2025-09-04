@@ -63,8 +63,9 @@ type KnownType struct {
 }
 
 const (
-	OutputModeSingle = "single"
-	OutputModeGroup  = "group"
+	OutputModeSingle       = "single"
+	OutputModeGroup        = "group"
+	OutputModeGroupVersion = "version"
 )
 
 type Flags struct {

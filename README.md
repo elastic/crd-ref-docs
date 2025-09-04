@@ -42,7 +42,7 @@ crd-ref-docs \
 ```
 
 Default output mode writes all data to a single output file. 
-You can choose between single mode and group mode by specifying the output mode. 
+You can choose between single mode, group mode, or version mode by specifying the output mode. 
 In group mode, separate files are created for each API group, ensuring that the specified output path is an existing directory.
 ```
 crd-ref-docs \
@@ -50,6 +50,14 @@ crd-ref-docs \
     --config=config.yaml \
     --output-path=./docs \
     --output-mode=group
+```
+In version mode, separate files are created for each API group and version combination, ensuring that the specified output path is an existing directory.
+```
+crd-ref-docs \
+    --source-path=$GOPATH/src/github.com/elastic/cloud-on-k8s/pkg/apis \
+    --config=config.yaml \
+    --output-path=./docs \
+    --output-mode=version
 ```
 
 ### Configuration
