@@ -21,6 +21,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"strings"
 	"text/template"
 
 	"github.com/elastic/crd-ref-docs/config"
@@ -39,6 +40,8 @@ func New(conf *config.Config) (Renderer, error) {
 		return NewAsciidoctorRenderer(conf)
 	case "markdown":
 		return NewMarkdownRenderer(conf)
+	case "mdx":
+		return NewMarkdownXRenderer(conf)
 	default:
 		return nil, fmt.Errorf("unknown renderer: %s", conf.Renderer)
 	}
@@ -85,6 +88,24 @@ func renderTemplate(tmpl *template.Template, conf *config.Config, fileExtension 
 	case config.OutputModeGroup:
 		for _, gvd := range gvds {
 			fileName := fmt.Sprintf("%s.%s", gvd.Group, fileExtension)
+			file, err := createOutFile(conf.OutputPath, true, fileName)
+			defer file.Close()
+			if err != nil {
+				return err
+			}
+
+			if err := tmpl.ExecuteTemplate(file, mainTemplate, []types.GroupVersionDetails{gvd}); err != nil {
+				return err
+			}
+		}
+	case config.OutputModeGroupVersion:
+		for _, gvd := range gvds {
+			// To avoid filenames containing filepath separators, replace them with a non-separator value.
+			// Using the GroupVersionString is the core difference between this output mode and the regular
+			// group mode.
+			name := strings.NewReplacer("/", "-").Replace(gvd.GroupVersionString())
+
+			fileName := fmt.Sprintf("%s.%s", name, fileExtension)
 			file, err := createOutFile(conf.OutputPath, true, fileName)
 			defer file.Close()
 			if err != nil {
