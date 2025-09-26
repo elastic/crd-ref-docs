@@ -163,6 +163,8 @@ GuestbookEntry defines an entry in a guest book.
 | *`name`* __string__ | Name of the guest (pipe \| should be escaped) + |  | MaxLength: 80 +
 Pattern: `0\*[a-z0-9]*[a-z]*[0-9]` +
 
+| *`tags`* __string array__ | Tags of the entry. + |  | items:Pattern: `[a-z]*` +
+
 | *`time`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#time-v1-meta[$$Time$$]__ | Time of entry + |  | 
 | *`comment`* __string__ | Comment by guest. This can be a multi-line comment. +
 Like this one. +
