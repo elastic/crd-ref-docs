@@ -146,6 +146,12 @@ type GuestbookEntry struct {
 	Comment string `json:"comment,omitempty"`
 	// Rating provided by the guest
 	Rating Rating `json:"rating,omitempty"`
+	// Email is the email address of the guest (required field using +required marker)
+	// +required
+	Email string `json:"email"`
+	// Location is the location of the guest (required field using +kubebuilder:validation:Required marker)
+	// +kubebuilder:validation:Required
+	Location string `json:"location"`
 }
 
 // GuestbookStatus defines the observed state of Guestbook.
