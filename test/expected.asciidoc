@@ -179,6 +179,10 @@ Looks good? + |  | Pattern: `0\*[a-z0-9]*[a-z]\*[0-9]*|\s` +
 | *`rating`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-rating[$$Rating$$]__ | Rating provided by the guest + |  | Maximum: 5 +
 Minimum: 1 +
 
+| *`email`* __string__ | Email is the email address of the guest (required field using +required marker) + |  | Required: \{} +
+
+| *`location`* __string__ | Location is the location of the guest (required field using +kubebuilder:validation:Required marker) + |  | Required: \{} +
+
 |===
 
 

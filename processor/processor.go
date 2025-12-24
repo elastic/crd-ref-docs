@@ -554,6 +554,12 @@ func parseMarkers(markers markers.MarkerValues) (string, []string) {
 			validation = append(validation, fmt.Sprintf("%s: %v", name, value))
 		}
 
+		// Handle standalone +required marker
+		// This is equivalent to +kubebuilder:validation:Required
+		if name == "required" {
+			validation = append(validation, "Required: {}")
+		}
+
 		if name == "kubebuilder:default" {
 			if value, ok := value.(crdmarkers.Default); ok {
 				defaultValue = fmt.Sprintf("%v", value.Value)
