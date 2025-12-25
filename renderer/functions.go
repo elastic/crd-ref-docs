@@ -71,12 +71,12 @@ func (f *Functions) SafeID(id string) string {
 }
 
 func (f *Functions) LinkForType(t *types.Type) (link string, local bool) {
-	if f.IsKubeType(t) {
-		return f.LinkForKubeType(t), false
-	}
-
 	if kt, ok := f.IsKnownType(t); ok {
 		return f.LinkForKnownType(kt), false
+	}
+
+	if f.IsKubeType(t) {
+		return f.LinkForKubeType(t), false
 	}
 
 	if t.IsBasic() || t.Imported {
