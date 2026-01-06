@@ -562,10 +562,15 @@ func parseMarkers(markers markers.MarkerValues) (string, []string) {
 			validation = append(validation, fmt.Sprintf("%s: %v", name, value))
 		}
 
-		// Handle standalone +required marker
+		// Handle standalone +required and +k8s:required marker
 		// This is equivalent to +kubebuilder:validation:Required
-		if name == "required" {
+		if name == "required" || name == "k8s:required" {
 			validation = append(validation, "Required: {}")
+		}
+		// Handle standalone +optional and +k8s:optional marker
+		// This is equivalent to +kubebuilder:validation:Optional
+		if name == "optional" || name == "k8s:optional" {
+			validation = append(validation, "Optional: {}")
 		}
 
 		if name == "kubebuilder:default" {
