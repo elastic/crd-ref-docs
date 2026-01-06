@@ -162,6 +162,7 @@ GuestbookEntry defines an entry in a guest book.
 | Field | Description | Default | Validation
 | *`name`* __string__ | Name of the guest (pipe \| should be escaped) + |  | MaxLength: 80 +
 Pattern: `0\*[a-z0-9]*[a-z]*[0-9]` +
+Required: \{} +
 
 | *`tags`* __string array__ | Tags of the entry. + |  | items:Pattern: `[a-z]*` +
 
@@ -181,7 +182,11 @@ Minimum: 1 +
 
 | *`email`* __string__ | Email is the email address of the guest (required field using +required marker) + |  | Required: \{} +
 
-| *`location`* __string__ | Location is the location of the guest (required field using +kubebuilder:validation:Required marker) + |  | Required: \{} +
+| *`location`* __string__ | Location is the location of the guest (required field using +k8s:required marker) + |  | Required: \{} +
+
+| *`phone`* __string__ | Phone is the phone number of the guest (optional field using +optional marker) + |  | Optional: \{} +
+
+| *`company`* __string__ | Company is the company of the guest (optional field using +k8s:optional marker) + |  | Optional: \{} +
 
 |===
 

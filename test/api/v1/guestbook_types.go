@@ -124,6 +124,7 @@ type PositiveInt int
 // GuestbookEntry defines an entry in a guest book.
 type GuestbookEntry struct {
 	// Name of the guest (pipe | should be escaped)
+	// +kubebuilder:validation:Required
 	// +kubebuilder:validation:MaxLength=80
 	// +kubebuilder:validation:Pattern=`0*[a-z0-9]*[a-z]*[0-9]`
 	Name string `json:"name,omitempty"`
@@ -146,12 +147,19 @@ type GuestbookEntry struct {
 	Comment string `json:"comment,omitempty"`
 	// Rating provided by the guest
 	Rating Rating `json:"rating,omitempty"`
+
 	// Email is the email address of the guest (required field using +required marker)
 	// +required
 	Email string `json:"email"`
-	// Location is the location of the guest (required field using +kubebuilder:validation:Required marker)
-	// +kubebuilder:validation:Required
+	// Location is the location of the guest (required field using +k8s:required marker)
+	// +k8s:required
 	Location string `json:"location"`
+	// Phone is the phone number of the guest (optional field using +optional marker)
+	// +optional
+	Phone string `json:"phone"`
+	// Company is the company of the guest (optional field using +k8s:optional marker)
+	// +k8s:optional
+	Company string `json:"company"`
 }
 
 // GuestbookStatus defines the observed state of Guestbook.
