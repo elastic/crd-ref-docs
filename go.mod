@@ -9,7 +9,7 @@ require (
 	github.com/goccy/go-yaml v1.18.0
 	github.com/spf13/cobra v1.10.1
 	github.com/stretchr/testify v1.11.1
-	go.uber.org/zap v1.27.0
+	go.uber.org/zap v1.27.1
 	golang.org/x/tools v0.39.0
 	k8s.io/apimachinery v0.34.1
 	sigs.k8s.io/controller-tools v0.19.0
