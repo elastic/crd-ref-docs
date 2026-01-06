@@ -505,6 +505,14 @@ func mkRegistry(customMarkers []config.Marker) (*markers.Registry, error) {
 		}
 	}
 
+	// Register k8s:* markers - sig apimachinery plans to unify CRD and native types on these.
+	if err := registry.Define("k8s:required", markers.DescribesField, struct{}{}); err != nil {
+		return nil, err
+	}
+	if err := registry.Define("k8s:optional", markers.DescribesField, struct{}{}); err != nil {
+		return nil, err
+	}
+
 	for _, marker := range customMarkers {
 		t := markers.DescribesField
 		switch marker.Target {
