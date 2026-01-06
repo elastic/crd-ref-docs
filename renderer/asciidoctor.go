@@ -169,6 +169,7 @@ func (adr *AsciidoctorRenderer) RenderFieldDoc(text string) string {
 
 func (adr *AsciidoctorRenderer) RenderValidation(text string) string {
 	renderedText := escapeFirstAsterixInEachPair(text)
+	renderedText = escapePipe(renderedText)
 	return escapeCurlyBraces(renderedText)
 }
 
@@ -188,6 +189,12 @@ func escapeFirstAsterixInEachPair(text string) string {
 		}
 	}
 	return text
+}
+
+// escapePipe ensures sufficient escapes are added to pipe characters, so they are not mistaken
+// for asciidoctor table formatting.
+func escapePipe(text string) string {
+	return strings.Replace(text, "|", "\\|", -1)
 }
 
 // escapeCurlyBraces ensures sufficient escapes are added to curly braces, so they are not mistaken
