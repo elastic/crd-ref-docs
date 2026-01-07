@@ -19,3 +19,8 @@ func Test_escapeCurlyBraces(t *testing.T) {
 	assert.Equal(t, "[a-fA-F0-9]\\{64}", escapeCurlyBraces("[a-fA-F0-9]{64}"))
 	assert.Equal(t, "[a-fA-F0-9]\\\\{64\\}", escapeCurlyBraces("[a-fA-F0-9]\\{64\\}"))
 }
+
+func Test_escapePipe(t *testing.T) {
+	assert.Equal(t, "[0-9]", escapePipe("[0-9]"))
+	assert.Equal(t, `[0-9]*\|\s`, escapePipe(`[0-9]*|\s`))
+}
