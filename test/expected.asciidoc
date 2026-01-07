@@ -162,6 +162,7 @@ GuestbookEntry defines an entry in a guest book.
 | Field | Description | Default | Validation
 | *`name`* __string__ | Name of the guest (pipe \| should be escaped) + |  | MaxLength: 80 +
 Pattern: `0\*[a-z0-9]*[a-z]*[0-9]` +
+Required: \{} +
 
 | *`tags`* __string array__ | Tags of the entry. + |  | items:Pattern: `[a-z]*` +
 
@@ -174,10 +175,18 @@ Now let's test a list: +
 
 Another isolated comment. +
 
-Looks good? + |  | Pattern: `0\*[a-z0-9]*[a-z]\*[0-9]*|\s` +
+Looks good? + |  | Pattern: `0\*[a-z0-9]*[a-z]\*[0-9]*\|\s` +
 
 | *`rating`* __xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-rating[$$Rating$$]__ | Rating provided by the guest + |  | Maximum: 5 +
 Minimum: 1 +
+
+| *`email`* __string__ | Email is the email address of the guest (required field using +required marker) + |  | Required: \{} +
+
+| *`location`* __string__ | Location is the location of the guest (required field using +k8s:required marker) + |  | Required: \{} +
+
+| *`phone`* __string__ | Phone is the phone number of the guest (optional field using +optional marker) + |  | Optional: \{} +
+
+| *`company`* __string__ | Company is the company of the guest (optional field using +k8s:optional marker) + |  | Optional: \{} +
 
 |===
 

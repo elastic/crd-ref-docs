@@ -505,6 +505,14 @@ func mkRegistry(customMarkers []config.Marker) (*markers.Registry, error) {
 		}
 	}
 
+	// Register k8s:* markers - sig apimachinery plans to unify CRD and native types on these.
+	if err := registry.Define("k8s:required", markers.DescribesField, struct{}{}); err != nil {
+		return nil, err
+	}
+	if err := registry.Define("k8s:optional", markers.DescribesField, struct{}{}); err != nil {
+		return nil, err
+	}
+
 	for _, marker := range customMarkers {
 		t := markers.DescribesField
 		switch marker.Target {
@@ -552,6 +560,17 @@ func parseMarkers(markers markers.MarkerValues) (string, []string) {
 				continue
 			}
 			validation = append(validation, fmt.Sprintf("%s: %v", name, value))
+		}
+
+		// Handle standalone +required and +k8s:required marker
+		// This is equivalent to +kubebuilder:validation:Required
+		if name == "required" || name == "k8s:required" {
+			validation = append(validation, "Required: {}")
+		}
+		// Handle standalone +optional and +k8s:optional marker
+		// This is equivalent to +kubebuilder:validation:Optional
+		if name == "optional" || name == "k8s:optional" {
+			validation = append(validation, "Optional: {}")
 		}
 
 		if name == "kubebuilder:default" {
