@@ -562,7 +562,14 @@ func parseMarkers(markers markers.MarkerValues) (string, []string) {
 			validation = append(validation, fmt.Sprintf("%s: %v", name, value))
 		}
 
-		// Handle standalone +required and +k8s:required marker
+		switch v := value.(type) {
+		case crdmarkers.KubernetesDefault:
+			defaultValue = fmt.Sprintf("%v", v.Value)
+		case crdmarkers.Default:
+			defaultValue = fmt.Sprintf("%v", v.Value)
+		}
+
+    // Handle standalone +required and +k8s:required marker
 		// This is equivalent to +kubebuilder:validation:Required
 		if name == "required" || name == "k8s:required" {
 			validation = append(validation, "Required: {}")
@@ -572,17 +579,12 @@ func parseMarkers(markers markers.MarkerValues) (string, []string) {
 		if name == "optional" || name == "k8s:optional" {
 			validation = append(validation, "Optional: {}")
 		}
+	}
 
-		if name == "kubebuilder:default" {
-			if value, ok := value.(crdmarkers.Default); ok {
-				defaultValue = fmt.Sprintf("%v", value.Value)
-				if strings.HasPrefix(defaultValue, "map[") {
-					defaultValue = strings.TrimPrefix(defaultValue, "map[")
-					defaultValue = strings.TrimSuffix(defaultValue, "]")
-					defaultValue = fmt.Sprintf("{ %s }", defaultValue)
-				}
-			}
-		}
+	if strings.HasPrefix(defaultValue, "map[") {
+		defaultValue = strings.TrimPrefix(defaultValue, "map[")
+		defaultValue = strings.TrimSuffix(defaultValue, "]")
+		defaultValue = fmt.Sprintf("{ %s }", defaultValue)
 	}
 
 	return defaultValue, validation
