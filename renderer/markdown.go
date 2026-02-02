@@ -114,23 +114,14 @@ func (m *MarkdownRenderer) RenderTypeLink(t *types.Type) string {
 	}
 
 	if local {
-		return m.RenderLocalLink(text)
+		return m.RenderLocalLink(link, text)
 	} else {
 		return m.RenderExternalLink(link, text)
 	}
 }
 
-func (m *MarkdownRenderer) RenderLocalLink(text string) string {
-	anchor := strings.ToLower(
-		strings.NewReplacer(
-			" ", "-",
-			".", "",
-			"/", "",
-			"(", "",
-			")", "",
-		).Replace(text),
-	)
-	return fmt.Sprintf("[%s](#%s)", text, anchor)
+func (m *MarkdownRenderer) RenderLocalLink(link, text string) string {
+	return fmt.Sprintf("[%s](#%s)", text, link)
 }
 
 func (m *MarkdownRenderer) TemplateValue(key string) string {
@@ -145,7 +136,7 @@ func (m *MarkdownRenderer) RenderExternalLink(link, text string) string {
 }
 
 func (m *MarkdownRenderer) RenderGVLink(gv types.GroupVersionDetails) string {
-	return m.RenderLocalLink(gv.GroupVersionString())
+	return m.RenderLocalLink(m.GroupVersionID(gv), gv.GroupVersionString())
 }
 
 func (m *MarkdownRenderer) RenderFieldDoc(text string) string {
