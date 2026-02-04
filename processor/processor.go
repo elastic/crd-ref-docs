@@ -536,8 +536,18 @@ func mkRegistry(customMarkers []config.Marker) (*markers.Registry, error) {
 			continue
 		}
 
-		if err := registry.Define(marker.Name, t, struct{}{}); err != nil {
+		var d *markers.Definition
+		var err error
+		if marker.HasValue {
+			d, err = markers.MakeAnyTypeDefinition(marker.Name, t, crdmarkers.Default{})
+		} else {
+			d, err = markers.MakeDefinition(marker.Name, t, struct{}{})
+		}
+		if err != nil {
 			return nil, fmt.Errorf("failed to define custom marker %s: %w", marker.Name, err)
+		}
+		if err := registry.Register(d); err != nil {
+			return nil, fmt.Errorf("failed to register custom marker %s: %w", marker.Name, err)
 		}
 	}
 
@@ -556,7 +566,6 @@ func parseMarkers(markers markers.MarkerValues) (string, []string) {
 
 	for _, name := range markerNames {
 		value := markers[name][len(markers[name])-1]
-
 		if strings.HasPrefix(name, "kubebuilder:validation:") {
 			name := strings.TrimPrefix(name, "kubebuilder:validation:")
 
