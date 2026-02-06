@@ -187,6 +187,7 @@ _Appears in:_
 | `selector` _[LabelSelector](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#labelselector-v1-meta)_ | Selector selects something |  |  |
 | `headers` _[GuestbookHeader](#guestbookheader) array_ | Headers contains a list of header items to include in the page |  | MaxItems: 10 <br />UniqueItems: true <br /> |
 | `certificateRef` _[SecretObjectReference](https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1beta1.SecretObjectReference)_ | CertificateRef is a reference to a secret containing a certificate |  |  |
+| `quantity` _[Quantity](https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/quantity/)_ | Quantity is a k8s type, but config.yaml overrides its link |  |  |
 | `str` _[CommonString](#commonstring)_ |  |  |  |
 | `enum` _[MyEnum](#myenum)_ | Enumeration is an example of an aliased enumeration type |  | Enum: [MyFirstValue MySecondValue] <br /> |
 | `digest` _string_ | Digest is the content-addressable identifier of the guestbook |  | Pattern: `^sha256:[a-fA-F0-9]\{64\}$` <br /> |
