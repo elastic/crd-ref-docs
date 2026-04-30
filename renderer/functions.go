@@ -75,11 +75,10 @@ func (f *Functions) LinkForType(t *types.Type) (link string, local bool) {
 		return f.LinkForKubeType(t), false
 	}
 
-	if kt, ok := f.IsKnownType(t); ok {
-		return f.LinkForKnownType(kt), false
-	}
-
 	if t.IsBasic() || t.Imported {
+		if kt, ok := f.IsKnownType(t); ok {
+			return f.LinkForKnownType(kt), false
+		}
 		return "", false
 	}
 

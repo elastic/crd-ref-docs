@@ -55,11 +55,8 @@ func TestLinkForType(t *testing.T) {
 		{
 			name:      "local type ignores knownTypes and gets local link",
 			typ:       &types.Type{Name: "Foo", Package: "example.com/pkg", Imported: false},
-			// FIXME: This is incorrect and should be a relative link
-			// wantLink:  "example-com-pkg-foo",
-			// wantLocal: true,
-			wantLink:  "https://example.com/docs#foo",
-			wantLocal: false,
+			wantLink:  "example-com-pkg-foo",
+			wantLocal: true,
 		},
 		{
 			name:      "kube type gets kubernetes.io link even when also in knownTypes",
