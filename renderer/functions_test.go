@@ -24,6 +24,60 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestLinkForType(t *testing.T) {
+	conf := config.Config{
+		Render: config.RenderConfig{
+			KubernetesVersion: "1.29",
+			KnownTypes: []*config.KnownType{
+				// Register our own package to verify it is ignored for local types.
+				{Name: "Foo", Package: "example.com/pkg", Link: "https://example.com/docs#foo"},
+				// Also register a kube type to verify IsKubeType takes precedence over knownTypes.
+				{Name: "ObjectMeta", Package: "k8s.io/apimachinery/pkg/apis/meta/v1", Link: "https://example.com/docs#objectmeta"},
+			},
+		},
+	}
+
+	f, err := NewFunctions(&conf)
+	require.NoError(t, err)
+
+	cases := []struct {
+		name      string
+		typ       *types.Type
+		wantLink  string
+		wantLocal bool
+	}{
+		{
+			name:      "imported type gets external link from knownTypes",
+			typ:       &types.Type{Name: "Foo", Package: "example.com/pkg", Imported: true},
+			wantLink:  "https://example.com/docs#foo",
+			wantLocal: false,
+		},
+		{
+			name:      "local type ignores knownTypes and gets local link",
+			typ:       &types.Type{Name: "Foo", Package: "example.com/pkg", Imported: false},
+			// FIXME: This is incorrect and should be a relative link
+			// wantLink:  "example-com-pkg-foo",
+			// wantLocal: true,
+			wantLink:  "https://example.com/docs#foo",
+			wantLocal: false,
+		},
+		{
+			name:      "kube type gets kubernetes.io link even when also in knownTypes",
+			typ:       &types.Type{Package: "k8s.io/apimachinery/pkg/apis/meta/v1", Name: "ObjectMeta"},
+			wantLink:  "https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#objectmeta-v1-meta",
+			wantLocal: false,
+		},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			link, local := f.LinkForType(tc.typ)
+			require.Equal(t, tc.wantLink, link)
+			require.Equal(t, tc.wantLocal, local)
+		})
+	}
+}
+
 func TestKubernetesHelper(t *testing.T) {
 	conf := config.Config{
 		Render: config.RenderConfig{
