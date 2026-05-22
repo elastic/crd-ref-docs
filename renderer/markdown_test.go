@@ -35,6 +35,119 @@ func newTestConfig(t *testing.T) *config.Config {
 	return conf
 }
 
+func TestMarkdownRenderer_RewriteLinks(t *testing.T) {
+	conf := &config.Config{
+		Render: config.RenderConfig{
+			LinkMappings: []*config.LinkMapping{
+				{
+					URL:  "https://example.com/old",
+					Link: "docs-content://new/page.md",
+					Text: "New page",
+				},
+				{
+					URL:  "https://example.com/other",
+					Link: "kibana://reference/other.md",
+					Text: "Other",
+				},
+			},
+		},
+	}
+	r := &MarkdownRenderer{conf: conf}
+
+	tests := []struct {
+		name     string
+		renderer *MarkdownRenderer
+		text     string
+		want     string
+	}{
+		{
+			name:     "single substitution",
+			renderer: r,
+			text:     "See https://example.com/old for details.",
+			want:     "See [New page](docs-content://new/page.md) for details.",
+		},
+		{
+			name:     "multiple substitutions",
+			renderer: r,
+			text:     "See https://example.com/old and https://example.com/other.",
+			want:     "See [New page](docs-content://new/page.md) and [Other](kibana://reference/other.md).",
+		},
+		{
+			name:     "no match leaves text unchanged",
+			renderer: r,
+			text:     "See https://example.com/unmapped for details.",
+			want:     "See https://example.com/unmapped for details.",
+		},
+		{
+			name:     "no mappings configured",
+			renderer: &MarkdownRenderer{conf: &config.Config{}},
+			text:     "See https://example.com/old for details.",
+			want:     "See https://example.com/old for details.",
+		},
+		{
+			name:     "nil config",
+			renderer: &MarkdownRenderer{conf: nil},
+			text:     "See https://example.com/old for details.",
+			want:     "See https://example.com/old for details.",
+		},
+		{
+			name:     "nil renderer",
+			renderer: nil,
+			text:     "See https://example.com/old for details.",
+			want:     "See https://example.com/old for details.",
+		},
+		{
+			name:     "multiple occurrences of the same URL are all rewritten",
+			renderer: r,
+			text:     "See https://example.com/old and again https://example.com/old.",
+			want:     "See [New page](docs-content://new/page.md) and again [New page](docs-content://new/page.md).",
+		},
+		{
+			name: "longer URL listed first wins over shorter prefix",
+			renderer: &MarkdownRenderer{conf: &config.Config{
+				Render: config.RenderConfig{
+					LinkMappings: []*config.LinkMapping{
+						{URL: "https://example.com/old-page", Link: "docs-content://new/page.md", Text: "New page"},
+						{URL: "https://example.com/old", Link: "docs-content://other.md", Text: "Other"},
+					},
+				},
+			}},
+			text: "See https://example.com/old-page for details.",
+			want: "See [New page](docs-content://new/page.md) for details.",
+		},
+		{
+			name:     "URL inside an existing Markdown link produces nested output",
+			renderer: r,
+			text:     "See [the page](https://example.com/old) for details.",
+			want:     "See [the page]([New page](docs-content://new/page.md)) for details.",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, tt.renderer.RewriteLinks(tt.text))
+		})
+	}
+}
+
+func TestMarkdownRenderer_RenderFieldDoc_appliesLinkMappings(t *testing.T) {
+	conf := &config.Config{
+		Render: config.RenderConfig{
+			LinkMappings: []*config.LinkMapping{
+				{
+					URL:  "https://example.com/old",
+					Link: "docs-content://new/page.md",
+					Text: "New page",
+				},
+			},
+		},
+	}
+	r := &MarkdownRenderer{conf: conf}
+
+	got := r.RenderFieldDoc("See https://example.com/old for details.")
+	assert.Equal(t, "See [New page](docs-content://new/page.md) for details.", got)
+}
+
 func TestMarkdownRenderer_TemplateValue(t *testing.T) {
 	tests := []struct {
 		name     string

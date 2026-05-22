@@ -52,14 +52,21 @@ const (
 )
 
 type RenderConfig struct {
-	KnownTypes        []*KnownType `json:"knownTypes"`
-	KubernetesVersion string       `json:"kubernetesVersion"`
+	KnownTypes        []*KnownType   `json:"knownTypes"`
+	KubernetesVersion string         `json:"kubernetesVersion"`
+	LinkMappings      []*LinkMapping `json:"linkMappings"`
 }
 
 type KnownType struct {
 	Name    string `json:"name"`
 	Package string `json:"package"`
 	Link    string `json:"link"`
+}
+
+type LinkMapping struct {
+	URL  string `json:"url"`
+	Link string `json:"link"`
+	Text string `json:"text"`
 }
 
 const (

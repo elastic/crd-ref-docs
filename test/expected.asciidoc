@@ -148,7 +148,7 @@ Guestbook is the Schema for the guestbooks API.
 
 
 
-GuestbookEntry defines an entry in a guest book.
+GuestbookEntry defines an entry in a guest book. See https://example.com/old-page for more.
 
 
 
@@ -160,7 +160,7 @@ GuestbookEntry defines an entry in a guest book.
 [cols="20a,50a,15a,15a", options="header"]
 |===
 | Field | Description | Default | Validation
-| *`name`* __string__ | Name of the guest (pipe \| should be escaped) + |  | MaxLength: 80 +
+| *`name`* __string__ | Name of the guest (pipe \| should be escaped). See https://example.com/old-page for naming guidance. + |  | MaxLength: 80 +
 Pattern: `0\*[a-z0-9]*[a-z]*[0-9]` +
 Required: \{} +
 

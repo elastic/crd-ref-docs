@@ -72,6 +72,7 @@ func (m *MarkdownRenderer) ToFuncMap() template.FuncMap {
 		"RenderLocalLink":    m.RenderLocalLink,
 		"RenderType":         m.RenderType,
 		"RenderTypeLink":     m.RenderTypeLink,
+		"RewriteLinks":       m.RewriteLinks,
 		"SafeID":             m.SafeID,
 		"ShouldRenderType":   m.ShouldRenderType,
 		"TypeID":             m.TypeID,
@@ -148,10 +149,22 @@ func (m *MarkdownRenderer) RenderGVLink(gv types.GroupVersionDetails) string {
 	return m.RenderLocalLink(gv.GroupVersionString())
 }
 
+func (m *MarkdownRenderer) RewriteLinks(text string) string {
+	if m == nil || m.conf == nil {
+		return text
+	}
+	for _, lm := range m.conf.Render.LinkMappings {
+		text = strings.ReplaceAll(text, lm.URL, m.RenderExternalLink(lm.Link, lm.Text))
+	}
+	return text
+}
+
 func (m *MarkdownRenderer) RenderFieldDoc(text string) string {
+	out := m.RewriteLinks(text)
+
 	// Escape the pipe character, which has special meaning for Markdown as a way to format tables
 	// so that including | in a comment does not result in wonky tables.
-	out := strings.ReplaceAll(text, "|", "\\|")
+	out = strings.ReplaceAll(out, "|", "\\|")
 
 	// Escape the curly bracket character.
 	out = strings.ReplaceAll(out, "{", "\\{")

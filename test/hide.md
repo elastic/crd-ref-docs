@@ -119,7 +119,7 @@ _Appears in:_
 
 
 
-GuestbookEntry defines an entry in a guest book.
+GuestbookEntry defines an entry in a guest book. See [New page](docs-content://new/page.md) for more.
 
 
 
@@ -128,7 +128,7 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `name` _string_ | Name of the guest (pipe \| should be escaped) |  | MaxLength: 80 <br />Pattern: `0*[a-z0-9]*[a-z]*[0-9]` <br />Required: \{\} <br /> |
+| `name` _string_ | Name of the guest (pipe \| should be escaped). See [New page](docs-content://new/page.md) for naming guidance. |  | MaxLength: 80 <br />Pattern: `0*[a-z0-9]*[a-z]*[0-9]` <br />Required: \{\} <br /> |
 | `tags` _string array_ | Tags of the entry. |  | items:Pattern: `[a-z]*` <br /> |
 | `time` _[Time](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#time-v1-meta)_ | Time of entry |  |  |
 | `comment` _string_ | Comment by guest. This can be a multi-line comment.<br />Like this one.<br />Now let's test a list:<br />* a<br />* b<br />Another isolated comment.<br />Looks good? |  | Pattern: `0*[a-z0-9]*[a-z]*[0-9]*\|\s` <br /> |

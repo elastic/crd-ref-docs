@@ -78,6 +78,11 @@ render:
     - name: SecretObjectReference
       package: sigs.k8s.io/gateway-api/apis/v1beta1
       link: https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1beta1.SecretObjectReference
+  # Rewrite plain URLs in field and type doc comments to Markdown links. Markdown renderer only.
+  linkMappings:
+    - url: https://example.com/old-page
+      link: docs-content://new/page.md
+      text: New page
 ```
 
 ### Advanced Features
