@@ -284,8 +284,9 @@ func (t *Type) propagateMarkers() {
 // Field describes a field in a struct.
 type Field struct {
 	Name       string
-	Embedded   bool // Embedded struct in Go typing
-	Inlined    bool // Inlined struct in serialization
+	Aliases    []string // alternative JSON key names from the "aliases" struct tag
+	Embedded   bool     // Embedded struct in Go typing
+	Inlined    bool     // Inlined struct in serialization
 	Doc        string
 	Default    string
 	Validation []string

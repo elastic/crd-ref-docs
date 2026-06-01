@@ -34,6 +34,7 @@ func compileConfig(conf *config.Config) (cc *compiledConfig, err error) {
 		ignoreGroupVersions: make([]*regexp.Regexp, len(conf.Processor.IgnoreGroupVersions)),
 		useRawDocstring:     conf.Processor.UseRawDocstring,
 		markers:             conf.Processor.CustomMarkers,
+		caseIgnoreAliases:   conf.Processor.CaseIgnoreAliases,
 	}
 
 	for i, t := range conf.Processor.IgnoreTypes {
@@ -63,6 +64,7 @@ type compiledConfig struct {
 	ignoreGroupVersions []*regexp.Regexp
 	useRawDocstring     bool
 	markers             []config.Marker
+	caseIgnoreAliases   []config.NamingConvention
 }
 
 func (cc *compiledConfig) shouldIgnoreGroupVersion(gv string) bool {
