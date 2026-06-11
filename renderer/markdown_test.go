@@ -155,6 +155,27 @@ func TestMarkdownRenderer_RenderFieldDoc_appliesLinkMappings(t *testing.T) {
 	assert.Equal(t, "See [New page](docs-content://new/page.md) for details.", got)
 }
 
+func TestMarkdownRenderer_RenderFieldDoc_rewriteThenEscape(t *testing.T) {
+	conf := &config.Config{
+		Render: config.RenderConfig{
+			LinkMappings: []*config.LinkMapping{
+				{
+					URL:  "https://example.com/old",
+					Link: "docs-content://new/page.md",
+					Text: "New page",
+				},
+			},
+		},
+	}
+	r := &MarkdownRenderer{conf: conf}
+
+	// Link rewriting happens before pipe-escaping: the URL becomes a Markdown
+	// link and the literal pipe in the surrounding text is still escaped so it
+	// does not break the Markdown table.
+	got := r.RenderFieldDoc("See https://example.com/old (a | b) for details.")
+	assert.Equal(t, "See [New page](docs-content://new/page.md) (a \\| b) for details.", got)
+}
+
 func TestMarkdownRenderer_TemplateValue(t *testing.T) {
 	tests := []struct {
 		name     string
