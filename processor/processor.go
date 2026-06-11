@@ -674,7 +674,7 @@ func (p *processor) deriveAliases(canonicalName string) []string {
 }
 
 // toSnakeCase converts a camelCase or PascalCase string to snake_case.
-// e.g. "groupWait" -> "group_wait", "apiURL" -> "api_url"
+// e.g. "groupWait" -> "group_wait", "apiURL" -> "api_url", "v1Beta" -> "v1_beta"
 func toSnakeCase(s string) string {
 	runes := []rune(s)
 	var b strings.Builder
@@ -685,7 +685,7 @@ func toSnakeCase(s string) string {
 		}
 		if unicode.IsUpper(r) {
 			prev := runes[i-1]
-			if unicode.IsLower(prev) || (unicode.IsUpper(prev) && i+1 < len(runes) && unicode.IsLower(runes[i+1])) {
+			if unicode.IsLower(prev) || unicode.IsDigit(prev) || (unicode.IsUpper(prev) && i+1 < len(runes) && unicode.IsLower(runes[i+1])) {
 				b.WriteByte('_')
 			}
 			b.WriteRune(unicode.ToLower(r))
