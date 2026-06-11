@@ -415,10 +415,6 @@ func (p *processor) processStructFields(parentType *types.Type, pkg *loader.Pack
 			}
 		}
 
-		if hasCaseIgnore(f.Tag.Get("json")) {
-			fieldDef.Aliases = p.deriveAliases(fieldDef.Name)
-		}
-
 		t := pkg.TypesInfo.TypeOf(f.RawField.Type)
 		if t == nil {
 			zap.S().Debugw("Failed to determine type of field", "field", fieldDef.Name)
@@ -436,6 +432,12 @@ func (p *processor) processStructFields(parentType *types.Type, pkg *loader.Pack
 
 		if fieldDef.Name == "" {
 			fieldDef.Name = fieldDef.Type.Name
+		}
+
+		// Derive aliases once the field name has been fully resolved, so they
+		// are based on the displayed name rather than an intermediate value.
+		if hasCaseIgnore(f.Tag.Get("json")) {
+			fieldDef.Aliases = p.deriveAliases(fieldDef.Name)
 		}
 
 		if p.shouldIgnoreField(parentTypeKey, fieldDef.Name) {
