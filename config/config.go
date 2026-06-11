@@ -30,6 +30,17 @@ type Config struct {
 	Flags     `json:"-"`
 }
 
+// NamingConvention identifies a field-naming style to derive as an alias
+// when a struct field carries the json `case:ignore` tag option.
+type NamingConvention string
+
+const (
+	// NamingConventionCamelCase derives the lowerCamelCase form (e.g. "groupWait" for "group_wait").
+	NamingConventionCamelCase NamingConvention = "camelCase"
+	// NamingConventionSnakeCase derives the snake_case form (e.g. "group_wait" for "groupWait").
+	NamingConventionSnakeCase NamingConvention = "snake_case"
+)
+
 type ProcessorConfig struct {
 	MaxDepth            int      `json:"maxDepth"`
 	IgnoreTypes         []string `json:"ignoreTypes"`
@@ -37,6 +48,10 @@ type ProcessorConfig struct {
 	IgnoreGroupVersions []string `json:"ignoreGroupVersions"`
 	UseRawDocstring     bool     `json:"useRawDocstring"`
 	CustomMarkers       []Marker `json:"customMarkers"`
+	// CaseIgnoreAliases lists the naming conventions to derive and display as
+	// alternative field names whenever a struct field carries the json `case:ignore`
+	// tag option. When empty, no aliases are shown for such fields.
+	CaseIgnoreAliases []NamingConvention `json:"caseIgnoreAliases"`
 }
 
 type Marker struct {

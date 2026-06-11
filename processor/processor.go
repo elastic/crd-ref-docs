@@ -25,6 +25,7 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+	"unicode"
 
 	"github.com/elastic/crd-ref-docs/config"
 	"github.com/elastic/crd-ref-docs/types"
@@ -404,6 +405,7 @@ func (p *processor) processStructFields(parentType *types.Type, pkg *loader.Pack
 			Embedded: f.Name == "",
 		}
 
+		var caseIgnore bool
 		if tagVal, ok := f.Tag.Lookup("json"); ok {
 			args := strings.Split(tagVal, ",")
 			if len(args) > 0 && args[0] != "" {
@@ -412,6 +414,7 @@ func (p *processor) processStructFields(parentType *types.Type, pkg *loader.Pack
 			if len(args) > 1 && args[1] == "inline" {
 				fieldDef.Inlined = true
 			}
+			caseIgnore = hasCaseIgnore(args)
 		}
 
 		t := pkg.TypesInfo.TypeOf(f.RawField.Type)
@@ -431,6 +434,12 @@ func (p *processor) processStructFields(parentType *types.Type, pkg *loader.Pack
 
 		if fieldDef.Name == "" {
 			fieldDef.Name = fieldDef.Type.Name
+		}
+
+		// Derive aliases once the field name has been fully resolved, so they
+		// are based on the displayed name rather than an intermediate value.
+		if caseIgnore {
+			fieldDef.Aliases = p.deriveAliases(fieldDef.Name)
 		}
 
 		if p.shouldIgnoreField(parentTypeKey, fieldDef.Name) {
@@ -569,7 +578,7 @@ func parseMarkers(markers markers.MarkerValues) (string, []string) {
 			defaultValue = fmt.Sprintf("%v", v.Value)
 		}
 
-    // Handle standalone +required and +k8s:required marker
+		// Handle standalone +required and +k8s:required marker
 		// This is equivalent to +kubebuilder:validation:Required
 		if name == "required" || name == "k8s:required" {
 			validation = append(validation, "Required: {}")
@@ -631,4 +640,77 @@ func lookupConstantValuesForAliasedType(pkg *loader.Package, aliasTypeName strin
 		}
 	}
 	return values
+}
+
+// hasCaseIgnore reports whether the comma-separated json struct tag options
+// contain the "case:ignore" option.
+func hasCaseIgnore(options []string) bool {
+	for _, part := range options {
+		if strings.TrimSpace(part) == "case:ignore" {
+			return true
+		}
+	}
+	return false
+}
+
+// deriveAliases returns alternative names for canonicalName based on the
+// configured caseIgnoreAliases conventions. Names identical to canonicalName
+// are omitted.
+func (p *processor) deriveAliases(canonicalName string) []string {
+	var aliases []string
+	for _, conv := range p.caseIgnoreAliases {
+		var derived string
+		switch conv {
+		case config.NamingConventionCamelCase:
+			derived = toCamelCase(canonicalName)
+		case config.NamingConventionSnakeCase:
+			derived = toSnakeCase(canonicalName)
+		}
+		if derived != "" && derived != canonicalName {
+			aliases = append(aliases, derived)
+		}
+	}
+	return aliases
+}
+
+// toSnakeCase converts a camelCase or PascalCase string to snake_case.
+// e.g. "groupWait" -> "group_wait", "apiURL" -> "api_url", "v1Beta" -> "v1_beta"
+func toSnakeCase(s string) string {
+	runes := []rune(s)
+	var b strings.Builder
+	for i, r := range runes {
+		if i == 0 {
+			b.WriteRune(unicode.ToLower(r))
+			continue
+		}
+		if unicode.IsUpper(r) {
+			prev := runes[i-1]
+			if unicode.IsLower(prev) || unicode.IsDigit(prev) || (unicode.IsUpper(prev) && i+1 < len(runes) && unicode.IsLower(runes[i+1])) {
+				b.WriteByte('_')
+			}
+			b.WriteRune(unicode.ToLower(r))
+		} else {
+			b.WriteRune(r)
+		}
+	}
+	return b.String()
+}
+
+// toCamelCase converts a snake_case string to lowerCamelCase.
+// e.g. "group_wait" -> "groupWait"
+func toCamelCase(s string) string {
+	parts := strings.Split(s, "_")
+	if len(parts) == 1 {
+		return s
+	}
+	var b strings.Builder
+	for i, p := range parts {
+		if i == 0 || len(p) == 0 {
+			b.WriteString(p)
+		} else {
+			b.WriteRune(unicode.ToUpper(rune(p[0])))
+			b.WriteString(p[1:])
+		}
+	}
+	return b.String()
 }

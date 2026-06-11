@@ -135,3 +135,20 @@ type Embedded1 struct {
 ```
 
 Then update the templates to render the custom markers. You can find an example [here](./test/templates/markdown/type.tpl).
+
+#### Field Aliases
+
+For fields carrying the `encoding/json/v2` `case:ignore` tag option, the documentation can
+list alternative names alongside the canonical one. Set `processor.caseIgnoreAliases` to the
+conventions to derive (`camelCase` and/or `snake_case`); when empty (the default) no aliases
+are shown.
+
+```yaml
+processor:
+ caseIgnoreAliases:
+   - camelCase
+   - snake_case
+```
+
+For a field tagged `json:"groupWait,case:ignore"`, the documentation displays `groupWait`
+together with the derived `group_wait` alias.
