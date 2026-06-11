@@ -405,6 +405,7 @@ func (p *processor) processStructFields(parentType *types.Type, pkg *loader.Pack
 			Embedded: f.Name == "",
 		}
 
+		var caseIgnore bool
 		if tagVal, ok := f.Tag.Lookup("json"); ok {
 			args := strings.Split(tagVal, ",")
 			if len(args) > 0 && args[0] != "" {
@@ -413,6 +414,7 @@ func (p *processor) processStructFields(parentType *types.Type, pkg *loader.Pack
 			if len(args) > 1 && args[1] == "inline" {
 				fieldDef.Inlined = true
 			}
+			caseIgnore = hasCaseIgnore(args)
 		}
 
 		t := pkg.TypesInfo.TypeOf(f.RawField.Type)
@@ -436,7 +438,7 @@ func (p *processor) processStructFields(parentType *types.Type, pkg *loader.Pack
 
 		// Derive aliases once the field name has been fully resolved, so they
 		// are based on the displayed name rather than an intermediate value.
-		if hasCaseIgnore(f.Tag.Get("json")) {
+		if caseIgnore {
 			fieldDef.Aliases = p.deriveAliases(fieldDef.Name)
 		}
 
@@ -640,9 +642,10 @@ func lookupConstantValuesForAliasedType(pkg *loader.Package, aliasTypeName strin
 	return values
 }
 
-// hasCaseIgnore reports whether a json struct tag contains the "case:ignore" option.
-func hasCaseIgnore(tag string) bool {
-	for _, part := range strings.Split(tag, ",") {
+// hasCaseIgnore reports whether the comma-separated json struct tag options
+// contain the "case:ignore" option.
+func hasCaseIgnore(options []string) bool {
+	for _, part := range options {
 		if strings.TrimSpace(part) == "case:ignore" {
 			return true
 		}
