@@ -87,6 +87,12 @@ render:
       text: New page
 ```
 
+> [!NOTE]
+> `linkMappings` are declared inline in the config file. This is convenient for a
+> small, fixed set of mappings per repository. If you find yourself maintaining a
+> large mapping set, consider whether the URLs should instead be linked directly in
+> the source doc comments; external mapping-file support may be added later if needed.
+
 ### Advanced Features
 
 #### Custom Markers
