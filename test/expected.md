@@ -28,7 +28,7 @@ _Appears in:_
 
 ## webapp.test.k8s.elastic.co/v1
 
-Package v1 contains API Schema definitions for the webapp v1 API group
+Package v1 contains API Schema definitions for the webapp v1 API group. See [New page](docs-content://new/page.md) for more.
 
 ### Resource Types
 - [Embedded](#embedded)

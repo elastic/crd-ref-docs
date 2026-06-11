@@ -37,7 +37,7 @@ _Underlying type:_ _string_
 [id="{anchor_prefix}-webapp-test-k8s-elastic-co-v1"]
 === webapp.test.k8s.elastic.co/v1
 
-Package v1 contains API Schema definitions for the webapp v1 API group
+Package v1 contains API Schema definitions for the webapp v1 API group. See https://example.com/old-page for more.
 
 .Resource Types
 - xref:{anchor_prefix}-github-com-elastic-crd-ref-docs-api-v1-embedded[$$Embedded$$]

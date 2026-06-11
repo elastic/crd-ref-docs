@@ -3,7 +3,7 @@
 
 ## {{ $gv.GroupVersionString }}
 
-{{ $gv.Doc }}
+{{ markdownRewriteLinks $gv.Doc }}
 
 {{- if index $gv.Markers "special" }}
 *Important: This package is special and should be treated differently.*
