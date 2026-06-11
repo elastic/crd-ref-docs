@@ -103,12 +103,15 @@ func TestMarkdownRenderer_RewriteLinks(t *testing.T) {
 			want:     "See [New page](docs-content://new/page.md) and again [New page](docs-content://new/page.md).",
 		},
 		{
-			name: "longer URL listed first wins over shorter prefix",
+			// The shorter, prefix URL is declared first; the longer/more specific
+			// URL must still win. RewriteLinks sorts by descending URL length, so
+			// the result is independent of config order.
+			name: "longer URL wins over shorter prefix regardless of order",
 			renderer: &MarkdownRenderer{conf: &config.Config{
 				Render: config.RenderConfig{
 					LinkMappings: []*config.LinkMapping{
-						{URL: "https://example.com/old-page", Link: "docs-content://new/page.md", Text: "New page"},
 						{URL: "https://example.com/old", Link: "docs-content://other.md", Text: "Other"},
+						{URL: "https://example.com/old-page", Link: "docs-content://new/page.md", Text: "New page"},
 					},
 				},
 			}},

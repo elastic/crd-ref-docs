@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
+	"slices"
 	"strings"
 	"text/template"
 
@@ -153,7 +154,14 @@ func (m *MarkdownRenderer) RewriteLinks(text string) string {
 	if m == nil || m.conf == nil {
 		return text
 	}
-	for _, lm := range m.conf.Render.LinkMappings {
+	// Apply longer URLs first so that when one mapped URL is a prefix of another
+	// (e.g. ".../old" vs ".../old-page"), the more specific match wins regardless
+	// of the order mappings are declared in the config.
+	mappings := slices.Clone(m.conf.Render.LinkMappings)
+	slices.SortStableFunc(mappings, func(a, b *config.LinkMapping) int {
+		return len(b.URL) - len(a.URL)
+	})
+	for _, lm := range mappings {
 		text = strings.ReplaceAll(text, lm.URL, m.RenderExternalLink(lm.Link, lm.Text))
 	}
 	return text
