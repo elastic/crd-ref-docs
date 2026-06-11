@@ -119,7 +119,11 @@ func TestMarkdownRenderer_RewriteLinks(t *testing.T) {
 			want: "See [New page](docs-content://new/page.md) for details.",
 		},
 		{
-			name:     "URL inside an existing Markdown link produces nested output",
+			// KNOWN LIMITATION: mappings target bare URLs. A URL that already
+			// appears inside a Markdown link gets rewritten too, producing nested
+			// (invalid) Markdown. This is acceptable because the feature is meant
+			// for plain URLs in godoc; do not map a URL that is already linked.
+			name:     "KNOWN LIMITATION: URL inside an existing Markdown link produces nested output",
 			renderer: r,
 			text:     "See [the page](https://example.com/old) for details.",
 			want:     "See [the page]([New page](docs-content://new/page.md)) for details.",
