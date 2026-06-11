@@ -18,6 +18,7 @@
 package config
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/goccy/go-yaml"
@@ -100,5 +101,12 @@ func Load(flags Flags) (*Config, error) {
 	}
 
 	conf.Flags = flags
+
+	for i, lm := range conf.Render.LinkMappings {
+		if lm.URL == "" || lm.Link == "" || lm.Text == "" {
+			return nil, fmt.Errorf("render.linkMappings[%d]: url, link, and text are all required", i)
+		}
+	}
+
 	return &conf, nil
 }
