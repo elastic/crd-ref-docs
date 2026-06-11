@@ -6,7 +6,7 @@
 
 {{ if $type.IsAlias }}_Underlying type:_ _{{ markdownRenderTypeLink $type.UnderlyingType  }}_{{ end }}
 
-{{ $type.Doc }}
+{{ markdownRewriteLinks $type.Doc }}
 
 {{ if $type.Validation -}}
 _Validation:_

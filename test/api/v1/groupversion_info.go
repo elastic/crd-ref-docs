@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-// Package v1 contains API Schema definitions for the webapp v1 API group
+// Package v1 contains API Schema definitions for the webapp v1 API group. See https://example.com/old-page for more.
 // +kubebuilder:object:generate=true
 // +groupName=webapp.test.k8s.elastic.co
 package v1

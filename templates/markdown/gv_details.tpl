@@ -3,7 +3,7 @@
 
 ## {{ $gv.GroupVersionString }}
 
-{{ $gv.Doc }}
+{{ markdownRewriteLinks $gv.Doc }}
 
 {{- if $gv.Kinds  }}
 ### Resource Types

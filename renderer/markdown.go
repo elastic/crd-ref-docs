@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
+	"slices"
 	"strings"
 	"text/template"
 
@@ -72,6 +73,7 @@ func (m *MarkdownRenderer) ToFuncMap() template.FuncMap {
 		"RenderLocalLink":    m.RenderLocalLink,
 		"RenderType":         m.RenderType,
 		"RenderTypeLink":     m.RenderTypeLink,
+		"RewriteLinks":       m.RewriteLinks,
 		"SafeID":             m.SafeID,
 		"ShouldRenderType":   m.ShouldRenderType,
 		"TypeID":             m.TypeID,
@@ -148,10 +150,29 @@ func (m *MarkdownRenderer) RenderGVLink(gv types.GroupVersionDetails) string {
 	return m.RenderLocalLink(gv.GroupVersionString())
 }
 
+func (m *MarkdownRenderer) RewriteLinks(text string) string {
+	if m == nil || m.conf == nil {
+		return text
+	}
+	// Apply longer URLs first so that when one mapped URL is a prefix of another
+	// (e.g. ".../old" vs ".../old-page"), the more specific match wins regardless
+	// of the order mappings are declared in the config.
+	mappings := slices.Clone(m.conf.Render.LinkMappings)
+	slices.SortStableFunc(mappings, func(a, b *config.LinkMapping) int {
+		return len(b.URL) - len(a.URL)
+	})
+	for _, lm := range mappings {
+		text = strings.ReplaceAll(text, lm.URL, m.RenderExternalLink(lm.Link, lm.Text))
+	}
+	return text
+}
+
 func (m *MarkdownRenderer) RenderFieldDoc(text string) string {
+	out := m.RewriteLinks(text)
+
 	// Escape the pipe character, which has special meaning for Markdown as a way to format tables
 	// so that including | in a comment does not result in wonky tables.
-	out := strings.ReplaceAll(text, "|", "\\|")
+	out = strings.ReplaceAll(out, "|", "\\|")
 
 	// Escape the curly bracket character.
 	out = strings.ReplaceAll(out, "{", "\\{")

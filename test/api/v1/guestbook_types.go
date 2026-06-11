@@ -121,9 +121,9 @@ const (
 // +kubebuilder:validation:Minimum=1
 type PositiveInt int
 
-// GuestbookEntry defines an entry in a guest book.
+// GuestbookEntry defines an entry in a guest book. See https://example.com/old-page for more.
 type GuestbookEntry struct {
-	// Name of the guest (pipe | should be escaped)
+	// Name of the guest (pipe | should be escaped). See https://example.com/old-page for naming guidance.
 	// +kubebuilder:validation:Required
 	// +kubebuilder:validation:MaxLength=80
 	// +kubebuilder:validation:Pattern=`0*[a-z0-9]*[a-z]*[0-9]`

@@ -78,7 +78,20 @@ render:
     - name: SecretObjectReference
       package: sigs.k8s.io/gateway-api/apis/v1beta1
       link: https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1beta1.SecretObjectReference
+  # Rewrite plain URLs in field, type and group/version doc comments to Markdown links.
+  # Markdown renderer only. Mappings target bare URLs: do not map a URL that already
+  # appears inside a Markdown link, as it would produce nested (invalid) Markdown.
+  linkMappings:
+    - url: https://example.com/old-page
+      link: docs-content://new/page.md
+      text: New page
 ```
+
+> [!NOTE]
+> `linkMappings` are declared inline in the config file. This is convenient for a
+> small, fixed set of mappings per repository. If you find yourself maintaining a
+> large mapping set, consider whether the URLs should instead be linked directly in
+> the source doc comments; external mapping-file support may be added later if needed.
 
 ### Advanced Features
 

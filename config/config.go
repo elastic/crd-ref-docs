@@ -18,6 +18,7 @@
 package config
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/goccy/go-yaml"
@@ -52,14 +53,21 @@ const (
 )
 
 type RenderConfig struct {
-	KnownTypes        []*KnownType `json:"knownTypes"`
-	KubernetesVersion string       `json:"kubernetesVersion"`
+	KnownTypes        []*KnownType   `json:"knownTypes"`
+	KubernetesVersion string         `json:"kubernetesVersion"`
+	LinkMappings      []*LinkMapping `json:"linkMappings"`
 }
 
 type KnownType struct {
 	Name    string `json:"name"`
 	Package string `json:"package"`
 	Link    string `json:"link"`
+}
+
+type LinkMapping struct {
+	URL  string `json:"url"`
+	Link string `json:"link"`
+	Text string `json:"text"`
 }
 
 const (
@@ -93,5 +101,12 @@ func Load(flags Flags) (*Config, error) {
 	}
 
 	conf.Flags = flags
+
+	for i, lm := range conf.Render.LinkMappings {
+		if lm.URL == "" || lm.Link == "" || lm.Text == "" {
+			return nil, fmt.Errorf("render.linkMappings[%d]: url, link, and text are all required", i)
+		}
+	}
+
 	return &conf, nil
 }
