@@ -83,15 +83,20 @@ func renderTemplate(tmpl *template.Template, conf *config.Config, fileExtension 
 		}
 
 	case config.OutputModeGroup:
+		// groupedGVDS aggregates all the GroupVersionDetails by group
+		groupedGVDS := make(map[string][]types.GroupVersionDetails)
 		for _, gvd := range gvds {
-			fileName := fmt.Sprintf("%s.%s", gvd.Group, fileExtension)
+			group := gvd.Group
+			groupedGVDS[group] = append(groupedGVDS[group], gvd)
+		}
+		for group, gvds := range groupedGVDS {
+			fileName := fmt.Sprintf("%s.%s", group, fileExtension)
 			file, err := createOutFile(conf.OutputPath, true, fileName)
 			defer file.Close()
 			if err != nil {
 				return err
 			}
-
-			if err := tmpl.ExecuteTemplate(file, mainTemplate, []types.GroupVersionDetails{gvd}); err != nil {
+			if err := tmpl.ExecuteTemplate(file, mainTemplate, gvds); err != nil {
 				return err
 			}
 		}
